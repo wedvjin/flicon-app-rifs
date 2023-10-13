@@ -54,6 +54,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  String _contoller = 'unknown';
+
   Future<void> btn() async {
     var requestMessage = deviceInfo.ReadRequest(
       inputNumbers: [1],
@@ -70,6 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
         );
     print(responseMessage.outputNumbers);
     print(responseMessage.outputString);
+
+    setState(() {
+      _contoller = responseMessage.outputString;
+    });
   }
 
   @override
@@ -85,7 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: btn,
               child: const Text("Request to Rust")
-            )
+            ),
+            Text(_contoller),
           ],
         ),
       ),
