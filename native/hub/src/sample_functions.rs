@@ -296,3 +296,42 @@ pub async fn stream_report_in() {
     //     current_number += 1;
     // }
 }
+
+pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
+    use crate::messages::device_info::{ReadRequest, ReadResponse};
+
+    match rust_request.operation {
+        RustOperation::Create => RustResponse::default(),
+        RustOperation::Read => {
+            let message_bytes = rust_request.message.unwrap();
+            let request_message = ReadRequest::decode(message_bytes.as_slice()).unwrap();
+
+            let new_numbers: Vec<i32> = request_message
+                .input_numbers
+                .into_iter()
+                .map(|x| x + 1)
+                .collect();
+            // let new_string = request_message.input_string.to_uppercase();
+
+            let mut device = sample_crate::DeviceState::new();
+            let left_or_right = device.get_side();
+
+            let new_string = match left_or_right {
+                true => "right".to_string(),
+                false => "left".to_string(),
+            };
+
+            let response_message = ReadResponse {
+                output_numbers: new_numbers,
+                output_string: new_string,
+            };
+            RustResponse {
+                successful: true,
+                message: Some(response_message.encode_to_vec()),
+                blob: None,
+            }
+        }
+        RustOperation::Update => RustResponse::default(),
+        RustOperation::Delete => RustResponse::default(),
+    }
+}

@@ -15,13 +15,13 @@ async fn main() {
     let mut request_receiver = bridge::get_request_receiver();
     // Repeat `crate::spawn` anywhere in your code
     // if more concurrent tasks are needed.
-    crate::spawn(sample_functions::stream_mandelbrot());
-    crate::spawn(sample_functions::run_debug_tests());
-    while let Some(request_unique) = request_receiver.recv().await {
-        crate::spawn(async {
-            let response_unique = handle_request(request_unique).await;
-            respond_to_dart(response_unique);
-        });
-    }
+    // crate::spawn(sample_functions::stream_mandelbrot());
+    // crate::spawn(sample_functions::run_debug_tests());
+    // while let Some(request_unique) = request_receiver.recv().await {
+    //     crate::spawn(async {
+    //         let response_unique = handle_request(request_unique).await;
+    //         respond_to_dart(response_unique);
+    //     });
+    // }
     crate::spawn(sample_functions::stream_report_in()); // ADDed THIS LINE
 }
