@@ -1,0 +1,4 @@
+syntax = "proto3";
+package report_in;
+
+message StateSignal { int32 current_number = 1; }

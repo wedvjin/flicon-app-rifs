@@ -1,0 +1,16 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[target.'cfg(any(target_os = "windows", target_os = "macos", target_os = "linux"))'.dependencies]
+machineid-rs = "1.2.4"
+
+[dependencies]
+druid = "0.8.3"
+hidapi = "2.4.1"
+serde = "1.0.188"
+serde_json = "1.0.107"
+flutter_rust_bridge = "1.82.1"
+anyhow = "1.0.75"
