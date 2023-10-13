@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/report_in.pb.dart' as  report_in;
+import 'package:example_app/messages/device_info.pb.dart'
+    as deviceInfo;
 
 void main() async {
   // Wait for Rust initialization to be completed first.
