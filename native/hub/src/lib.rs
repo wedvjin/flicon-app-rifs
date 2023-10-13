@@ -16,12 +16,13 @@ async fn main() {
     // Repeat `crate::spawn` anywhere in your code
     // if more concurrent tasks are needed.
     // crate::spawn(sample_functions::stream_mandelbrot());
+    // crate::spawn(sample_functions::stream_increasing_number()); // ADD THIS LINE
     // crate::spawn(sample_functions::run_debug_tests());
+    crate::spawn(sample_functions::stream_report_in()); // ADDed THIS LINE
     while let Some(request_unique) = request_receiver.recv().await {
         crate::spawn(async {
             let response_unique = handle_request(request_unique).await;
             respond_to_dart(response_unique);
         });
     }
-    crate::spawn(sample_functions::stream_report_in()); // ADDed THIS LINE
 }

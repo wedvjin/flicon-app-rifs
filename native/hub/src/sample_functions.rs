@@ -215,6 +215,25 @@ pub async fn run_debug_tests() {
     panic!("INTENTIONAL DEBUG PANIC");
 }
 
+pub async fn stream_increasing_number() {
+    use crate::messages::increasing_number::{StateSignal, ID};
+
+    let mut current_number: i32 = 1;
+    loop {
+        crate::sleep(std::time::Duration::from_secs(1)).await;
+
+        let signal_message = StateSignal { current_number };
+        let rust_signal = RustSignal {
+            resource: ID,
+            message: Some(signal_message.encode_to_vec()),
+            blob: None,
+        };
+        send_rust_signal(rust_signal);
+
+        current_number += 1;
+    }
+}
+
 pub async fn stream_report_in() {
     use crate::messages::report_in_message::{ReportInMessage, ID};
 

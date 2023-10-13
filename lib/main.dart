@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
+import 'package:flicon/messages/increasing_number.pb.dart'
+    as increasingNumbers;
 
 void main() async {
   // Wait for Rust initialization to be completed first.
@@ -84,7 +86,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamBuilder<RustSignal>(
-              stream: rustBroadcaster.stream,
+              stream: rustBroadcaster.stream.where((rustSignal) {
+                return rustSignal.resource == reportInMessage.ID;
+              }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 print(rustBroadcaster.stream.isBroadcast);
@@ -92,7 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (rustSignal == null) {
                   return Text("No stream");
                 } else {
-                  return Text(rustSignal.toString());
+                  // final singal = reportInMessage.ReportInMessage.fromBuffer(
+                  //   rustSignal.message!,
+                  // );
+                  // final data = signal.data;
+                  // final currentNumber = singal.currentNumber;
+                  // return Text(currentNumber.toString());
+                  return Text(rustSignal.message!.toString());
                 }
               },
             ),
