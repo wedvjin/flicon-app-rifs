@@ -2,11 +2,18 @@
 //! when a `RustRequest` was received from Dart
 //! and returns `RustResponse`.
 
+use std::sync::{Arc, Mutex};
+
+use sample_crate::DeviceState;
+
 use crate::bridge::api::{RustRequestUnique, RustResponse, RustResponseUnique};
 use crate::messages;
 use crate::sample_functions;
 
-pub async fn handle_request(request_unique: RustRequestUnique) -> RustResponseUnique {
+pub async fn handle_request(
+    request_unique: RustRequestUnique,
+    adevice: Arc<Mutex<DeviceState>>,
+) -> RustResponseUnique {
     // Get the request data.
     let rust_request = request_unique.request;
     let interaction_id = request_unique.id;
@@ -23,6 +30,9 @@ pub async fn handle_request(request_unique: RustRequestUnique) -> RustResponseUn
         }
         messages::device_info::ID => {
             sample_functions::handle_device_info(rust_request).await // ADDed THIS BLOCK
+        }
+        messages::device_info::ID => {
+            sample_functions::handle_device(rust_request, adevice).await // ADDed THIS BLOCK
         }
         _ => RustResponse::default(),
     };

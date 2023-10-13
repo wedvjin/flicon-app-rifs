@@ -23,10 +23,11 @@ async fn main() {
     // crate::spawn(sample_functions::stream_mandelbrot());
     // crate::spawn(sample_functions::stream_increasing_number()); // ADD THIS LINE
     // crate::spawn(sample_functions::run_debug_tests());
-    crate::spawn(sample_functions::stream_report_in(adevice)); // ADDed THIS LINE
+    crate::spawn(sample_functions::stream_report_in(adevice.clone())); // ADDed THIS LINE
     while let Some(request_unique) = request_receiver.recv().await {
+        let adevice_cp = adevice.clone();
         crate::spawn(async {
-            let response_unique = handle_request(request_unique).await;
+            let response_unique = handle_request(request_unique, adevice_cp).await;
             respond_to_dart(response_unique);
         });
     }

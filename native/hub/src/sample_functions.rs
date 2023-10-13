@@ -388,7 +388,10 @@ pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
     }
 }
 
-pub async fn handle_device(rust_request: RustRequest) -> RustResponse {
+pub async fn handle_device(
+    rust_request: RustRequest,
+    adevice: Arc<Mutex<DeviceState>>,
+) -> RustResponse {
     use crate::messages::device_info::{ReadRequest, ReadResponse, SetRgbLed};
     // We import message structs in this handler function
     // because schema will differ by Rust resource.
@@ -400,8 +403,11 @@ pub async fn handle_device(rust_request: RustRequest) -> RustResponse {
             let message_bytes = rust_request.message.unwrap();
             let request_message = SetRgbLed::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
-
-
+            adevice.lock().unwrap().set_rgb_led(
+                request_message.r.try_into().unwrap(), 
+                request_message.g.try_into().unwrap(), 
+                request_message.b.try_into().unwrap()
+            );
             
             // Return the response that will be sent to Dart.
             let response_message = ReadResponse {
