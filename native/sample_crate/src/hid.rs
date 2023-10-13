@@ -351,7 +351,7 @@ fn get_data(
     let res = device.read(&mut buf[..]).unwrap();
     let report_in = ReportIn {
             id: buf[0],
-            buttons: u64::from_le_bytes(buf[1..7].try_into().unwrap()),
+            buttons: to_u64_from_6_bytes(buf[1..7].try_into().unwrap()),
             x_axis: u16::from_le_bytes(buf[7..9].try_into().unwrap()),
             y_axis: u16::from_le_bytes(buf[9..11].try_into().unwrap()),
             z_axis: u16::from_le_bytes(buf[11..13].try_into().unwrap()),

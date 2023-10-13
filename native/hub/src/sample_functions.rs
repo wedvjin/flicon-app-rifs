@@ -218,6 +218,7 @@ pub async fn run_debug_tests() {
 pub async fn stream_report_in() {
     use crate::messages::report_in_message::{ReportInMessage, ID};
 
+    println!("TESTTESTEST");
     let device = sample_crate::DeviceState::new();
     
     let mut counter = 0;
@@ -341,10 +342,12 @@ pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
             let mut device = sample_crate::DeviceState::new();
             let left_or_right = device.get_side();
 
-            let new_string = match left_or_right {
-                true => "right".to_string(),
-                false => "left".to_string(),
-            };
+            // let new_string = match left_or_right {
+            //     true => "right".to_string(),
+            //     false => "left".to_string(),
+            // };
+
+            let new_string =String::from_utf8(device.get_data().to_vec()).unwrap();
 
             let response_message = ReadResponse {
                 output_numbers: new_numbers,
