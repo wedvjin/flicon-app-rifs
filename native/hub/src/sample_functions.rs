@@ -216,71 +216,96 @@ pub async fn run_debug_tests() {
 }
 
 pub async fn stream_report_in() {
-    use crate::messages::report_in::{StateSignal, ID};
+    use crate::messages::report_in_message::{ReportInMessage, ID};
 
-    let (report_in_tx, mut report_in_rx) = tokio::sync::mpsc::channel(25);
+    let device = sample_crate::DeviceState::new();
+    
+    let mut counter = 0;
+    loop {
+        crate::sleep(std::time::Duration::from_millis(40)).await;
+        let data = device.get_data().to_vec();
+        
+        let report_in_signal_message = ReportInMessage {
+            counter: counter,
+            data: data,
+        };
+        let rust_signal = RustSignal {
+            resource: ID,
+            message: Some(report_in_signal_message.encode_to_vec()),
+            blob: None,
+        };
+
+
+        send_rust_signal(rust_signal);
+        counter += 1;
+        
+    }
+
+    // let (report_in_tx, mut report_in_rx) = tokio::sync::mpsc::channel(25);
 
     // let mut current_number: i32 = 1;
 
-    crate::spawn(async move {
-        let device = sample_crate::DeviceState::new();
-        loop {
-            // Wait for 40 milliseconds on each frame
-            crate::sleep(std::time::Duration::from_millis(40)).await;
-            if report_in_tx.capacity() == 0 {
-                continue;
-            }
+    // crate::spawn(async move {
+    //     let device = sample_crate::DeviceState::new();
+    //     loop {
+    //         // Wait for 40 milliseconds on each frame
+    //         crate::sleep(std::time::Duration::from_millis(40)).await;
+    //         if report_in_tx.capacity() == 0 {
+    //             continue;
+    //         }
 
-            // Calculate the mandelbrot image
-            // parallelly in a separate thread pool.
-            // let join_handle = crate::spawn_blocking(move || {
-            //     // sample_crate::mandelbrot(
-            //     //     sample_crate::Size {
-            //     //         width: 384,
-            //     //         height: 384,
-            //     //     },
-            //     //     sample_crate::Point {
-            //     //         x: 0.360,
-            //     //         y: -0.641,
-            //     //     },
-            //     //     scale,
-            //     //     4,
-            //     // )
-            //     device.get_data()
-            // });
-            let data = device.get_data();
-            let _ = report_in_tx.send(data).await;
-        }
-    });
+    //         // Calculate the mandelbrot image
+    //         // parallelly in a separate thread pool.
+    //         // let join_handle = crate::spawn_blocking(move || {
+    //         //     // sample_crate::mandelbrot(
+    //         //     //     sample_crate::Size {
+    //         //     //         width: 384,
+    //         //     //         height: 384,
+    //         //     //     },
+    //         //     //     sample_crate::Point {
+    //         //     //         x: 0.360,
+    //         //     //         y: -0.641,
+    //         //     //     },
+    //         //     //     scale,
+    //         //     //     4,
+    //         //     // )
+    //         //     device.get_data()
+    //         // });
+    //         let data = device.get_data();
+    //         let _ = report_in_tx.send(data).await;
+    //     }
+    // });
 
-    // Receive frames in order.
-    crate::spawn(async move {
-        loop {
-            let received_report_in = report_in_rx.recv().await.unwrap();
-            let signal_message = StateSignal {
-                current_number: 0
-            };
-            let rust_signal = RustSignal {
-                resource: ID,
-                message: Some(signal_message.encode_to_vec()),
-                blob: Some(received_report_in.to_vec()),
-            };
-            send_rust_signal(rust_signal);
-            // if let Some(mandelbrot) = received_frame {
-            //     // Stream the signal to Dart.
-            //     let signal_message = StateSignal {
-            //         id: 0,
-            //         current_scale: scale,
-            //     };
-            //     let rust_signal = RustSignal {
-            //         resource: ID,
-            //         message: Some(signal_message.encode_to_vec()),
-            //         blob: Some(mandelbrot),
-            //     };
-            //     send_rust_signal(rust_signal);
-            // };
-        }
-    });
+    // // Receive frames in order.
+    // crate::spawn(async move {
+    //     loop {
+    //         let received_report_in = report_in_rx.recv().await.unwrap();
+    //         let signal_message = StateSignal {
+    //             current_number: 0
+    //         };
+    //         let rust_signal = RustSignal {
+    //             resource: ID,
+    //             message: Some(signal_message.encode_to_vec()),
+    //             blob: Some(received_report_in.to_vec()),
+    //         };
+    //         send_rust_signal(rust_signal);
+    //         // if let Some(mandelbrot) = received_frame {
+    //         //     // Stream the signal to Dart.
+    //         //     let signal_message = StateSignal {
+    //         //         id: 0,
+    //         //         current_scale: scale,
+    //         //     };
+    //         //     let rust_signal = RustSignal {
+    //         //         resource: ID,
+    //         //         message: Some(signal_message.encode_to_vec()),
+    //         //         blob: Some(mandelbrot),
+    //         //     };
+    //         //     send_rust_signal(rust_signal);
+    //         // };
+    //     }
+    // });
+
+
 
     // loop {
     //     crate::sleep(std::time::Duration::from_secs(1)).await;
