@@ -6,7 +6,7 @@ import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 
 void main() async {
   // Wait for Rust initialization to be completed first.
-  await RustInFlutter.ensureInitialized();
+  await RustInFlutter.ensureInitialized();  
   runApp(const MyApp());
 }
 
@@ -20,7 +20,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _appLifecycleListener = AppLifecycleListener(
     onExitRequested: () async {
-      // Terminate Rust tasks before closing the Flutter app.
       await RustInFlutter.ensureFinalized();
       return AppExitResponse.exit;
     },
@@ -84,17 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: btn,
-              child: const Text("Request to Rust")
-            ),
-            Text(_contoller),
             StreamBuilder<RustSignal>(
-              stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportInMessage.ID;
-              }),
+              stream: rustBroadcaster.stream,
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
+                print(rustBroadcaster.stream.isBroadcast);
                 print(rustSignal);
                 if (rustSignal == null) {
                   return Text("No stream");
