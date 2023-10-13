@@ -7,6 +7,30 @@ message ReadRequest {
 }
 
 message ReadResponse {
-  repeated int32 output_numbers = 1;
+  int32 output_numbers = 1;
   string output_string = 2;
+}
+
+//and slider
+message SetAxis {
+    string target = 1;
+    uint32 min = 2;
+    uint32 max = 3;
+    uint32 average = 4;
+    uint32 dead_zone = 5;
+}
+
+message SetEncoder {
+    uint32 value = 1;
+}
+
+message SetRgbLed {
+    uint32 r = 1;
+    uint32 g = 2;
+    uint32 b = 3;
+}
+
+message SetHatka {
+    uint32 target = 1;
+    uint32 value = 2;
 }

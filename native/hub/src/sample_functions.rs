@@ -1,9 +1,12 @@
 //! This module is only for demonstration purposes.
 //! You might want to remove this module in production.
 
+use std::sync::{Arc, Mutex};
+
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
 use prost::Message;
+use sample_crate::DeviceState;
 
 pub async fn handle_sample_resource(rust_request: RustRequest) -> RustResponse {
     match rust_request.operation {
@@ -234,16 +237,18 @@ pub async fn stream_increasing_number() {
     }
 }
 
-pub async fn stream_report_in() {
+pub async fn stream_report_in(
+    device: Arc<Mutex<DeviceState>>,
+) {
     use crate::messages::report_in_message::{ReportInMessage, ID};
 
     println!("TESTTESTEST");
-    let device = sample_crate::DeviceState::new();
+    // let device = sample_crate::DeviceState::new();
     
     let mut counter = 0;
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
-        let data = device.get_data().to_vec();
+        let data = device.lock().unwrap().get_data().to_vec();
         
         let report_in_signal_message = ReportInMessage {
             counter: counter,
@@ -351,26 +356,57 @@ pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
             let message_bytes = rust_request.message.unwrap();
             let request_message = ReadRequest::decode(message_bytes.as_slice()).unwrap();
 
-            let new_numbers: Vec<i32> = request_message
-                .input_numbers
-                .into_iter()
-                .map(|x| x + 1)
-                .collect();
+            // let new_numbers: Vec<i32> = request_message
+            //     .input_numbers
+            //     .into_iter()
+            //     .map(|x| x + 1)
+            //     .collect();
             // let new_string = request_message.input_string.to_uppercase();
 
             let mut device = sample_crate::DeviceState::new();
             let left_or_right = device.get_side();
 
-            // let new_string = match left_or_right {
-            //     true => "right".to_string(),
-            //     false => "left".to_string(),
-            // };
+            let new_string = match left_or_right {
+                true => "right".to_string(),
+                false => "left".to_string(),
+            };
 
-            let new_string =String::from_utf8(device.get_data().to_vec()).unwrap();
-
+            // let new_string =String::from_utf8(device.get_data().to_vec()).unwrap();
+            let new_numbers = 0;
             let response_message = ReadResponse {
                 output_numbers: new_numbers,
                 output_string: new_string,
+            };
+            RustResponse {
+                successful: true,
+                message: Some(response_message.encode_to_vec()),
+                blob: None,
+            }
+        }
+        RustOperation::Update => RustResponse::default(),
+        RustOperation::Delete => RustResponse::default(),
+    }
+}
+
+pub async fn handle_device(rust_request: RustRequest) -> RustResponse {
+    use crate::messages::device_info::{ReadRequest, ReadResponse, SetRgbLed};
+    // We import message structs in this handler function
+    // because schema will differ by Rust resource.
+
+    match rust_request.operation {
+        RustOperation::Create => RustResponse::default(),
+        RustOperation::Read => {
+            // Decode raw bytes into a Rust message object.
+            let message_bytes = rust_request.message.unwrap();
+            let request_message = SetRgbLed::decode(message_bytes.as_slice()).unwrap();
+            // crate::debug_print!("{}", request_message.letter);
+
+
+            
+            // Return the response that will be sent to Dart.
+            let response_message = ReadResponse {
+                output_numbers: 200,
+                output_string: "success".to_string(),
             };
             RustResponse {
                 successful: true,
