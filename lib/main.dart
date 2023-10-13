@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
+import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 
 void main() async {
   // Wait for Rust initialization to be completed first.
@@ -70,9 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
         deviceInfo.ReadResponse.fromBuffer(
           rustResponse.message!,
         );
-    print(responseMessage.outputNumbers);
-    print(responseMessage.outputString);
-
     setState(() {
       _contoller = responseMessage.outputString;
     });
@@ -80,19 +78,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    deviceInfo.ReadRequest requestMessage;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          
             ElevatedButton(
               onPressed: btn,
               child: const Text("Request to Rust")
             ),
             Text(_contoller),
+            StreamBuilder<RustSignal>(
+              stream: rustBroadcaster.stream.where((rustSignal) {
+                return rustSignal.resource == reportInMessage.ID;
+              }),
+              builder: (context, snapshot) {
+                final rustSignal = snapshot.data;
+                print(rustSignal);
+                if (rustSignal == null) {
+                  return Text("No stream");
+                } else {
+                  return Text(rustSignal.toString());
+                }
+              },
+            ),
           ],
         ),
       ),
