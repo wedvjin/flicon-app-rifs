@@ -1,0 +1,67 @@
+syntax = "proto3";
+package report_feature_message;
+
+message ReportFeature {
+    uint32 id = 1;
+    uint32 x_min = 2;
+    uint32 x_centr = 3;
+    uint32 x_max = 4;
+    uint32 x_averaging = 5;
+    uint32 x_dead_zone = 6;
+    uint32 y_min = 7;
+    uint32 y_centr = 8;
+    uint32 y_max = 9;
+    uint32 y_averaging = 10;
+    uint32 y_dead_zone = 11;
+    uint32 z_min = 12;
+    uint32 z_centr = 13;
+    uint32 z_max = 14;
+    uint32 z_averaging = 15;
+    uint32 z_dead_zone = 16;
+    uint32 rx_min = 17;
+    uint32 rx_centr = 18;
+    uint32 rx_max = 19;
+    uint32 rx_averaging = 20;
+    uint32 rx_dead_zone = 21;
+    uint32 ry_min = 22;
+    uint32 ry_centr = 23;
+    uint32 ry_max = 24;
+    uint32 ry_averaging = 25;
+    uint32 ry_dead_zone = 26;
+    uint32 rz_min = 27;
+    uint32 rz_centr = 28;
+    uint32 rz_max = 29;
+    uint32 rz_averaging = 30;
+    uint32 rz_dead_zone = 31;
+    uint32 slider_min = 32;
+    uint32 slider_max = 33;
+    uint32 slider_averaging = 34;
+    uint32 slider_dead_zone = 35;
+    uint32 encoder_time = 36;
+    uint32 led_r = 37;
+    uint32 led_g = 38;
+    uint32 led_b = 39;
+    uint32 hatka1_mode = 40;
+    uint32 hatka2_mode = 41;
+    uint32 hatka3_mode = 42;
+    uint32 hatka4_mode = 43;
+    uint32 control_byte = 44;
+    uint32 gash_button1_min = 45;
+    uint32 gash_button1_max = 46;
+    uint32 gash_button2_min = 47;
+    uint32 gash_button2_max = 48;
+    uint32 gash_button3_min = 49;
+    uint32 gash_button3_max = 50;
+    uint32 spi_error_cnt = 51;
+    
+    // Real values received
+    uint64 buttons = 52;
+    uint32 x_axis = 53;
+    uint32 y_axis = 54;
+    uint32 z_axis = 55;
+    uint32 rx_axis = 56;
+    uint32 ry_axis = 57;
+    uint32 rz_axis = 58;
+    uint32 slider_axis = 59;
+    uint32 fw_version = 60;
+}
