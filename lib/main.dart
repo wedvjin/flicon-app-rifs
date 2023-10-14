@@ -91,21 +91,18 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
-                print(rustBroadcaster.stream.isBroadcast);
-                print(rustSignal);
                 if (rustSignal == null) {
                   return Text("No stream");
                 } else {
-                  // final singal = reportInMessage.ReportInMessage.fromBuffer(
-                  //   rustSignal.message!,
-                  // );
-                  // final data = signal.data;
-                  // final currentNumber = singal.currentNumber;
-                  // return Text(currentNumber.toString());
-                  return Text(rustSignal.message!.toString());
+                  return Text(rustSignal.message.toString());
                 }
               },
             ),
+            ElevatedButton(
+              onPressed: btn, 
+              child: Text('Controller')
+            ),
+            Text(_contoller)
           ],
         ),
       ),
