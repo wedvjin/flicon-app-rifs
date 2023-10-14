@@ -242,7 +242,6 @@ pub async fn stream_report_in(
 ) {
     use crate::messages::report_in_message::{ReportInMessage, ID};
 
-    println!("TESTTESTEST");
     // let device = sample_crate::DeviceState::new();
     
     let mut counter = 0;
@@ -408,6 +407,7 @@ pub async fn handle_device(
 
             
             match set_message.target.as_str() {
+                "apply" => adevice.lock().unwrap().write_feature(),
                 "x" => adevice.lock().unwrap().set_x(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),

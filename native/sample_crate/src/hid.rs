@@ -152,10 +152,11 @@ impl DeviceState {
 
     // fn set_control_byte 
 
-
-    // pub fn write_feature(&self) {
-
-    // }
+    pub fn write_feature(&self) {
+        let mut buf: [u8; 128] = [0; 128];
+        self.feature.to_bytes(&mut buf);
+        self.device.send_feature_report(&buf);
+    }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
     //     self.feature.x_min = x_min;
@@ -285,6 +286,90 @@ impl Default for ReportFeature {
         ReportFeature { id: 0, x_min: 0, _x_centr: 0, x_max: 0, x_averaging: 0, x_dead_zone: 0, y_min: 0, _y_centr: 0, y_max: 0, y_averaging: 0, y_dead_zone: 0, z_min: 0, _z_centr: 0, z_max: 0, z_averaging: 0, z_dead_zone: 0, rx_min: 0, _rx_centr: 0, rx_max: 0, rx_averaging: 0, rx_dead_zone: 0, ry_min: 0, _ry_centr: 0, ry_max: 0, ry_averaging: 0, ry_dead_zone: 0, rz_min: 0, _rz_centr: 0, rz_max: 0, rz_averaging: 0, rz_dead_zone: 0, slider_min: 0, slider_max: 0, slider_averaging: 0, slider_dead_zone: 0, encoder_time: 0, led_r: 0, led_g: 0, led_b: 0, hatka1_mode: 0, hatka2_mode: 0, hatka3_mode: 0, hatka4_mode: 0, control_byte: 0, gash_button1_min: 0, gash_button1_max: 0, gash_button2_min: 0, gash_button2_max: 0, gash_button3_min: 0, gash_button3_max: 0, spi_error_cnt: 0, buttons: 0, x_axis: 0, y_axis: 0, z_axis: 0, rx_axis: 0, ry_axis: 0, rz_axis: 0, slider_axis: 0, fw_version: 0 }
     }
 }
+
+impl ReportFeature {
+    fn to_bytes(&self, buf: &mut [u8; 128]) {
+        buf[0] = self.id;
+        buf[1..3].copy_from_slice(&to_bytes_from_u16(self.x_min));
+        buf[3..5].copy_from_slice(&to_bytes_from_u16(self._x_centr));
+        buf[5..7].copy_from_slice(&to_bytes_from_u16(self.x_max));
+        buf[7..8].copy_from_slice(&to_bytes_from_u8(self.x_averaging));
+        buf[8..9].copy_from_slice(&to_bytes_from_u8(self.x_dead_zone));
+        buf[9..11].copy_from_slice(&to_bytes_from_u16(self.y_min));
+        buf[11..13].copy_from_slice(&to_bytes_from_u16(self._y_centr));
+        buf[13..15].copy_from_slice(&to_bytes_from_u16(self.y_max));
+        buf[15..16].copy_from_slice(&to_bytes_from_u8(self.y_averaging));
+        buf[16..17].copy_from_slice(&to_bytes_from_u8(self.y_dead_zone));
+        buf[17..19].copy_from_slice(&to_bytes_from_u16(self.z_min));
+        buf[19..21].copy_from_slice(&to_bytes_from_u16(self._z_centr));
+        buf[21..23].copy_from_slice(&to_bytes_from_u16(self.z_max));
+        buf[23..24].copy_from_slice(&to_bytes_from_u8(self.z_averaging));
+        buf[24..25].copy_from_slice(&to_bytes_from_u8(self.z_dead_zone));
+        buf[25..27].copy_from_slice(&to_bytes_from_u16(self.rx_min));
+        buf[27..29].copy_from_slice(&to_bytes_from_u16(self._rx_centr));
+        buf[29..31].copy_from_slice(&to_bytes_from_u16(self.rx_max));
+        buf[31..32].copy_from_slice(&to_bytes_from_u8(self.rx_averaging));
+        buf[32..33].copy_from_slice(&to_bytes_from_u8(self.rx_dead_zone));
+        buf[33..35].copy_from_slice(&to_bytes_from_u16(self.ry_min));
+        buf[35..37].copy_from_slice(&to_bytes_from_u16(self._ry_centr));
+        buf[37..39].copy_from_slice(&to_bytes_from_u16(self.ry_max));
+        buf[39..40].copy_from_slice(&to_bytes_from_u8(self.ry_averaging));
+        buf[40..41].copy_from_slice(&to_bytes_from_u8(self.ry_dead_zone));
+        buf[41..43].copy_from_slice(&to_bytes_from_u16(self.rz_min));
+        buf[43..45].copy_from_slice(&to_bytes_from_u16(self._rz_centr));
+        buf[45..47].copy_from_slice(&to_bytes_from_u16(self.rz_max));
+        buf[47..48].copy_from_slice(&to_bytes_from_u8(self.rz_averaging));
+        buf[48..49].copy_from_slice(&to_bytes_from_u8(self.rz_dead_zone));
+        buf[49..51].copy_from_slice(&to_bytes_from_u16(self.slider_min));
+        buf[51..53].copy_from_slice(&to_bytes_from_u16(self.slider_max));
+        buf[53..54].copy_from_slice(&to_bytes_from_u8(self.slider_averaging));
+        buf[54..55].copy_from_slice(&to_bytes_from_u8(self.slider_dead_zone));
+        buf[55..56].copy_from_slice(&to_bytes_from_u8(self.encoder_time));
+        buf[56..57].copy_from_slice(&to_bytes_from_u8(self.led_r));
+        buf[57..58].copy_from_slice(&to_bytes_from_u8(self.led_g));
+        buf[58..59].copy_from_slice(&to_bytes_from_u8(self.led_b));
+        buf[59..60].copy_from_slice(&to_bytes_from_u8(self.hatka1_mode));
+        buf[60..61].copy_from_slice(&to_bytes_from_u8(self.hatka2_mode));
+        buf[61..62].copy_from_slice(&to_bytes_from_u8(self.hatka3_mode));
+        buf[62..63].copy_from_slice(&to_bytes_from_u8(self.hatka4_mode));
+        buf[63..64].copy_from_slice(&to_bytes_from_u8(self.control_byte));
+        buf[64..66].copy_from_slice(&to_bytes_from_u16(self.gash_button1_min));
+        buf[66..68].copy_from_slice(&to_bytes_from_u16(self.gash_button1_max));
+        buf[68..70].copy_from_slice(&to_bytes_from_u16(self.gash_button2_min));
+        buf[70..72].copy_from_slice(&to_bytes_from_u16(self.gash_button2_max));
+        buf[72..74].copy_from_slice(&to_bytes_from_u16(self.gash_button3_min));
+        buf[74..76].copy_from_slice(&to_bytes_from_u16(self.gash_button3_max));
+        buf[76..77].copy_from_slice(&to_bytes_from_u8(self.spi_error_cnt));
+        buf[77..83].copy_from_slice(&to_bytes_from_u64(self.buttons));
+        buf[83..85].copy_from_slice(&to_bytes_from_u16(self.x_axis));
+        buf[85..87].copy_from_slice(&to_bytes_from_u16(self.y_axis));
+        buf[87..89].copy_from_slice(&to_bytes_from_u16(self.z_axis));
+        buf[89..91].copy_from_slice(&to_bytes_from_u16(self.rx_axis));
+        buf[91..93].copy_from_slice(&to_bytes_from_u16(self.ry_axis));
+        buf[93..95].copy_from_slice(&to_bytes_from_u16(self.rz_axis));
+        buf[95..97].copy_from_slice(&to_bytes_from_u16(self.slider_axis));
+        buf[97..99].copy_from_slice(&to_bytes_from_u16(self.fw_version));
+        
+    }
+}
+    
+    fn to_bytes_from_u16(value: u16) -> [u8; 2] {
+        value.to_le_bytes()
+}
+
+fn to_bytes_from_u8(value: u8) -> [u8; 1] {
+    [value]
+}
+
+fn to_bytes_from_u64(value: u64) -> [u8; 6] {
+    let mut bytes = [0u8; 6];
+    for i in 0..6 {
+        bytes[i] = ((value >> (i * 8)) & 0xFF) as u8;
+    }
+    bytes
+}
+
+
 
 type ReportFeatureTuple = (
     u8, u16, u16, u16, u8, u8, u16, u16, u16, u8, u8,

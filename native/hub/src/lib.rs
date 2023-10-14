@@ -15,6 +15,7 @@ mod with_request;
 async fn main() {
 
     let mut device = sample_crate::DeviceState::new();
+    device.set_report_internal();
     let adevice = Arc::new(Mutex::new(device));
     // This is `tokio::sync::mpsc::Reciver` that receives the requests from Dart.
     let mut request_receiver = bridge::get_request_receiver();
