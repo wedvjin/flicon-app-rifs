@@ -28,9 +28,9 @@ pub async fn handle_request(
         messages::sample_folder::deeper_folder::deeper_resource::ID => {
             sample_functions::handle_deeper_resource(rust_request).await
         }
-        messages::device_info::ID => {
-            sample_functions::handle_device_info(rust_request).await // ADDed THIS BLOCK
-        }
+        // messages::device_info::ID => {
+        //     sample_functions::handle_device_info(rust_request).await // ADDed THIS BLOCK
+        // }
         messages::device_info::ID => {
             sample_functions::handle_device(rust_request, adevice).await // ADDed THIS BLOCK
         }
