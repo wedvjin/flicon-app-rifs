@@ -155,10 +155,16 @@ impl DeviceState {
     //     self.feature.control_byte ^= 1 << 
     // }
 
-    pub fn write_feature(&self) {
+    pub fn send_feature(&self) {
         let mut buf: [u8; 128] = [0; 128];
         self.feature.to_bytes(&mut buf);
         self.device.send_feature_report(&buf).unwrap();
+    }
+
+    pub fn write_feature(&self) {
+        let mut buf: [u8; 128] = [0; 128];
+        self.feature.to_bytes(&mut buf);
+        self.device.write(&buf).unwrap();
     }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
