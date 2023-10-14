@@ -5,6 +5,8 @@ import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 import 'package:flicon/messages/increasing_number.pb.dart'
     as increasingNumbers;
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
+
 
 void main() async {
   // Wait for Rust initialization to be completed first.
@@ -58,10 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _contoller = 'unknown';
 
-  Future<void> btn() async {
-    var requestMessage = deviceInfo.ReadRequest(
-      inputNumbers: [1],
-      inputString: 'n',
+  Future<void> btn(message, value1, value2, value3, value4) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
     );
     var rustResponse = await requestToRust(RustRequest(
       resource: deviceInfo.ID,
@@ -77,6 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  HSVColor color = HSVColor.fromColor(Colors.blue);
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -91,26 +99,25 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
-                print(rustBroadcaster.stream.isBroadcast);
-                print(rustSignal);
                 if (rustSignal == null) {
                   return Text("No stream");
                 } else {
-                  // final singal = reportInMessage.ReportInMessage.fromBuffer(
-                  //   rustSignal.message!,
-                  // );
-                  // final data = signal.data;
-                  // final currentNumber = singal.currentNumber;
-                  // return Text(currentNumber.toString());
-                  return Text(rustSignal.message!.toString());
+                  return Text(rustSignal.message.toString());
                 }
               },
             ),
-            ElevatedButton(
-              onPressed: btn, 
-              child: Text('Controller')
+            Text(_contoller),
+            WheelPicker(
+              color: color,
+              onChanged: (value) async { 
+                final c = color.toColor();
+                await btn('led', c.red, c.green, c.blue, 0);
+                setState(() {
+                  color = value;
+                });
+              },
             ),
-            Text(_contoller)
+            Text(color.toString()),
           ],
         ),
       ),
