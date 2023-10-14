@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No stream");
+                  return Text("No reportInMessage stream");
                 } else {
                   var dd = reportInMessage.ReportInMessage.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No stream");
+                  return Text("No reportFeatureMessage stream");
                 } else {
                   var dd = reportFeatureMessage.ReportFeature.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
