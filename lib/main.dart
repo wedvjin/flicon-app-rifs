@@ -106,6 +106,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
+            ElevatedButton(
+              onPressed: btn, 
+              child: Text('Controller')
+            ),
+            Text(_contoller)
           ],
         ),
       ),
