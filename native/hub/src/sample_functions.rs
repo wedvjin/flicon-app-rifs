@@ -266,7 +266,6 @@ pub async fn stream_report_in(
             blob: None,
         };
 
-
         send_rust_signal(rust_signal);
         // counter += 1;
         
@@ -351,6 +350,89 @@ pub async fn stream_report_in(
 
     //     current_number += 1;
     // }
+}
+
+pub async fn stream_report_feature(
+    device: Arc<Mutex<DeviceState>>,
+) {
+    use crate::messages::report_feature_message::{ReportFeature, ID};
+
+    loop {
+
+        crate::sleep(std::time::Duration::from_millis(40)).await;
+        let report_feature_data = device.lock().unwrap().get_report();
+
+        let report_feature_signal_message = ReportFeature {
+            id: report_feature_data.id as u32,
+            x_min: report_feature_data.x_min as u32,
+            x_centr: report_feature_data._x_centr as u32,
+            x_max: report_feature_data.x_max as u32,
+            x_averaging: report_feature_data.x_averaging as u32,
+            x_dead_zone: report_feature_data.x_dead_zone as u32,
+            y_min: report_feature_data.y_min as u32,
+            y_centr: report_feature_data._y_centr as u32,
+            y_max: report_feature_data.y_max as u32,
+            y_averaging: report_feature_data.y_averaging as u32,
+            y_dead_zone: report_feature_data.y_dead_zone as u32,
+            z_min: report_feature_data.z_min as u32,
+            z_centr: report_feature_data._z_centr as u32,
+            z_max: report_feature_data.z_max as u32,
+            z_averaging: report_feature_data.z_averaging as u32,
+            z_dead_zone: report_feature_data.z_dead_zone as u32,
+            rx_min: report_feature_data.rx_min as u32,
+            rx_centr: report_feature_data._rx_centr as u32,
+            rx_max: report_feature_data.rx_max as u32,
+            rx_averaging: report_feature_data.rx_averaging as u32,
+            rx_dead_zone: report_feature_data.rx_dead_zone as u32,
+            ry_min: report_feature_data.ry_min as u32,
+            ry_centr: report_feature_data._ry_centr as u32,
+            ry_max: report_feature_data.ry_max as u32,
+            ry_averaging: report_feature_data.ry_averaging as u32,
+            ry_dead_zone: report_feature_data.ry_dead_zone as u32,
+            rz_min: report_feature_data.rz_min as u32,
+            rz_centr: report_feature_data._rz_centr as u32,
+            rz_max: report_feature_data.rz_max as u32,
+            rz_averaging: report_feature_data.rz_averaging as u32,
+            rz_dead_zone: report_feature_data.rz_dead_zone as u32,
+            slider_min: report_feature_data.slider_min as u32,
+            slider_max: report_feature_data.slider_max as u32,
+            slider_averaging: report_feature_data.slider_averaging as u32,
+            slider_dead_zone: report_feature_data.slider_dead_zone as u32,
+            encoder_time: report_feature_data.encoder_time as u32,
+            led_r: report_feature_data.led_r as u32,
+            led_g: report_feature_data.led_g as u32,
+            led_b: report_feature_data.led_b as u32,
+            hatka1_mode: report_feature_data.hatka1_mode as u32,
+            hatka2_mode: report_feature_data.hatka2_mode as u32,
+            hatka3_mode: report_feature_data.hatka3_mode as u32,
+            hatka4_mode: report_feature_data.hatka4_mode as u32,
+            control_byte: report_feature_data.control_byte as u32,
+            gash_button1_min: report_feature_data.gash_button1_min as u32,
+            gash_button1_max: report_feature_data.gash_button1_max as u32,
+            gash_button2_min: report_feature_data.gash_button2_min as u32,
+            gash_button2_max: report_feature_data.gash_button2_max as u32,
+            gash_button3_min: report_feature_data.gash_button3_min as u32,
+            gash_button3_max: report_feature_data.gash_button3_max as u32,
+            spi_error_cnt: report_feature_data.spi_error_cnt as u32,
+            buttons: report_feature_data.buttons as u64,
+            x_axis: report_feature_data.x_axis as u32,
+            y_axis: report_feature_data.y_axis as u32,
+            z_axis: report_feature_data.z_axis as u32,
+            rx_axis: report_feature_data.rx_axis as u32,
+            ry_axis: report_feature_data.ry_axis as u32,
+            rz_axis: report_feature_data.rz_axis as u32,
+            slider_axis: report_feature_data.slider_axis as u32,
+            fw_version: report_feature_data.fw_version as u32,
+        };
+
+        let rust_signal = RustSignal {
+            resource: ID,
+            message: Some(report_feature_signal_message.encode_to_vec()),
+            blob: None,
+        };
+
+        send_rust_signal(rust_signal);
+    }
 }
 
 // pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {

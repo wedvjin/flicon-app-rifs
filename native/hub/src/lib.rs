@@ -24,6 +24,7 @@ async fn main() {
     // crate::spawn(sample_functions::stream_mandelbrot());
     // crate::spawn(sample_functions::stream_increasing_number()); // ADD THIS LINE
     // crate::spawn(sample_functions::run_debug_tests());
+    crate::spawn(sample_functions::stream_report_feature(adevice.clone()));
     crate::spawn(sample_functions::stream_report_in(adevice.clone())); // ADDed THIS LINE
     while let Some(request_unique) = request_receiver.recv().await {
         let adevice_cp = adevice.clone();
