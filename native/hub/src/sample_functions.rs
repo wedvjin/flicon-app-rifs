@@ -403,6 +403,10 @@ pub async fn handle_device(
             let message_bytes = rust_request.message.unwrap();
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
+            let mut side = "did not get";
+            if set_message.target.to_string() != "test" {
+
+            
             match set_message.target.as_str() {
                 "x" => adevice.lock().unwrap().set_x(
                     set_message.value1.try_into().unwrap(),
@@ -468,6 +472,14 @@ pub async fn handle_device(
                 ),
                 _ => println!("INCORRECT OPTION PASSED or NOT IMPLEMENTED"),
             }
+            }
+            else {
+                side = match adevice.lock().unwrap().get_side() {
+                    true => "right",
+                    false => "left",
+                    // _ => "unrecognized".to_string(),
+                }
+            }
             // adevice.lock().unwrap().set_rgb_led(
             //     request_message.r.try_into().unwrap(), 
             //     request_message.g.try_into().unwrap(), 
@@ -477,7 +489,7 @@ pub async fn handle_device(
             // Return the response that will be sent to Dart.
             let response_message = ReadResponse {
                 output_numbers: 200,
-                output_string: "success".to_string(),
+                output_string: side.to_owned(),
             };
             RustResponse {
                 successful: true,
