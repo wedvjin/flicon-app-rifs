@@ -132,6 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    int u64Value = 12345678901234567; // Replace this with your 64-bit integer
+    String binaryString = u64Value.toRadixString(2);
+  
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -146,16 +150,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (rustSignal == null) {
                   return Text("No stream");
                 } else {
-                  var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
-                  final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
+                  var dd = reportInMessage.ReportInMessage.fromBuffer(rustSignal.message as List<int>);
+                  //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
+                  //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
                
                   return Column(
                     children: [
-                      Text(rustSignal.message.toString()),
-                      Text("1: ${byteData.getUint8(1)}"),
-                      Text("2: ${byteData.getUint16(2)}"),
-                      Text("3: ${byteData.getUint16(3)}"),
-                      Text("4: ${byteData.getUint16(4)}"),
+                      Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
+                      // Text("1: ${byteData.getUint8(1)}"),
+                      // Text("2: ${byteData.getUint16(2)}"),
+                      // Text("3: ${byteData.getUint16(3)}"),
+                      // Text("4: ${byteData.getUint16(4)}"),
                     ]
                   );
                 }
