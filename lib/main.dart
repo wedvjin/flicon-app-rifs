@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
+import 'package:flicon/messages/report_feature_message.pb.dart' as reportFeatureMessage;
 import 'package:flicon/messages/increasing_number.pb.dart'
     as increasingNumbers;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
@@ -156,8 +157,32 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
-                      Text(dd.toString()),
                       Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
+                      // Text("1: ${byteData.getUint8(1)}"),
+                      // Text("2: ${byteData.getUint16(2)}"),
+                      // Text("3: ${byteData.getUint16(3)}"),
+                      // Text("4: ${byteData.getUint16(4)}"),
+                    ]
+                  );
+                }
+              },
+            ),
+            StreamBuilder<RustSignal>(
+              stream: rustBroadcaster.stream.where((rustSignal) {
+                return rustSignal.resource == reportFeatureMessage.ID;
+              }),
+              builder: (context, snapshot) {
+                final rustSignal = snapshot.data;
+                if (rustSignal == null) {
+                  return Text("No stream");
+                } else {
+                  var dd = reportFeatureMessage.ReportFeature.fromBuffer(rustSignal.message as List<int>);
+                  //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
+                  //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
+               
+                  return Column(
+                    children: [
+                      Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),
