@@ -392,7 +392,7 @@ pub async fn handle_device(
     rust_request: RustRequest,
     adevice: Arc<Mutex<DeviceState>>,
 ) -> RustResponse {
-    use crate::messages::device_info::{ReadRequest, ReadResponse, SetRgbLed};
+    use crate::messages::device_info::{ReadRequest, ReadResponse, SetValues};
     // We import message structs in this handler function
     // because schema will differ by Rust resource.
 
@@ -401,13 +401,78 @@ pub async fn handle_device(
         RustOperation::Read => {
             // Decode raw bytes into a Rust message object.
             let message_bytes = rust_request.message.unwrap();
-            let request_message = SetRgbLed::decode(message_bytes.as_slice()).unwrap();
+            let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
-            adevice.lock().unwrap().set_rgb_led(
-                request_message.r.try_into().unwrap(), 
-                request_message.g.try_into().unwrap(), 
-                request_message.b.try_into().unwrap()
-            );
+            match set_message.target.as_str() {
+                "x" => adevice.lock().unwrap().set_x(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "y" => adevice.lock().unwrap().set_y(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "z" => adevice.lock().unwrap().set_z(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "rx" => adevice.lock().unwrap().set_rx(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "ry" => adevice.lock().unwrap().set_ry(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "rz" => adevice.lock().unwrap().set_rz(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "slider" => adevice.lock().unwrap().set_slider(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                    set_message.value4.try_into().unwrap(),
+                ),
+                "encoder" => adevice.lock().unwrap().set_encoder(
+                    set_message.value1.try_into().unwrap(),
+                ),
+                "led" => adevice.lock().unwrap().set_rgb_led(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                    set_message.value3.try_into().unwrap(),
+                ),
+                "hatka1" => adevice.lock().unwrap().set_hatka1_mode(
+                    set_message.value1.try_into().unwrap(),
+                ),
+                "hatka2" => adevice.lock().unwrap().set_hatka2_mode(
+                    set_message.value1.try_into().unwrap(),
+                ),
+                "hatka3" => adevice.lock().unwrap().set_hatka3_mode(
+                    set_message.value1.try_into().unwrap(),
+                ),
+                "hatka4" => adevice.lock().unwrap().set_hatka4_mode(
+                    set_message.value1.try_into().unwrap(),
+                ),
+                _ => println!("INCORRECT OPTION PASSED or NOT IMPLEMENTED"),
+            }
+            // adevice.lock().unwrap().set_rgb_led(
+            //     request_message.r.try_into().unwrap(), 
+            //     request_message.g.try_into().unwrap(), 
+            //     request_message.b.try_into().unwrap()
+            // );
             
             // Return the response that will be sent to Dart.
             let response_message = ReadResponse {

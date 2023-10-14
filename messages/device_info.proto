@@ -11,26 +11,26 @@ message ReadResponse {
   string output_string = 2;
 }
 
-//and slider
-message SetAxis {
+//and slider and everything, depending on string pass the value
+message SetValues {
     string target = 1;
-    uint32 min = 2;
-    uint32 max = 3;
-    uint32 average = 4;
-    uint32 dead_zone = 5;
+    uint32 value1 = 2;
+    uint32 value2 = 3;
+    uint32 value3 = 4;
+    uint32 value4 = 5;
 }
 
-message SetEncoder {
-    uint32 value = 1;
-}
-
-message SetRgbLed {
-    uint32 r = 1;
-    uint32 g = 2;
-    uint32 b = 3;
-}
-
-message SetHatka {
-    uint32 target = 1;
-    uint32 value = 2;
-}
+//message SetEncoder {
+//    uint32 value = 1;
+//}
+//
+//message SetRgbLed {
+//    uint32 r = 1;
+//    uint32 g = 2;
+//    uint32 b = 3;
+//}
+//
+//message SetHatka {
+//    uint32 target = 1;
+//    uint32 value = 2;
+//}
