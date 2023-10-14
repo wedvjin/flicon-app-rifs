@@ -2,6 +2,6 @@ syntax = "proto3";
 package report_in_message;
 
 message ReportInMessage { 
-    int32 counter = 1;
+//    int32 counter = 1;
     bytes data = 2;
 }

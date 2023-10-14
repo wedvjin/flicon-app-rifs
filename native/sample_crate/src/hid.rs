@@ -3,6 +3,7 @@ use anyhow::{anyhow, Result};
 use hidapi::{DeviceInfo, HidDevice};
 
 use byteorder::{LittleEndian, WriteBytesExt};
+use serde::de::value;
 
 const VENDOR_ID_CONST: u16 = 13911;
 
@@ -150,10 +151,38 @@ impl DeviceState {
         }
     }
 
+    pub fn set_gash1(&mut self, value_min: u16, value_max: u16) {
+        self.feature.gash_button1_min = value_min;
+        self.feature.gash_button1_max = value_max;
+    }
+    pub fn set_gash2(&mut self, value_min: u16, value_max: u16) {
+        self.feature.gash_button2_min = value_min;
+        self.feature.gash_button2_max = value_max;
+    }
+    pub fn set_gash3(&mut self, value_min: u16, value_max: u16) {
+        self.feature.gash_button3_min = value_min;
+        self.feature.gash_button3_max = value_max;
+    }
     // fn set_control_byte(&self) 
-    // pub fn set_toggle_lr(&self) {
-    //     self.feature.control_byte ^= 1 << 
-    // }
+    pub fn set_toggle_lr(&mut self) {
+        self.feature.control_byte ^= 1 << 6;
+    }
+
+    pub fn set_enable_dfu(&mut self) {
+        self.feature.control_byte |= 1 << 7;
+    }
+
+    pub fn set_enable_calibrate_handle(&mut self) {
+        self.feature.control_byte |= 1 << 3;
+    }
+
+    pub fn set_enable_calibrate_base(&mut self) {
+        self.feature.control_byte |= 1 << 2;
+    }
+
+    pub fn set_save_config(&mut self) {
+        self.feature.control_byte |= 1 << 0;
+    }
 
     pub fn send_feature(&self) {
         let mut buf: [u8; 128] = [0; 128];
@@ -176,6 +205,12 @@ impl DeviceState {
     //     self.feature.x_min = x_min;
     //     self.feature.x_max = x_max;
     // }
+
+    pub fn get_control_byte(&self) -> u8 {
+        self.feature.control_byte
+    }
+
+    
     
 }
 
