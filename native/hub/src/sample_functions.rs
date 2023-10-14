@@ -505,7 +505,24 @@ pub async fn handle_device(
                 blob: None,
             }
         }
-        RustOperation::Read => RustResponse::default(),
+        RustOperation::Read => {
+            let message_bytes = rust_request.message.unwrap();
+            let read_message = SetValues::decode(message_bytes.as_slice()).unwrap();
+
+
+            let response_message = ReadValues {
+                target: todo!("add"),
+                value1: todo!(),
+                value2: todo!(),
+                value3: todo!(),
+                value4: todo!(),
+            };
+            RustResponse {
+                successful: true,
+                message: Some(response_message.encode_to_vec()),
+                blob: None,
+            }
+        },
         RustOperation::Delete => RustResponse::default(),
     }
 }
