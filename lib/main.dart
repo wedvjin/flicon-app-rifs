@@ -156,6 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
+                      Text(dd.toString()),
                       Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
@@ -179,6 +180,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: apply, 
               child: const Text("Apply")
+            ),
+            ElevatedButton(
+              onPressed: () => {
+                context.go('/settings')
+              },
+              child: const Text("Go to settings")
             )
           ],
         ),
