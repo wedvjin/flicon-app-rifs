@@ -150,12 +150,15 @@ impl DeviceState {
         }
     }
 
-    // fn set_control_byte 
+    // fn set_control_byte(&self) 
+    // pub fn set_toggle_lr(&self) {
+    //     self.feature.control_byte ^= 1 << 
+    // }
 
     pub fn write_feature(&self) {
         let mut buf: [u8; 128] = [0; 128];
         self.feature.to_bytes(&mut buf);
-        self.device.send_feature_report(&buf);
+        self.device.send_feature_report(&buf).unwrap();
     }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
