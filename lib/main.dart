@@ -114,11 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 await btn('led', c.red, c.green, c.blue, 0);
                 setState(() {
                   color = value;
-                  print("${c.red} ${c.green} ${c.blue}");
                 });
               },
             ),
-            Text(color.toString()),
+            Text("${color.toColor().red} ${color.toColor().green} ${color.toColor().blue}"),
           ],
         ),
       ),
