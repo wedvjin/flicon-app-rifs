@@ -247,11 +247,18 @@ pub async fn stream_report_in(
     // let mut counter = 0;
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
-        let data = device.lock().unwrap().get_data().to_vec();
+        let report_in_data = device.lock().unwrap().get_data();
         
         let report_in_signal_message = ReportInMessage {
-            // counter: counter,
-            data: data,
+            id: report_in_data.id as u32,
+            buttons: report_in_data.buttons as u64,
+            x: report_in_data.x_axis as u32,
+            y: report_in_data.y_axis as u32,
+            z: report_in_data.z_axis as u32,
+            rx: report_in_data.rx_axis as u32,
+            ry: report_in_data.ry_axis as u32,
+            rz: report_in_data.rz_axis as u32,
+            slider: report_in_data.slider_axis as u32,
         };
         let rust_signal = RustSignal {
             resource: ID,
