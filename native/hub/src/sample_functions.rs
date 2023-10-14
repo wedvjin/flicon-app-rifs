@@ -244,13 +244,13 @@ pub async fn stream_report_in(
 
     // let device = sample_crate::DeviceState::new();
     
-    let mut counter = 0;
+    // let mut counter = 0;
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let data = device.lock().unwrap().get_data().to_vec();
         
         let report_in_signal_message = ReportInMessage {
-            counter: counter,
+            // counter: counter,
             data: data,
         };
         let rust_signal = RustSignal {
@@ -261,7 +261,7 @@ pub async fn stream_report_in(
 
 
         send_rust_signal(rust_signal);
-        counter += 1;
+        // counter += 1;
         
     }
 
