@@ -210,21 +210,24 @@ impl DeviceState {
         self.feature.control_byte
     }
 
+    // pub fn get_x(&self) -> {u16, u16, u16, u16} {
+
+    // }
     
     
 }
 
 #[derive(Clone, Debug)]
 pub struct ReportIn {
-    id: u8,
-    buttons: u64,
-    x_axis: u16,
-    y_axis: u16,
-    z_axis: u16,
-    rx_axis: u16,
-    ry_axis: u16,
-    rz_axis: u16,
-    slider_axis: u16,
+    pub id: u8,
+    pub buttons: u64,
+    pub x_axis: u16,
+    pub y_axis: u16,
+    pub z_axis: u16,
+    pub rx_axis: u16,
+    pub ry_axis: u16,
+    pub rz_axis: u16,
+    pub slider_axis: u16,
 }
 
 impl ReportIn {

@@ -2,6 +2,14 @@ syntax = "proto3";
 package report_in_message;
 
 message ReportInMessage { 
-//    int32 counter = 1;
-    bytes data = 2;
+    uint32 id = 1;
+    uint64 buttons = 2;
+    uint32 x = 3;
+    uint32 y = 4;
+    uint32 z = 5;
+    uint32 rx = 6;
+    uint32 ry = 7;
+    uint32 rz = 8;
+    uint32 slider = 9;
 }
+
