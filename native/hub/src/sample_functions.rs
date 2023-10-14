@@ -346,140 +346,148 @@ pub async fn stream_report_in(
     // }
 }
 
-pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
-    use crate::messages::device_info::{ReadRequest, ReadResponse};
+// pub async fn handle_device_info(rust_request: RustRequest) -> RustResponse {
+//     use crate::messages::device_info::{ReadRequest, ReadResponse};
 
-    match rust_request.operation {
-        RustOperation::Create => RustResponse::default(),
-        RustOperation::Read => {
-            let message_bytes = rust_request.message.unwrap();
-            let request_message = ReadRequest::decode(message_bytes.as_slice()).unwrap();
+//     match rust_request.operation {
+//         RustOperation::Create => RustResponse::default(),
+//         RustOperation::Read => {
+//             let message_bytes = rust_request.message.unwrap();
+//             let request_message = ReadRequest::decode(message_bytes.as_slice()).unwrap();
 
-            // let new_numbers: Vec<i32> = request_message
-            //     .input_numbers
-            //     .into_iter()
-            //     .map(|x| x + 1)
-            //     .collect();
-            // let new_string = request_message.input_string.to_uppercase();
+//             // let new_numbers: Vec<i32> = request_message
+//             //     .input_numbers
+//             //     .into_iter()
+//             //     .map(|x| x + 1)
+//             //     .collect();
+//             // let new_string = request_message.input_string.to_uppercase();
 
-            let mut device = sample_crate::DeviceState::new();
-            let left_or_right = device.get_side();
+//             let mut device = sample_crate::DeviceState::new();
+//             let left_or_right = device.get_side();
 
-            let new_string = match left_or_right {
-                true => "right".to_string(),
-                false => "left".to_string(),
-            };
+//             let new_string = match left_or_right {
+//                 true => "right".to_string(),
+//                 false => "left".to_string(),
+//             };
 
-            // let new_string =String::from_utf8(device.get_data().to_vec()).unwrap();
-            let new_numbers = 0;
-            let response_message = ReadResponse {
-                output_numbers: new_numbers,
-                output_string: new_string,
-            };
-            RustResponse {
-                successful: true,
-                message: Some(response_message.encode_to_vec()),
-                blob: None,
-            }
-        }
-        RustOperation::Update => RustResponse::default(),
-        RustOperation::Delete => RustResponse::default(),
-    }
-}
+//             // let new_string =String::from_utf8(device.get_data().to_vec()).unwrap();
+//             let new_numbers = 0;
+//             let response_message = ReadResponse {
+//                 output_numbers: new_numbers,
+//                 output_string: new_string,
+//             };
+//             RustResponse {
+//                 successful: true,
+//                 message: Some(response_message.encode_to_vec()),
+//                 blob: None,
+//             }
+//         }
+//         RustOperation::Update => RustResponse::default(),
+//         RustOperation::Delete => RustResponse::default(),
+//     }
+// }
 
 pub async fn handle_device(
     rust_request: RustRequest,
     adevice: Arc<Mutex<DeviceState>>,
 ) -> RustResponse {
-    use crate::messages::device_info::{ReadRequest, ReadResponse, SetValues};
+    use crate::messages::device_info::{ReadResponse, ReadValues, SetValues};
     // We import message structs in this handler function
     // because schema will differ by Rust resource.
 
     match rust_request.operation {
         RustOperation::Create => RustResponse::default(),
-        RustOperation::Read => {
+        RustOperation::Update => {
             // Decode raw bytes into a Rust message object.
             let message_bytes = rust_request.message.unwrap();
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
-            let mut side = "did not get";
-            if set_message.target.to_string() != "test" {
 
-            
             match set_message.target.as_str() {
                 "apply" => adevice.lock().unwrap().write_feature(),
-                "x" => adevice.lock().unwrap().set_x(
+                "setx" => adevice.lock().unwrap().set_x(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "y" => adevice.lock().unwrap().set_y(
+                "sety" => adevice.lock().unwrap().set_y(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "z" => adevice.lock().unwrap().set_z(
+                "setz" => adevice.lock().unwrap().set_z(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "rx" => adevice.lock().unwrap().set_rx(
+                "setrx" => adevice.lock().unwrap().set_rx(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "ry" => adevice.lock().unwrap().set_ry(
+                "setry" => adevice.lock().unwrap().set_ry(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "rz" => adevice.lock().unwrap().set_rz(
+                "setrz" => adevice.lock().unwrap().set_rz(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "slider" => adevice.lock().unwrap().set_slider(
+                "setslider" => adevice.lock().unwrap().set_slider(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                     set_message.value4.try_into().unwrap(),
                 ),
-                "encoder" => adevice.lock().unwrap().set_encoder(
+                "setencoder" => adevice.lock().unwrap().set_encoder(
                     set_message.value1.try_into().unwrap(),
                 ),
-                "led" => adevice.lock().unwrap().set_rgb_led(
+                "setled" => adevice.lock().unwrap().set_rgb_led(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
                     set_message.value3.try_into().unwrap(),
                 ),
-                "hatka1" => adevice.lock().unwrap().set_hatka1_mode(
+                "sethatka1" => adevice.lock().unwrap().set_hatka1_mode(
                     set_message.value1.try_into().unwrap(),
                 ),
-                "hatka2" => adevice.lock().unwrap().set_hatka2_mode(
+                "sethatka2" => adevice.lock().unwrap().set_hatka2_mode(
                     set_message.value1.try_into().unwrap(),
                 ),
-                "hatka3" => adevice.lock().unwrap().set_hatka3_mode(
+                "sethatka3" => adevice.lock().unwrap().set_hatka3_mode(
                     set_message.value1.try_into().unwrap(),
                 ),
-                "hatka4" => adevice.lock().unwrap().set_hatka4_mode(
+                "sethatka4" => adevice.lock().unwrap().set_hatka4_mode(
                     set_message.value1.try_into().unwrap(),
                 ),
+                "setgash1" => adevice.lock().unwrap().set_gash1(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                ),
+                "setgash2" => adevice.lock().unwrap().set_gash2(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                ),
+                "setgash3" => adevice.lock().unwrap().set_gash3(
+                    set_message.value1.try_into().unwrap(),
+                    set_message.value2.try_into().unwrap(),
+                ),
+                "togglelr" => adevice.lock().unwrap().set_toggle_lr(),
+                "enabledfu" => adevice.lock().unwrap().set_enable_dfu(),
+                "calibratehandle" => adevice.lock().unwrap().set_enable_calibrate_base(),
+                "calibratebase" => adevice.lock().unwrap().set_enable_calibrate_handle(),
+                "save" => adevice.lock().unwrap().set_save_config(),
                 _ => println!("INCORRECT OPTION PASSED or NOT IMPLEMENTED"),
             }
-            }
-            else {
-                side = match adevice.lock().unwrap().get_side() {
-                    true => "right",
-                    false => "left",
-                    // _ => "unrecognized".to_string(),
-                }
-            }
+            
+
             // adevice.lock().unwrap().set_rgb_led(
             //     request_message.r.try_into().unwrap(), 
             //     request_message.g.try_into().unwrap(), 
@@ -489,7 +497,7 @@ pub async fn handle_device(
             // Return the response that will be sent to Dart.
             let response_message = ReadResponse {
                 output_numbers: 200,
-                output_string: side.to_owned(),
+                output_string: "success".to_owned(),
             };
             RustResponse {
                 successful: true,
@@ -497,7 +505,7 @@ pub async fn handle_device(
                 blob: None,
             }
         }
-        RustOperation::Update => RustResponse::default(),
+        RustOperation::Read => RustResponse::default(),
         RustOperation::Delete => RustResponse::default(),
     }
 }

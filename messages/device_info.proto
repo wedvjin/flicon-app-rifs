@@ -1,9 +1,17 @@
 syntax = "proto3";
 package device_info;
 
-message ReadRequest {
-  repeated int32 input_numbers = 1;
-  string input_string = 2;
+//message ReadRequest {
+//  repeated int32 input_numbers = 1;
+//  string input_string = 2;
+//}
+
+message ReadValues {
+    string target = 1;
+    uint32 value1 = 2;
+    uint32 value2 = 3;
+    uint32 value3 = 4;
+    uint32 value4 = 5;
 }
 
 message ReadResponse {
