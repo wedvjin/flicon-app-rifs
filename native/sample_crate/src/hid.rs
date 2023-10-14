@@ -186,6 +186,7 @@ impl DeviceState {
 
     pub fn send_feature(&self) {
         let mut buf: [u8; 128] = [0; 128];
+        buf[0] = 3;
         self.feature.to_bytes(&mut buf);
         self.device.send_feature_report(&buf).unwrap();
     }
