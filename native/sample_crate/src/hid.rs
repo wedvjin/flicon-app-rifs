@@ -210,9 +210,14 @@ impl DeviceState {
         self.feature.control_byte
     }
 
-    // pub fn get_x(&self) -> {u16, u16, u16, u16} {
-
-    // }
+    pub fn get_x(&self) -> (u16, u16, u8, u8) {
+        (
+            self.feature.x_min,
+            self.feature.x_max,
+            self.feature.x_averaging,
+            self.feature.x_dead_zone
+        )
+    }
     
     
 }

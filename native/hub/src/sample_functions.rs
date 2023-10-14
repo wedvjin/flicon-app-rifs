@@ -266,7 +266,6 @@ pub async fn stream_report_in(
             blob: None,
         };
 
-
         send_rust_signal(rust_signal);
         // counter += 1;
         
