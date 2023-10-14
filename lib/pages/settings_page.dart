@@ -8,16 +8,15 @@ import 'package:flicon/widgets/settings.dart';
 
 
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _HomeState extends State<Home> {
+class _SettingsPageState extends State<SettingsPage> {
 
-  
   @override
   Widget build(BuildContext context) {
     var varsRead = context.read<VarsModel>();

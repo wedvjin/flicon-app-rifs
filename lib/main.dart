@@ -1,6 +1,10 @@
 import 'dart:ui';
+import 'package:flicon/models/settings.dart';
+import 'package:flicon/models/vars.dart';
+import 'package:flicon/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
@@ -14,15 +18,19 @@ import 'package:flicon/pages/settings_page.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/search',
+    initialLocation: '/main',
     routes: [
+      GoRoute(
+        path: '/main',
+        builder: (context, state) => const MyHomePage(),
+      ),
       GoRoute(
         path: '/search',
         builder: (context, state) => const Search(),
       ),
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const Home(),
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
       ),
     ],
   );
@@ -57,13 +65,24 @@ class _FliconAppState extends State<FliconApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RIF Example',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: MediaQuery.platformBrightnessOf(context),
+    return MultiProvider(
+      providers: [
+        Provider(create: (context) => SettingsModel()),
+        ChangeNotifierProxyProvider<SettingsModel, VarsModel>(
+          create: (context) => VarsModel(),
+          update: (context, vars, settings) {
+            if (settings == null) throw ArgumentError.notNull('cart');
+            settings.settings = vars;
+            return settings;
+          },
+        ),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'EVO Flight Controller',
+        theme: AppTheme().main,
+        routerConfig: router(),
       ),
-      home: MyHomePage(),
     );
   }
 }
@@ -133,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Column(
                     children: [
                       Text(rustSignal.message.toString()),
-                      Text("1: ${byteData.getUint16(1, Endian.big)}"),
+                      Text("1: ${byteData.getUint8(1)}"),
                       Text("2: ${byteData.getUint16(2)}"),
                       Text("3: ${byteData.getUint16(3)}"),
                       Text("4: ${byteData.getUint16(4)}"),
