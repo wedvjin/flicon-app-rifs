@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void apply() {
     final c = color.toColor();
-    rust_request('led', c.red, c.green, c.blue, 0, RustOperation.Update);
+    rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
     rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
   }
 
