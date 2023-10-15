@@ -292,9 +292,10 @@ impl DeviceState {
     }
 
     pub fn send_feature(&self) {
-        let mut buf: [u8; 178] = [0; 178];
+        let mut buf: [u8; 129] = [0; 129];
         // buf[0] = 3;
         self.feature.to_bytes(&mut buf);
+        println!("BUF: {:?}", buf);
         self.device.send_feature_report(&buf).unwrap();
         println!("sent");
     }
@@ -304,7 +305,7 @@ impl DeviceState {
     }
 
     // pub fn write_feature(&self) {
-    //     let mut buf: [u8; 128] = [0; 128];
+    //     let mut buf: [u8; 12] = [0; 128];
     //     self.feature.to_bytes(&mut buf);
     //     let mut write_buf: [u8; 178] = [0; 178];
     //     let bytes = [
@@ -476,7 +477,7 @@ impl Default for ReportFeature {
 }
 
 impl ReportFeature {
-    fn to_bytes(&self, buf: &mut [u8; 178]) {
+    fn to_bytes(&self, buf: &mut [u8; 129]) {
         buf[0] = self.id;
         buf[1..3].copy_from_slice(&to_bytes_from_u16(self.x_min));
         buf[3..5].copy_from_slice(&to_bytes_from_u16(self._x_centr));
