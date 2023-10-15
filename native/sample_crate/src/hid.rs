@@ -672,6 +672,9 @@ fn get_report(
     let res = device.get_feature_report(&mut buf).unwrap();
     println!("RES SIZE LEN: {}", res);
     // let res = device.get_feature_report(&mut buf).unwrap();
+    for byte in buf.iter() {
+        print!("{:08b} ", byte); // This will print each byte in hexadecimal format
+    }
 
     let report_feature = ReportFeature {
         id: buf[0],
