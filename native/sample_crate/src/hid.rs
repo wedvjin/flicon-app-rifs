@@ -738,7 +738,7 @@ fn get_report(
     };
 
     // println!("Read: {:?}", &buf[..res]);
-    // println!("Feature report: {:?}",report_feature);
+    println!("Feature report: {:?}",report_feature);
     Ok(report_feature)
 }
 
