@@ -8,9 +8,9 @@ use serde::de::value;
 const VENDOR_ID_CONST: u16 = 13911;
 
 pub struct DeviceState {
-    device: Box<HidDevice>,
-    controller_info: DeviceInfo,
-    feature: ReportFeature,
+    pub device: Box<HidDevice>,
+    pub controller_info: DeviceInfo,
+    pub feature: ReportFeature,
 }
 
 impl DeviceState {
@@ -37,12 +37,119 @@ impl DeviceState {
         self.feature = get_report(&self.device).unwrap();
     }
 
+    // pub fn get_feature_report(&self) {
+    //     let feature_report = get_feature_report(&self.device).unwrap();
+    //     println!("feature report: {:?}", feature_report);
+
+    // }
+
+    pub fn get_feature_report_bytes(&self) {
+        let mut buf: [u8; 129] = [0; 129];
+        // buf[0] = 5;
+        // let mut buf: Vec<u8> = Vec::new();
+        // for vl in 0..buffer_length {
+        //     buf.push(0);
+        // }
+        // buf[0] = 5;
+        // let mut buf: [u8; 128] = [0; 128];
+        // let res = self.device.get_report_descriptor(&mut buf);
+        
+        buf[0] = 3;
+        let res = self.device.get_feature_report(&mut buf);
+        println!("{:?}", res);
+        for byte in buf.iter() {
+            print!("{:08b} ", byte); // This will print each byte in hexadecimal format
+        }
+    }
+
+    pub fn get_device_name(&self) {
+        println!("{:?}", self.device.get_manufacturer_string());
+        println!("{:?}", self.device.get_product_string());
+        println!("{:?}", self.device.get_serial_number_string());
+    }
+
     pub fn get_data(&self) -> ReportIn {
         get_data(&self.device).unwrap()
     }
 
     pub fn get_report(&self) -> ReportFeature {
         get_report(&self.device).unwrap()
+    }
+
+    pub fn get_report_descriptor(&self) -> ReportFeature {
+        let mut buf_resreq: [u8; 4096] = [0; 4096];
+        // buf[0] = 3;
+        let res = (&self.device).get_report_descriptor(&mut buf_resreq).unwrap();
+        // let res = device.get_feature_report(&mut buf).unwrap();
+
+        let buf = &buf_resreq[44..];
+
+        let report_feature = ReportFeature {
+            id: buf[0],
+            x_min: u16::from_le_bytes(buf[1..3].try_into().unwrap()),
+            _x_centr: u16::from_le_bytes(buf[3..5].try_into().unwrap()),
+            x_max: u16::from_le_bytes(buf[5..7].try_into().unwrap()),
+            x_averaging: u8::from_le_bytes(buf[7..8].try_into().unwrap()),
+            x_dead_zone: u8::from_le_bytes(buf[8..9].try_into().unwrap()),
+            y_min: u16::from_le_bytes(buf[9..11].try_into().unwrap()),
+            _y_centr: u16::from_le_bytes(buf[11..13].try_into().unwrap()),
+            y_max: u16::from_le_bytes(buf[13..15].try_into().unwrap()),
+            y_averaging: u8::from_le_bytes(buf[15..16].try_into().unwrap()),
+            y_dead_zone: u8::from_le_bytes(buf[16..17].try_into().unwrap()),
+            z_min: u16::from_le_bytes(buf[17..19].try_into().unwrap()),
+            _z_centr: u16::from_le_bytes(buf[19..21].try_into().unwrap()),
+            z_max: u16::from_le_bytes(buf[21..23].try_into().unwrap()),
+            z_averaging: u8::from_le_bytes(buf[23..24].try_into().unwrap()),
+            z_dead_zone: u8::from_le_bytes(buf[24..25].try_into().unwrap()),
+            rx_min: u16::from_le_bytes(buf[25..27].try_into().unwrap()),
+            _rx_centr: u16::from_le_bytes(buf[27..29].try_into().unwrap()),
+            rx_max: u16::from_le_bytes(buf[29..31].try_into().unwrap()),
+            rx_averaging: u8::from_le_bytes(buf[31..32].try_into().unwrap()),
+            rx_dead_zone: u8::from_le_bytes(buf[32..33].try_into().unwrap()),
+            ry_min: u16::from_le_bytes(buf[33..35].try_into().unwrap()),
+            _ry_centr: u16::from_le_bytes(buf[35..37].try_into().unwrap()),
+            ry_max: u16::from_le_bytes(buf[37..39].try_into().unwrap()),
+            ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
+            ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
+            rz_min: u16::from_le_bytes(buf[41..43].try_into().unwrap()),
+            _rz_centr: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
+            rz_max: u16::from_le_bytes(buf[45..47].try_into().unwrap()),
+            rz_averaging: u8::from_le_bytes(buf[47..48].try_into().unwrap()),
+            rz_dead_zone: u8::from_le_bytes(buf[48..49].try_into().unwrap()),
+            slider_min: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
+            slider_max: u16::from_le_bytes(buf[51..53].try_into().unwrap()),
+            slider_averaging: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
+            slider_dead_zone: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
+            encoder_time: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
+            led_r: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
+            led_g: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
+            led_b: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
+            hatka1_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
+            hatka2_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
+            hatka3_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
+            hatka4_mode: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
+            control_byte: u8::from_le_bytes(buf[63..64].try_into().unwrap()),
+            gash_button1_min: u16::from_le_bytes(buf[64..66].try_into().unwrap()),
+            gash_button1_max: u16::from_le_bytes(buf[66..68].try_into().unwrap()),
+            gash_button2_min: u16::from_le_bytes(buf[68..70].try_into().unwrap()),
+            gash_button2_max: u16::from_le_bytes(buf[70..72].try_into().unwrap()),
+            gash_button3_min: u16::from_le_bytes(buf[72..74].try_into().unwrap()),
+            gash_button3_max: u16::from_le_bytes(buf[74..76].try_into().unwrap()),
+            spi_error_cnt: u8::from_le_bytes(buf[76..77].try_into().unwrap()),
+            //below are real values received
+            buttons: to_u64_from_6_bytes(buf[77..83].try_into().unwrap()),
+            x_axis: u16::from_le_bytes(buf[83..85].try_into().unwrap()),
+            y_axis: u16::from_le_bytes(buf[85..87].try_into().unwrap()),
+            z_axis: u16::from_le_bytes(buf[87..89].try_into().unwrap()),
+            rx_axis: u16::from_le_bytes(buf[89..91].try_into().unwrap()),
+            ry_axis: u16::from_le_bytes(buf[91..93].try_into().unwrap()),
+            rz_axis: u16::from_le_bytes(buf[93..95].try_into().unwrap()),
+            slider_axis: u16::from_le_bytes(buf[95..97].try_into().unwrap()),
+            fw_version: u16::from_le_bytes(buf[97..99].try_into().unwrap()),
+        };
+
+
+        report_feature
     }
 
     pub fn get_side(&self) -> bool {
@@ -189,6 +296,10 @@ impl DeviceState {
         // buf[0] = 5;
         self.feature.to_bytes(&mut buf);
         self.device.send_feature_report(&buf).unwrap();
+    }
+
+    pub fn print_feature(&self) {
+        println!("{:?}", self.feature);
     }
 
     pub fn write_feature(&self) {
@@ -542,7 +653,7 @@ fn get_report(
 
     let mut buf: [u8; 128] = [0; 128];
     buf[0] = 3;
-    let res = device.get_report_descriptor(&mut buf).unwrap();
+    let res = device.get_feature_report(&mut buf).unwrap();
     // let res = device.get_feature_report(&mut buf).unwrap();
 
     let report_feature = ReportFeature {
