@@ -667,9 +667,10 @@ fn get_report(
     // let controller = get_controller().unwrap();
     // let device = api.open(controller.vendor_id(), controller.product_id()).unwrap();
 
-    let mut buf: [u8; 128] = [0; 128];
+    let mut buf: [u8; 129] = [0; 129];
     buf[0] = 3;
     let res = device.get_feature_report(&mut buf).unwrap();
+    println!("RES SIZE LEN: {}", res);
     // let res = device.get_feature_report(&mut buf).unwrap();
 
     let report_feature = ReportFeature {
