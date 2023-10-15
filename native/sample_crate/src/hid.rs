@@ -542,8 +542,8 @@ fn get_report(
 
     let mut buf: [u8; 128] = [0; 128];
     buf[0] = 3;
-    // let res = device.get_report_descriptor(&mut buf).unwrap();
-    let res = device.get_feature_report(&mut buf).unwrap();
+    let res = device.get_report_descriptor(&mut buf).unwrap();
+    // let res = device.get_feature_report(&mut buf).unwrap();
 
     let report_feature = ReportFeature {
         id: buf[0],
