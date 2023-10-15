@@ -255,8 +255,8 @@ class _SettingPageState extends State<SettingPage> {
                                   endIndent: 0,
                                   color: Colors.black12,
                                 ),
-                                //if(_showButton == 7)
-                                BaseRotation(data: data),
+                                if(_showButton == 7)
+                                  BaseRotation(data: data),
                                 if(_showButton == 13)
                                   JoystickCalibartion(data: data),
                                 if(_showButton == 898)

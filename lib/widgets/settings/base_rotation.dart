@@ -27,6 +27,10 @@ class _BaseRotationState extends State<BaseRotation> {
 
   @override
   Widget build(BuildContext context) {
+
+    double rotationAngle = (widget.data.z * 100 /widget.data.zMin) - 50;
+
+    
     return Column(
       children: [
         Transform.rotate(
@@ -49,9 +53,9 @@ class _BaseRotationState extends State<BaseRotation> {
                   width: 130,
                   height: 130,
                   child: Transform.flip(
-                    flipX: _negativeValue,
+                    flipX: (rotationAngle - 0.5) < 0,
                     child: CircularProgressIndicator(
-                      value: _realRotationValue,
+                      value: (rotationAngle / 100).abs(),
                       strokeWidth: 20.0,
                       valueColor : const AlwaysStoppedAnimation(Color.fromRGBO(132, 5, 5, 1))
                     )
@@ -124,29 +128,32 @@ class _BaseRotationState extends State<BaseRotation> {
           ),
         ),
         
-        const Text('Rotation'),
-        Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
-        Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
-        Slider(
-          value: _rotationValue,
-          min: -0.35,
-          max: 0.35,
-          divisions: 100,
-          label: _rotationValue.toString(),
-          onChanged: (double value) {
-            setState(() {
-              _rotationValue = value;
-              if(value < 0) {
-                _negativeValue = true;
-                _realRotationValue = value.abs();
-              } else {
-                _negativeValue = false;
-                _realRotationValue = value;
-              }
+        // const Text('Rotation'),
+        // Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
+        // Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
+        // Text("_roration : ${(widget.data.z * 100 /widget.data.zMin) - 50}"),
+        // Text("rotationAngle: ${rotationAngle / 100}"),
+        // Text("flip : ${(rotationAngle - 0.5) < 0}"),
+        // Slider(
+        //   value: _rotationValue,
+        //   min: -0.35,
+        //   max: 0.35,
+        //   divisions: 100,
+        //   label: _rotationValue.toString(),
+        //   onChanged: (double value) {
+        //     setState(() {
+        //       _rotationValue = value;
+        //       if(value < 0) {
+        //         _negativeValue = true;
+        //         _realRotationValue = value.abs();
+        //       } else {
+        //         _negativeValue = false;
+        //         _realRotationValue = value;
+        //       }
             
-            });
-          },
-        ),
+        //     });
+        //   },
+        // ),
       
         
         Padding(
@@ -184,7 +191,6 @@ class _BaseRotationState extends State<BaseRotation> {
                   onChanged: (value) => {
                     setState(() {
                       calibration = value;
-                      _deadZone = value[2] - value[1];
                     })
                   },
                   divisions: 48,
