@@ -1,26 +1,22 @@
 import 'dart:ui';
-import 'package:flicon/models/settings.dart';
-import 'package:flicon/models/vars.dart';
-import 'package:flicon/streams/rust_signal_provider.dart';
 import 'package:flicon/theme.dart';
+import 'package:flicon/widgets/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 import 'package:flicon/messages/report_feature_message.pb.dart' as reportFeatureMessage;
-import 'package:flicon/messages/increasing_number.pb.dart'
-    as increasingNumbers;
+import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
-import 'dart:typed_data';
 
 import 'package:flicon/pages/search_page.dart';
 import 'package:flicon/pages/settings_page.dart';
+import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/settings',
     routes: [
       GoRoute(
         path: '/main',
@@ -32,7 +28,7 @@ GoRouter router() {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => SettingsPage(),
+        builder: (context, state) => SettingPage(),
       ),
     ],
   );
@@ -41,6 +37,21 @@ GoRouter router() {
 void main() async {
   // Wait for Rust initialization to be completed first.
   await RustInFlutter.ensureInitialized();  
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1000, 650),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: true,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setResizable(false);
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(const FliconApp());
 }
 
@@ -112,19 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void apply() {
     final c = color.toColor();
     rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
-    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', c.red, c.green, c.blue, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
 
 
   @override
-  Widget build(BuildContext context) {
-
-    int u64Value = 12345678901234567; // Replace this with your 64-bit integer
-    String binaryString = u64Value.toRadixString(2);
-  
-
+  Widget build(BuildContext context) {  
     return Scaffold(
       body: Center(
         child: Column(
@@ -132,50 +138,21 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             StreamBuilder<RustSignal>(
               stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportInMessage.ID;
+                return rustSignal.resource == reportMessage.ID;
               }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No reportInMessage stream");
+                  return Text("No reportMessage stream");
                 } else {
-                  var dd = reportInMessage.ReportInMessage.fromBuffer(rustSignal.message as List<int>);
+                  var dd = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
                   //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
                
                   return Column(
                     children: [
-                      Text("x: ${dd.x}, y: ${dd.y}, z: ${dd.z}"),
-                      Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
-                      // Text("1: ${byteData.getUint8(1)}"),
-                      // Text("2: ${byteData.getUint16(2)}"),
-                      // Text("3: ${byteData.getUint16(3)}"),
-                      // Text("4: ${byteData.getUint16(4)}"),
-                    ]
-                  );
-                }
-              },
-            ),
-            StreamBuilder<RustSignal>(
-              stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportFeatureMessage.ID;
-              }),
-              builder: (context, snapshot) {
-                final rustSignal = snapshot.data;
-                if (rustSignal == null) {
-                  return Text("No reportFeatureMessage stream");
-                } else {
-                  var dd = reportFeatureMessage.ReportFeature.fromBuffer(rustSignal.message as List<int>);
-                  //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
-                  //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
-               
-                  return Column(
-                    children: [
-                      Text("${dd.id}"),
+                      Text("${dd.rx} ${dd.x} ${dd.y}"),
                       Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
-                      Text("X: ${dd.xAxis} - AVG : ${dd.xAveraging}"),
-                      Text("Y: ${dd.yAxis} - AVG : ${dd.yAveraging}"),
-                      Text("Z: ${dd.zAxis} - AVG : ${dd.zAveraging} - max : ${dd.zMax} min: ${dd.zMin}")
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),
@@ -185,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
+          
             Text(_contoller),
             WheelPicker(
               color: color,

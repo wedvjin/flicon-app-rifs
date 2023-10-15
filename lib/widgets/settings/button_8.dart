@@ -4,18 +4,15 @@ import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 
 
-class JoystickCalibartion extends StatefulWidget {
+class Button8 extends StatefulWidget {
   final reportMessage.ReportMessage data;
-  const JoystickCalibartion({Key? key, required this.data}) : super(key: key);
+  const Button8({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<JoystickCalibartion> createState() => _JoystickCalibartionState();
+  State<Button8> createState() => _Button8State();
 }
 
-class _JoystickCalibartionState extends State<JoystickCalibartion> {
-
-  double _xAsis = 50;
-  double _yAsis = 50;
+class _Button8State extends State<Button8> {
 
   int _centerPostion = 50;
 
@@ -76,8 +73,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
             ),
             Positioned(
-              bottom: 150 / 2 - 15 + (((widget.data.y * 100 / widget.data.xMax) - 50)),
-              left: 150 / 2 - 15 + (((widget.data.x * 100 / widget.data.xMax) - 50)),
+              bottom: 150 / 2 - 15 + (((widget.data.ry * 100 / widget.data.ryMax) - 50)),
+              left: 150 / 2 - 15 + (((widget.data.rx * 100 / widget.data.rxMax) - 50)),
               child: Container(
                 width: 30,
                 height: 30,
@@ -89,8 +86,6 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
             ),
           ],
         ),
-        
-   
         Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: ElevatedButton(
@@ -105,6 +100,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
         
           },
         )),
+        Text("${widget.data.rx} ${widget.data.rxMax} ${widget.data.rxMin}"),
+        Text("${widget.data.ry} ${widget.data.ryMax} ${widget.data.ryMin}"),
         if(_showCalibation) 
           Column(
             children: [
