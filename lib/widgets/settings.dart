@@ -1,4 +1,4 @@
-import 'package:flicon/widgets/settings/button_7.dart';
+import 'package:flicon/widgets/settings/base_rotation.dart';
 import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
@@ -131,10 +131,7 @@ class _SettingsState extends State<Settings> {
         endIndent: 0,
         color: Colors.black12,
       ),
-      
-        const Button7(),
-        const JoystickCalibartion(),
-        const LedColorPicker()
+
     ]);
   }
 }

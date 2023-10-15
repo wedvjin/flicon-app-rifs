@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
+import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+
 
 class JoystickCalibartion extends StatefulWidget {
-  const JoystickCalibartion({Key? key}) : super(key: key);
+  final reportMessage.ReportMessage data;
+  const JoystickCalibartion({Key? key, required this.data}) : super(key: key);
 
   @override
   State<JoystickCalibartion> createState() => _JoystickCalibartionState();
@@ -22,6 +25,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Stack(
@@ -72,8 +76,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
             ),
             Positioned(
-              top: 150 / 2 - 15 + ((_yAsis - 50)),
-              left: 150 / 2 - 15 + ((_xAsis - 50)),
+              bottom: 150 / 2 - 15 + (((widget.data.y * 100 / widget.data.xMax) - 50)),
+              left: 150 / 2 - 15 + (((widget.data.x * 100 / widget.data.xMax) - 50)),
               child: Container(
                 width: 30,
                 height: 30,
@@ -86,31 +90,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
           ],
         ),
         
-        const Text('X Asis'),
-        Slider(
-          value: _xAsis,
-          max: 100,
-          divisions: 100,
-          label: _xAsis.round().toString(),
-          onChanged: (double value) {
-            setState(() {
-              _xAsis = value;
-            });
-          },
-        ),
-        const Text('Y Asis'),
-        Slider(
-          value: _yAsis,
-          max: 100,
-          divisions: 100,
-          label: _yAsis.round().toString(),
-          onChanged: (double value) {
-            setState(() {
-              _yAsis = value;
-            });
-          },
-        ),
-        
+   
         Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: ElevatedButton(

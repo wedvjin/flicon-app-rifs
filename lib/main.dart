@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flicon/theme.dart';
+import 'package:flicon/widgets/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
@@ -11,10 +12,11 @@ import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
 import 'package:flicon/pages/search_page.dart';
 import 'package:flicon/pages/settings_page.dart';
+import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/settings',
     routes: [
       GoRoute(
         path: '/main',
@@ -26,7 +28,7 @@ GoRouter router() {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => SettingsPage(),
+        builder: (context, state) => SettingPage(),
       ),
     ],
   );
@@ -35,6 +37,21 @@ GoRouter router() {
 void main() async {
   // Wait for Rust initialization to be completed first.
   await RustInFlutter.ensureInitialized();  
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1000, 650),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: true,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setResizable(false);
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(const FliconApp());
 }
 
@@ -106,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void apply() {
     final c = color.toColor();
     rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
-    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', c.red, c.green, c.blue, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
@@ -134,7 +151,8 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
-                      Text(dd.toString()),
+                      Text("${dd.rx} ${dd.x} ${dd.y}"),
+                      Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),

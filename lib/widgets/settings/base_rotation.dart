@@ -1,17 +1,19 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
+import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 
-class Button7 extends StatefulWidget {
-  const Button7({Key? key}) : super(key: key);
+class BaseRotation extends StatefulWidget {
+  final reportMessage.ReportMessage data;
+
+  const BaseRotation({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<Button7> createState() => _Button7State();
+  State<BaseRotation> createState() => _BaseRotationState();
 }
 
-class _Button7State extends State<Button7> {
+class _BaseRotationState extends State<BaseRotation> {
 
-  double _deadZone = 0.0;
   double _rotationValue = 0.0;
   double _realRotationValue = 0.0;
   
@@ -66,7 +68,7 @@ class _Button7State extends State<Button7> {
                   child: Transform.flip(
                     flipX: _negativeValue,
                     child: CircularProgressIndicator(
-                      value: _deadZone,
+                      value: widget.data.zDeadZone / 100 / 2,
                       strokeWidth: 20.0,
                       valueColor : const AlwaysStoppedAnimation(Color.fromRGBO(59, 1, 1, 1))
                     )
@@ -83,7 +85,7 @@ class _Button7State extends State<Button7> {
                   child: Transform.flip(
                     flipX: !_negativeValue,
                     child: CircularProgressIndicator(
-                      value: _deadZone,
+                      value: widget.data.zDeadZone / 100 / 2,
                       strokeWidth: 20.0,
                       valueColor : const AlwaysStoppedAnimation(Color.fromRGBO(59, 1, 1, 1))
                     )
@@ -100,7 +102,7 @@ class _Button7State extends State<Button7> {
                   child: Center(
                     child: 
                     Text(
-                      "${(_deadZone * 100).round()} %", 
+                      "${widget.data.zDeadZone} %", 
                       style: const TextStyle(fontSize: 10),
                     )
                   ),
@@ -123,6 +125,8 @@ class _Button7State extends State<Button7> {
         ),
         
         const Text('Rotation'),
+        Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
+        Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
         Slider(
           value: _rotationValue,
           min: -0.35,
