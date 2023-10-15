@@ -1,19 +1,12 @@
 import 'dart:ui';
-import 'package:flicon/models/settings.dart';
-import 'package:flicon/models/vars.dart';
-import 'package:flicon/streams/rust_signal_provider.dart';
 import 'package:flicon/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 import 'package:flicon/messages/report_feature_message.pb.dart' as reportFeatureMessage;
-import 'package:flicon/messages/increasing_number.pb.dart'
-    as increasingNumbers;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
-import 'dart:typed_data';
 
 import 'package:flicon/pages/search_page.dart';
 import 'package:flicon/pages/settings_page.dart';
