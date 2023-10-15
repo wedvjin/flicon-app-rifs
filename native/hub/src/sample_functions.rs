@@ -485,6 +485,7 @@ pub async fn stream_report(
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_in_data = adevice.lock().unwrap().get_data();
+        crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_feature_data = adevice.lock().unwrap().get_report_descriptor();
 
         let report_in_signal_message = ReportMessage {

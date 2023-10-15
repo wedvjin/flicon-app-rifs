@@ -34,7 +34,7 @@ impl DeviceState {
 
     // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
     pub fn set_report_internal(&mut self) {
-        self.feature = get_report(&self.device).unwrap();
+        self.feature = self.get_report_descriptor();
     }
 
     // pub fn get_feature_report(&self) {
@@ -305,7 +305,21 @@ impl DeviceState {
     pub fn write_feature(&self) {
         let mut buf: [u8; 128] = [0; 128];
         self.feature.to_bytes(&mut buf);
-        self.device.write(&buf).unwrap();
+        let mut write_buf: [u8; 178] = [0; 178];
+        let bytes = [
+            0b00000101, 0b00000001, 0b00001001, 0b00000100, 0b10100001, 0b00000001, 0b10000101, 0b00000001,
+            0b00000101, 0b00001001, 0b00011001, 0b00000001, 0b00101001, 0b00110000, 0b00010101, 0b00000000,
+            0b00100101, 0b00000001, 0b01110101, 0b00000001, 0b10010101, 0b00110000, 0b10000001, 0b00000010,
+            0b00000101, 0b00000001, 0b00001001, 0b00110000, 0b00010101, 0b00000000, 0b00100110, 0b11111111,
+            0b01111111, 0b01110101, 0b00001111, 0b10010101, 0b00000001, 0b10000001, 0b00000010, 0b01110101,
+            0b00000001, 0b10010101, 0b00000001, 0b10000001,
+        ];
+
+        write_buf[..44].copy_from_slice(&bytes);
+        write_buf[44..172].copy_from_slice(&buf);
+        // write_buf[45] = 3;
+        println!("WRITTEN BUFFER: {:?}", write_buf );
+        self.device.send_feature_report(&write_buf).unwrap();
     }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
