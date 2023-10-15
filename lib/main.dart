@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flicon/models/settings.dart';
 import 'package:flicon/models/vars.dart';
+import 'package:flicon/streams/rust_signal_provider.dart';
 import 'package:flicon/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +32,7 @@ GoRouter router() {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => const SettingsPage(),
+        builder: (context, state) => SettingsPage(),
       ),
     ],
   );
@@ -66,25 +67,12 @@ class _FliconAppState extends State<FliconApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(create: (context) => SettingsModel()),
-        ChangeNotifierProxyProvider<SettingsModel, VarsModel>(
-          create: (context) => VarsModel(),
-          update: (context, vars, settings) {
-            if (settings == null) throw ArgumentError.notNull('cart');
-            settings.settings = vars;
-            return settings;
-          },
-        ),
-      ],
-      child: MaterialApp.router(
+    return MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'EVO Flight Controller',
         theme: AppTheme().main,
         routerConfig: router(),
-      ),
-    );
+      );
   }
 }
 
@@ -149,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No stream");
+                  return Text("No reportInMessage stream");
                 } else {
                   var dd = reportInMessage.ReportInMessage.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
@@ -157,6 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
+                      Text("x: ${dd.x}, y: ${dd.y}, z: ${dd.z}"),
                       Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
@@ -174,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No stream");
+                  return Text("No reportFeatureMessage stream");
                 } else {
                   var dd = reportFeatureMessage.ReportFeature.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
@@ -182,7 +171,11 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
+                      Text("${dd.id}"),
                       Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
+                      Text("X: ${dd.xAxis} - AVG : ${dd.xAveraging}"),
+                      Text("Y: ${dd.yAxis} - AVG : ${dd.yAveraging}"),
+                      Text("Z: ${dd.zAxis} - AVG : ${dd.zAveraging} - max : ${dd.zMax} min: ${dd.zMin}")
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),
