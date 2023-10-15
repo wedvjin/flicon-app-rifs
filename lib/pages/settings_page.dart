@@ -189,7 +189,6 @@ class _SettingPageState extends State<SettingPage> {
                             onHover: _updateLocation,
                             cursor: cursor,
                             child: Stack(
-                                key: Key("11"),
                                 fit: StackFit.expand,
                                 alignment: Alignment.center, 
                                 children: [
@@ -203,6 +202,9 @@ class _SettingPageState extends State<SettingPage> {
                                     ),
                                   Positioned(
                                     child: Image.asset('assets/${controller}/btn-${_showButton.toString()}-active.png', width: 595, height: 464),
+                                  ),
+                                  Positioned(
+                                    child: Image.asset('assets/${controller}/btn-${_controlButton.toString()}-active.png', width: 595, height: 464),
                                   ),
                                   Positioned(
                                     top: 40,
@@ -327,13 +329,13 @@ class _SettingPageState extends State<SettingPage> {
                                   endIndent: 0,
                                   color: Colors.black12,
                                 ),
-                                if(_controlButton == 7)
+                                if(_showButton == 7)
                                   BaseRotation(data: data),
-                                if(_controlButton == 8)
+                                if(_showButton == 8)
                                   Button8(data: data),
-                                if(_controlButton == 13)
+                                if(_showButton == 13)
                                   JoystickCalibartion(data: data),
-                                if(_controlButton == 898)
+                                if(_showButton == 898)
                                   LedColorPicker(data: data)
                               ])
                             ],

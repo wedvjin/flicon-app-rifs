@@ -128,12 +128,12 @@ class _BaseRotationState extends State<BaseRotation> {
           ),
         ),
         
-        // const Text('Rotation'),
-        // Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
-        // Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
-        // Text("_roration : ${(widget.data.z * 100 /widget.data.zMin) - 50}"),
-        // Text("rotationAngle: ${rotationAngle / 100}"),
-        // Text("flip : ${(rotationAngle - 0.5) < 0}"),
+        const Text('Rotation'),
+        Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
+        Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
+        Text("_roration : ${(widget.data.z * 100 /widget.data.zMin) - 50}"),
+        Text("rotationAngle: ${rotationAngle / 100}"),
+        Text("flip : ${(rotationAngle - 0.5) < 0}"),
         // Slider(
         //   value: _rotationValue,
         //   min: -0.35,
