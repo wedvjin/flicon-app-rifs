@@ -586,7 +586,7 @@ pub async fn handle_device(
             // crate::debug_print!("{}", request_message.letter);
 
             match set_message.target.as_str() {
-                "apply" => adevice.lock().unwrap().write_feature(),
+                "apply" => adevice.lock().unwrap().send_feature(),
                 "setx" => adevice.lock().unwrap().set_x(
                     set_message.value1.try_into().unwrap(),
                     set_message.value2.try_into().unwrap(),
