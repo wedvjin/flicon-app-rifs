@@ -16,7 +16,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/settings',
+    initialLocation: '/main',
     routes: [
       GoRoute(
         path: '/main',
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void apply() {
     final c = color.toColor();
     rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
-    rust_request('apply', c.red, c.green, c.blue, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
