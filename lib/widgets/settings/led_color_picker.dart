@@ -1,12 +1,13 @@
-import 'package:flicon/models/settings.dart';
-import 'package:flicon/models/vars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+
 
 class LedColorPicker extends StatefulWidget {
-  const LedColorPicker({Key? key}) : super(key: key);
+  final reportMessage.ReportMessage data;
+
+  const LedColorPicker({Key? key, required this.data}) : super(key: key);
 
   @override
   State<LedColorPicker> createState() => _LedColorPickerState();
@@ -14,13 +15,15 @@ class LedColorPicker extends StatefulWidget {
 
 class _LedColorPickerState extends State<LedColorPicker> {
 
-  HSVColor color = HSVColor.fromColor(Colors.blue);
 
   @override
   Widget build(BuildContext context) {
+     
+    HSVColor color = HSVColor.fromColor(Color.fromRGBO(widget.data.ledR, widget.data.ledG, widget.data.ledB, 1));
 
     return Column(
       children: [
+        Text("${widget.data.ledR} ${widget.data.ledG} ${widget.data.ledB}"),
         WheelPicker(
           color: color,
           onChanged: (value){ 
