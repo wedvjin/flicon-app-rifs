@@ -292,35 +292,36 @@ impl DeviceState {
     }
 
     pub fn send_feature(&self) {
-        let mut buf: [u8; 128] = [0; 128];
-        // buf[0] = 5;
+        let mut buf: [u8; 178] = [0; 178];
+        // buf[0] = 3;
         self.feature.to_bytes(&mut buf);
         self.device.send_feature_report(&buf).unwrap();
+        println!("sent");
     }
 
     pub fn print_feature(&self) {
         println!("{:?}", self.feature);
     }
 
-    pub fn write_feature(&self) {
-        let mut buf: [u8; 128] = [0; 128];
-        self.feature.to_bytes(&mut buf);
-        let mut write_buf: [u8; 178] = [0; 178];
-        let bytes = [
-            0b00000101, 0b00000001, 0b00001001, 0b00000100, 0b10100001, 0b00000001, 0b10000101, 0b00000001,
-            0b00000101, 0b00001001, 0b00011001, 0b00000001, 0b00101001, 0b00110000, 0b00010101, 0b00000000,
-            0b00100101, 0b00000001, 0b01110101, 0b00000001, 0b10010101, 0b00110000, 0b10000001, 0b00000010,
-            0b00000101, 0b00000001, 0b00001001, 0b00110000, 0b00010101, 0b00000000, 0b00100110, 0b11111111,
-            0b01111111, 0b01110101, 0b00001111, 0b10010101, 0b00000001, 0b10000001, 0b00000010, 0b01110101,
-            0b00000001, 0b10010101, 0b00000001, 0b10000001,
-        ];
+    // pub fn write_feature(&self) {
+    //     let mut buf: [u8; 128] = [0; 128];
+    //     self.feature.to_bytes(&mut buf);
+    //     let mut write_buf: [u8; 178] = [0; 178];
+    //     let bytes = [
+    //         0b00000101, 0b00000001, 0b00001001, 0b00000100, 0b10100001, 0b00000001, 0b10000101, 0b00000001,
+    //         0b00000101, 0b00001001, 0b00011001, 0b00000001, 0b00101001, 0b00110000, 0b00010101, 0b00000000,
+    //         0b00100101, 0b00000001, 0b01110101, 0b00000001, 0b10010101, 0b00110000, 0b10000001, 0b00000010,
+    //         0b00000101, 0b00000001, 0b00001001, 0b00110000, 0b00010101, 0b00000000, 0b00100110, 0b11111111,
+    //         0b01111111, 0b01110101, 0b00001111, 0b10010101, 0b00000001, 0b10000001, 0b00000010, 0b01110101,
+    //         0b00000001, 0b10010101, 0b00000001, 0b10000001,
+    //     ];
 
-        write_buf[..44].copy_from_slice(&bytes);
-        write_buf[44..172].copy_from_slice(&buf);
-        // write_buf[45] = 3;
-        println!("WRITTEN BUFFER: {:?}", write_buf );
-        self.device.send_feature_report(&write_buf).unwrap();
-    }
+    //     write_buf[..44].copy_from_slice(&bytes);
+    //     write_buf[44..172].copy_from_slice(&buf);
+    //     // write_buf[45] = 3;
+    //     println!("WRITTEN BUFFER: {:?}", write_buf );
+    //     self.device.send_feature_report(&write_buf).unwrap();
+    // }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
     //     self.feature.x_min = x_min;
@@ -475,7 +476,7 @@ impl Default for ReportFeature {
 }
 
 impl ReportFeature {
-    fn to_bytes(&self, buf: &mut [u8; 128]) {
+    fn to_bytes(&self, buf: &mut [u8; 178]) {
         buf[0] = self.id;
         buf[1..3].copy_from_slice(&to_bytes_from_u16(self.x_min));
         buf[3..5].copy_from_slice(&to_bytes_from_u16(self._x_centr));
