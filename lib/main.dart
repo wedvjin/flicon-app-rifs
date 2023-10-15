@@ -6,6 +6,7 @@ import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 import 'package:flicon/messages/report_feature_message.pb.dart' as reportFeatureMessage;
+import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
 import 'package:flicon/pages/search_page.dart';
@@ -112,12 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   @override
-  Widget build(BuildContext context) {
-
-    int u64Value = 12345678901234567; // Replace this with your 64-bit integer
-    String binaryString = u64Value.toRadixString(2);
-  
-
+  Widget build(BuildContext context) {  
     return Scaffold(
       body: Center(
         child: Column(
@@ -125,21 +121,20 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             StreamBuilder<RustSignal>(
               stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportInMessage.ID;
+                return rustSignal.resource == reportMessage.ID;
               }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No reportInMessage stream");
+                  return Text("No reportMessage stream");
                 } else {
-                  var dd = reportInMessage.ReportInMessage.fromBuffer(rustSignal.message as List<int>);
+                  var dd = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
                   //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
                
                   return Column(
                     children: [
-                      Text("x: ${dd.x}, y: ${dd.y}, z: ${dd.z}"),
-                      Text(dd.buttons.toRadixString(2).padLeft(64, '0')),
+                      Text(dd.toString()),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),
@@ -149,35 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               },
             ),
-            StreamBuilder<RustSignal>(
-              stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportFeatureMessage.ID;
-              }),
-              builder: (context, snapshot) {
-                final rustSignal = snapshot.data;
-                if (rustSignal == null) {
-                  return Text("No reportFeatureMessage stream");
-                } else {
-                  var dd = reportFeatureMessage.ReportFeature.fromBuffer(rustSignal.message as List<int>);
-                  //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
-                  //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
-               
-                  return Column(
-                    children: [
-                      Text("${dd.id}"),
-                      Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
-                      Text("X: ${dd.xAxis} - AVG : ${dd.xAveraging}"),
-                      Text("Y: ${dd.yAxis} - AVG : ${dd.yAveraging}"),
-                      Text("Z: ${dd.zAxis} - AVG : ${dd.zAveraging} - max : ${dd.zMax} min: ${dd.zMin}")
-                      // Text("1: ${byteData.getUint8(1)}"),
-                      // Text("2: ${byteData.getUint16(2)}"),
-                      // Text("3: ${byteData.getUint16(3)}"),
-                      // Text("4: ${byteData.getUint16(4)}"),
-                    ]
-                  );
-                }
-              },
-            ),
+          
             Text(_contoller),
             WheelPicker(
               color: color,
