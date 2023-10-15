@@ -1,4 +1,3 @@
-import 'package:flicon/models/vars.dart';
 import 'package:flicon/widgets/settings/button_7.dart';
 import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
@@ -62,9 +61,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    var varsWatch = context.watch<VarsModel>();
 
-    print(varsWatch.currentItem);
     return Column(children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(
@@ -134,11 +131,9 @@ class _SettingsState extends State<Settings> {
         endIndent: 0,
         color: Colors.black12,
       ),
-      if(varsWatch.currentItem == 7)
+      
         const Button7(),
-      if(varsWatch.currentItem == 13)
         const JoystickCalibartion(),
-      if(varsWatch.currentItem == 9999)
         const LedColorPicker()
     ]);
   }

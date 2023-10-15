@@ -18,7 +18,6 @@ class _LedColorPickerState extends State<LedColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    var varsWatch = context.watch<VarsModel>();
 
     return Column(
       children: [
@@ -26,10 +25,8 @@ class _LedColorPickerState extends State<LedColorPicker> {
           color: color,
           onChanged: (value){ 
             setState(() {
-              varsWatch.removeRGB();
               color = value;
               final c = color.toColor();
-              varsWatch.addRGB(RGB(c.red, c.green, c.blue));
             });
           },
         ),
