@@ -156,7 +156,7 @@ class _SettingPageState extends State<SettingPage> {
             builder: (context, snapshot) {
               final rustSignal = snapshot.data;
               if (rustSignal == null) {
-                return Text("No reportInMessage stream");
+                return Text("No reportMessage stream");
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
               
