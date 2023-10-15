@@ -564,6 +564,7 @@ pub async fn stream_report(
             message: Some(report_in_signal_message.encode_to_vec()),
             blob: None,
         };
+        send_rust_signal(rust_signal);
     }
 }
 
