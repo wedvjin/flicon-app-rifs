@@ -180,7 +180,7 @@ class _SettingPageState extends State<SettingPage> {
                             onTap: () {
                               setState(() {
                                 _clicked = true;
-                                Timer(Duration(milliseconds: 10), () {
+                                Timer(Duration(seconds: 1), () {
                                   _clicked = false;
                                 });
                               });
@@ -257,7 +257,7 @@ class _SettingPageState extends State<SettingPage> {
                           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                           child: ListView(
                             children: [
-                              Text("${_showButton} ${_controlButton} ${clickPosition}"),
+                              Text("${_showButton} ${_controlButton}"),
                               Column(children: [
                                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Expanded(
