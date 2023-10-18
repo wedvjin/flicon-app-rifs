@@ -665,6 +665,8 @@ pub async fn handle_device(
                 "enabledfu" => adevice.lock().unwrap().set_enable_dfu(),
                 "calibratehandle" => adevice.lock().unwrap().set_enable_calibrate_base(),
                 "calibratebase" => adevice.lock().unwrap().set_enable_calibrate_handle(),
+                "discalibratehandle" => adevice.lock().unwrap().set_disable_calibrate_base(),
+                "discalibratebase" => adevice.lock().unwrap().set_disable_calibrate_handle(),
                 "save" => adevice.lock().unwrap().set_save_config(),
                 _ => println!("INCORRECT OPTION PASSED or NOT IMPLEMENTED"),
             }
