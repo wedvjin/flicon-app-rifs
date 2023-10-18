@@ -34,7 +34,7 @@ impl DeviceState {
 
     // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
     pub fn set_report_internal(&mut self) {
-        self.feature = self.get_report_descriptor();
+        self.feature = self.get_report();
     }
 
     // pub fn get_feature_report(&self) {
@@ -47,19 +47,33 @@ impl DeviceState {
         let mut buf: [u8; 129] = [0; 129];
         // buf[0] = 5;
         // let mut buf: Vec<u8> = Vec::new();
-        // for vl in 0..buffer_length {
+        // for _vl in 0..buffer_length {
         //     buf.push(0);
         // }
-        // buf[0] = 5;
         // let mut buf: [u8; 128] = [0; 128];
         // let res = self.device.get_report_descriptor(&mut buf);
         
-        buf[0] = 3;
-        let res = self.device.get_feature_report(&mut buf);
-        println!("{:?}", res);
+        buf[0] = 2;
+        let res = self.device.get_feature_report(&mut buf).unwrap();
+        //  {
+        //     Ok(res) => {
+        //         for byte in buf.iter() {
+        //             print!("{:08b} ", byte); // This will print each byte in hexadecimal format
+        //         }
+        //         println!("Good buffer length: {}", buffer_length);
+        //         res
+        //     }
+        //     Err(e) => {
+        //         // println!("error {:?} on buffer length {}", e, buffer_length);
+        //         0
+        //     }
+        // };
+        // let res = self.device.get_feature_report(&mut buf);  //TODO uncomment and see if it returns but with error
+        // println!("res: {:?}", res);
         for byte in buf.iter() {
             print!("{:08b} ", byte); // This will print each byte in hexadecimal format
         }
+
     }
 
     pub fn get_device_name(&self) {
@@ -77,7 +91,7 @@ impl DeviceState {
     }
 
     pub fn get_report_descriptor(&self) -> ReportFeature {
-        let mut buf_resreq: [u8; 4096] = [0; 4096];
+        let mut buf_resreq: [u8; 4096] = [0; 4096]; //TODO:
         // buf[0] = 3;
         let res = (&self.device).get_report_descriptor(&mut buf_resreq).unwrap();
         // let res = device.get_feature_report(&mut buf).unwrap();
@@ -279,12 +293,20 @@ impl DeviceState {
         self.feature.control_byte |= 1 << 7;
     }
 
+    pub fn set_enable_calibrate_base(&mut self) {
+        self.feature.control_byte |= 1 << 2;
+    }
+
     pub fn set_enable_calibrate_handle(&mut self) {
         self.feature.control_byte |= 1 << 3;
     }
 
-    pub fn set_enable_calibrate_base(&mut self) {
-        self.feature.control_byte |= 1 << 2;
+    pub fn set_disable_calibrate_handle(&mut self) {
+        self.feature.control_byte &= !(1 << 3);
+    }
+
+    pub fn set_disable_calibrate_base(&mut self) {
+        self.feature.control_byte &= !(1 << 2);
     }
 
     pub fn set_save_config(&mut self) {
@@ -293,36 +315,38 @@ impl DeviceState {
 
     pub fn send_feature(&self) {
         let mut buf: [u8; 129] = [0; 129];
-        // buf[0] = 3;
+        // buf[0] = 5;
         self.feature.to_bytes(&mut buf);
-        println!("BUF: {:?}", buf);
         self.device.send_feature_report(&buf).unwrap();
-        println!("sent");
     }
 
     pub fn print_feature(&self) {
         println!("{:?}", self.feature);
     }
 
-    // pub fn write_feature(&self) {
-    //     let mut buf: [u8; 12] = [0; 128];
-    //     self.feature.to_bytes(&mut buf);
-    //     let mut write_buf: [u8; 178] = [0; 178];
-    //     let bytes = [
-    //         0b00000101, 0b00000001, 0b00001001, 0b00000100, 0b10100001, 0b00000001, 0b10000101, 0b00000001,
-    //         0b00000101, 0b00001001, 0b00011001, 0b00000001, 0b00101001, 0b00110000, 0b00010101, 0b00000000,
-    //         0b00100101, 0b00000001, 0b01110101, 0b00000001, 0b10010101, 0b00110000, 0b10000001, 0b00000010,
-    //         0b00000101, 0b00000001, 0b00001001, 0b00110000, 0b00010101, 0b00000000, 0b00100110, 0b11111111,
-    //         0b01111111, 0b01110101, 0b00001111, 0b10010101, 0b00000001, 0b10000001, 0b00000010, 0b01110101,
-    //         0b00000001, 0b10010101, 0b00000001, 0b10000001,
-    //     ];
+    pub fn write_feature(&self) {
+        let mut buf: [u8; 129] = [0; 129];
+        // buf[0] = 2;
 
-    //     write_buf[..44].copy_from_slice(&bytes);
-    //     write_buf[44..172].copy_from_slice(&buf);
-    //     // write_buf[45] = 3;
-    //     println!("WRITTEN BUFFER: {:?}", write_buf );
-    //     self.device.send_feature_report(&write_buf).unwrap();
-    // }
+        self.feature.to_bytes(&mut buf);
+        buf[0] = 2;
+        // self.feature.to_bytes(&mut buf);
+        // let mut write_buf: [u8; 178] = [0; 178];
+        // let bytes = [
+        //     0b00000101, 0b00000001, 0b00001001, 0b00000100, 0b10100001, 0b00000001, 0b10000101, 0b00000001,
+        //     0b00000101, 0b00001001, 0b00011001, 0b00000001, 0b00101001, 0b00110000, 0b00010101, 0b00000000,
+        //     0b00100101, 0b00000001, 0b01110101, 0b00000001, 0b10010101, 0b00110000, 0b10000001, 0b00000010,
+        //     0b00000101, 0b00000001, 0b00001001, 0b00110000, 0b00010101, 0b00000000, 0b00100110, 0b11111111,
+        //     0b01111111, 0b01110101, 0b00001111, 0b10010101, 0b00000001, 0b10000001, 0b00000010, 0b01110101,
+        //     0b00000001, 0b10010101, 0b00000001, 0b10000001,
+        // ];
+
+        // write_buf[..44].copy_from_slice(&bytes);
+        // write_buf[44..172].copy_from_slice(&buf);
+        // // write_buf[45] = 3;
+        // println!("WRITTEN BUFFER: {:?}", write_buf );
+        self.device.send_feature_report(&buf).unwrap();
+    }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
     //     self.feature.x_min = x_min;
@@ -668,13 +692,9 @@ fn get_report(
     // let device = api.open(controller.vendor_id(), controller.product_id()).unwrap();
 
     let mut buf: [u8; 129] = [0; 129];
-    buf[0] = 3;
+    buf[0] = 2;
     let res = device.get_feature_report(&mut buf).unwrap();
-    println!("RES SIZE LEN: {}", res);
     // let res = device.get_feature_report(&mut buf).unwrap();
-    for byte in buf.iter() {
-        print!("{:08b} ", byte); // This will print each byte in hexadecimal format
-    }
 
     let report_feature = ReportFeature {
         id: buf[0],
@@ -741,7 +761,7 @@ fn get_report(
     };
 
     // println!("Read: {:?}", &buf[..res]);
-    println!("Feature report: {:?}",report_feature);
+    // println!("Feature report: {:?}",report_feature);
     Ok(report_feature)
 }
 
