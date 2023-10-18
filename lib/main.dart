@@ -137,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
     rust_request('togglelr', 0, 0, 0, 0, RustOperation.Update);
     rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
     rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
