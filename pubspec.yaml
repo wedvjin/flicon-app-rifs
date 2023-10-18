@@ -31,6 +31,7 @@ dependencies:
   flutter_arc_text: ^0.5.0
   wire: ^1.5.4
   keyboard_mouse_indicator: ^0.1.2
+  integer: ^2.0.1
 
 dev_dependencies:
   flutter_test:
