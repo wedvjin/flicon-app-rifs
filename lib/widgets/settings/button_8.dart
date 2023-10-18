@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:integer/integer.dart';
 
 
 class Button8 extends StatefulWidget {
@@ -100,8 +101,8 @@ class _Button8State extends State<Button8> {
         
           },
         )),
-        Text("${widget.data.rx} ${widget.data.rxMax} ${widget.data.rxMin}"),
-        Text("${widget.data.ry} ${widget.data.ryMax} ${widget.data.ryMin}"),
+        Text("${widget.data.rx.u_16} ${widget.data.rxMax.u_16} ${widget.data.rxMin.u_16}"),
+        Text("${widget.data.ry.u_16} ${widget.data.ryMax.u_16} ${widget.data.ryMin.u_16}"),
         if(_showCalibation) 
           Column(
             children: [

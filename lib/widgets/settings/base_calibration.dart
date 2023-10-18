@@ -94,7 +94,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
         const Text('Base'),
         Text("${(widget.data.y).u_16} (min: ${widget.data.yMin.u_16} max: ${widget.data.yMax.u_16})"),
         Text("${widget.data.x} (min: ${widget.data.xMin} max: ${widget.data.xMax})"),
-        Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
+        Text("Dead zone: ${widget.data.zDeadZone.u_16}, center: ${widget.data.zCentr.u_16}, avg: ${widget.data.zAveraging.u_16}"),
         
    
         Padding(
