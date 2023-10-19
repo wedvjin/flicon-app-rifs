@@ -44,6 +44,9 @@ class _SettingPageState extends State<SettingPage> {
   final int max = 10;
   bool _flip = false;
 
+  double realX = 0;
+  double realY = 0;
+
   void setControlButton(int buttonID) {
     setState(() {
       if(_controlButton == buttonID) {
@@ -59,38 +62,76 @@ class _SettingPageState extends State<SettingPage> {
       double x = details.globalPosition.dx;
       double y = details.globalPosition.dy;
 
-      if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
-        setControlButton(1);
-      } else if(((x >136 && y > 176) && (x<162 && y<207))) {
-        setControlButton(2);
-      } else if(((x >152 && y > 222) && (x<163 && y<238))) {
-        setControlButton(3);
-      } else if(((x >175 && y > 186) && (x<197 && y<206))) {
-        setControlButton(4);
-      } else if(((x >183 && y > 139) && (x<208 && y<170))) {
-        setControlButton(5);
-      } else if(((x >153 && y > 143) && (x<171 && y<166))) {
-        setControlButton(6);
-      } else if(((x >243 && y > 168) && (x<268 && y<240))) {
-        setControlButton(7);
-      } else if(((x >535 && y > 389) && (x<556 && y<413))) {
-        setControlButton(8);
-      } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
-        setControlButton(9);
-      } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
-        setControlButton(10);
-      } else if(((x > 191 && y > 269) && (x<209 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
-        setControlButton(11);
-      } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
-        setControlButton(12);
-      } else if(((x >313 && y > 401) && (x<352 && y<435))) {
-        setControlButton(13);
-      } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
-        setControlButton(14);
-      } else if(((x >385 && y > 270) && (x<455 && y<297))) {
-        setControlButton(898);
-      } else {
-        setControlButton(0);
+      if(controller == 'right') {
+        if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
+          setControlButton(1);
+        } else if(((x >136 && y > 176) && (x<162 && y<207))) {
+          setControlButton(2);
+        } else if(((x >152 && y > 222) && (x<163 && y<238))) {
+          setControlButton(3);
+        } else if(((x >175 && y > 186) && (x<197 && y<206))) {
+          setControlButton(4);
+        } else if(((x >183 && y > 139) && (x<208 && y<170))) {
+          setControlButton(5);
+        } else if(((x >153 && y > 143) && (x<171 && y<166))) {
+          setControlButton(6);
+        } else if(((x >243 && y > 168) && (x<268 && y<240))) {
+          setControlButton(7);
+        } else if(((x >535 && y > 389) && (x<556 && y<413))) {
+          setControlButton(8);
+        } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
+          setControlButton(9);
+        } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
+          setControlButton(10);
+        } else if(((x > 191 && y > 269) && (x<209 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
+          setControlButton(11);
+        } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
+          setControlButton(12);
+        } else if(((x >291 && y > 404) && (x<372 && y<472))) {
+          setControlButton(13);
+        } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
+          setControlButton(14);
+        } else if(((x >385 && y > 270) && (x<455 && y<297))) {
+          setControlButton(898);
+        } else {
+          setControlButton(0);
+        }
+      }
+
+      if(controller == 'left') {
+        if(((x > 199 && y > 173) && (x<229 && y<205)) || ((x>448 && y>175) && (x<476 && y<202))) {
+          setControlButton(1);
+        } else if(((x >484 && y > 190) && (x<509 && y<215))) {
+          setControlButton(2);
+        } else if(((x >499 && y > 230) && (x<510 && y<247))) {
+          setControlButton(3);
+        } else if(((x >520 && y > 196) && (x<528 && y<218))) {
+          setControlButton(4);
+        } else if(((x >527 && y > 156) && (x<549 && y<183))) {
+          setControlButton(5);
+        } else if(((x >498 && y > 159) && (x<515 && y<179))) {
+          setControlButton(6);
+        } else if(((x >581 && y > 179) && (x<603 && y<249))) {
+          setControlButton(7);
+        } else if(((x >184 && y > 413) && (x<210 && y<441))) {
+          setControlButton(8);
+        } else if(((x > 70 && y > 391) && (x<143 && y<494)) || ((x>526 && y>341) && (x<562 && y<426))) {
+          setControlButton(9);
+        } else if(((x > 215 && y > 290) && (x<251 && y<317)) || ((x>433 && y>275) && (x<455 && y<286))) {
+          setControlButton(10);
+        } else if(((x > 101 && y > 296) && (x<156 && y<330)) || ((x>536 && y>271) && (x<546 && y<306))) {
+          setControlButton(11);
+        } else if(((x > 37 && y > 326) && (x<78 && y<366)) || ((x>554 && y>274) && (x<590 && y<317))) {
+          setControlButton(12);
+        } else if(((x >291 && y > 404) && (x<372 && y<472))) {
+          setControlButton(13);
+        } else if(((x >165 && y > 499) && (x<234 && y<536)) || ((x>454 && y>481) && (x<514 && y< 517))) {
+          setControlButton(14);
+        } else if(((x >26 && y > 292) && (x<97 && y<313))) {
+          setControlButton(898);
+        } else {
+          setControlButton(0);
+        }
       }
     });
   }
@@ -100,6 +141,9 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       double x = details.position.dx;
       double y = details.position.dy;
+
+      realX = details.position.dx;
+      realY = details.position.dy;
 
       if(controller == 'right') {
         if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
@@ -126,7 +170,7 @@ class _SettingPageState extends State<SettingPage> {
           _showButton = 11;
         } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
           _showButton = 12;
-        } else if(((x >313 && y > 401) && (x<352 && y<435))) {
+        } else if(((x >291 && y > 404) && (x<372 && y<472))) {
           _showButton = 13;
         } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
           _showButton = 14;
@@ -141,9 +185,55 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
+      if(controller == 'left') {
+        if(((x > 199 && y > 173) && (x<229 && y<205)) || ((x>448 && y>175) && (x<476 && y<202))) {
+          _showButton = 1;
+        } else if(((x >484 && y > 190) && (x<509 && y<215))) {
+          _showButton = 2;
+        } else if(((x >484 && y > 190) && (x<509 && y<215))) {
+          _showButton = 2;
+        } else if(((x >499 && y > 230) && (x<510 && y<247))) {
+          _showButton = 3;
+        } else if(((x >520 && y > 196) && (x<528 && y<218))) {
+          _showButton = 4;
+        } else if(((x >527 && y > 156) && (x<549 && y<183))) {
+          _showButton = 5;
+        } else if(((x >498 && y > 159) && (x<515 && y<179))) {
+          _showButton = 6;
+        } else if(((x >581 && y > 179) && (x<603 && y<249))) {
+          _showButton = 7;
+        } else if(((x >184 && y > 413) && (x<210 && y<441))) {
+          _showButton = 8;
+        } else if(((x > 70 && y > 391) && (x<143 && y<494)) || ((x>526 && y>341) && (x<562 && y<426))) {
+          _showButton = 9;
+        } else if(((x > 215 && y > 290) && (x<251 && y<317)) || ((x>433 && y>275) && (x<455 && y<286))) {
+          _showButton = 10;
+        } else if(((x > 101 && y > 296) && (x<156 && y<330)) || ((x>536 && y>271) && (x<546 && y<306))) {
+          _showButton = 11;
+        } else if(((x > 37 && y > 326) && (x<78 && y<366)) || ((x>554 && y>274) && (x<590 && y<317))) {
+          _showButton = 12;
+        } else if(((x >291 && y > 404) && (x<372 && y<472))) {
+          _showButton = 13;
+        } else if(((x >165 && y > 499) && (x<234 && y<536)) || ((x>454 && y>481) && (x<514 && y< 517))) {
+          _showButton = 14;
+        } else if(((x >26 && y > 292) && (x<97 && y<313))) {
+          _showButton = 898;
+        } else {
+          _showButton = 0;
+          cursor = SystemMouseCursors.basic;
+        }
+
+        if(_showButton != 0) {
+          cursor = SystemMouseCursors.click;
+        }
+      }
+
+
     });
   }
   
+  int mask = 64;
+
 
   
   @override
@@ -188,43 +278,39 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
-                                        if(_flip) 
-                                          Positioned(
-                                            child: Image.asset('assets/controller-flipped.png', width: 595, height: 464),
-                                          ),
-                                        if(!_flip) 
-                                          Positioned(
-                                            child: Image.asset('assets/controllers_and_base.png', width: 595, height: 464),
-                                          ),
+                                        Positioned(
+                                          child: Image.asset('assets/${controller}/controllers_and_base.png', width: 595, height: 464),
+                                        ),
                                         Positioned(
                                           child: Image.asset('assets/${controller}/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),
                                         ),
 
                                         // leds
-                                        Positioned(
-                                          child: Opacity(
-                                            opacity: 1, 
-                                            child: Image.asset('assets/$controller/led-w.png', width: 595, height: 464)
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
+                                          Positioned(
+                                            child: Opacity(
+                                              opacity: 1, 
+                                              child: Image.asset('assets/$controller/led-w.png', width: 595, height: 464)
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          child: Opacity(
-                                            opacity: data.ledR * 100 / 255 * 0.01, 
-                                            child: Image.asset('assets/$controller/led-r.png', width: 595, height: 464)
+                                          Positioned(
+                                            child: Opacity(
+                                              opacity: data.ledR * 100 / 255 * 0.01, 
+                                              child: Image.asset('assets/$controller/led-r.png', width: 595, height: 464)
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          child: Opacity(
-                                            opacity: data.ledG * 100 / 255 * 0.01, 
-                                            child: Image.asset('assets/$controller/led-g.png', width: 595, height: 464)
+                                          Positioned(
+                                            child: Opacity(
+                                              opacity: data.ledG * 100 / 255 * 0.01, 
+                                              child: Image.asset('assets/$controller/led-g.png', width: 595, height: 464)
+                                            ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          child: Opacity(
-                                            opacity: data.ledB * 100 / 255 * 0.01, 
-                                            child: Image.asset('assets/$controller/led-b.png', width: 595, height: 464)
+                                          Positioned(
+                                            child: Opacity(
+                                              opacity: data.ledB * 100 / 255 * 0.01, 
+                                              child: Image.asset('assets/$controller/led-b.png', width: 595, height: 464)
+                                            ),
                                           ),
-                                        ),
                                         
                                         // active
                                         Positioned(
@@ -236,10 +322,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
 
-                                        Positioned(
-                                          top: 40,
-                                          child: Text('${data.buttons}'),
-                                        ),
+    
 
                                   
                                         Positioned(
@@ -253,9 +336,21 @@ class _SettingPageState extends State<SettingPage> {
 
                                               activeBgColor: [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
                                               activeFgColor: Colors.white,
-                                              changeOnTap: false,
+                                              //changeOnTap: false,
 
-                                              onToggle:(index) => {},
+                                              onToggle:(index) {
+                                                setState(() {
+                                                  if(index==0) {
+                                                    controller = 'left';
+                                                  } else {
+                                                    controller = 'right';
+                                                  }
+                                                  if(index != null) {
+                                                    initialController = index;
+                                                  }
+
+                                                });
+                                              },
 
                                               labels: ['Left', 'Right'],
                                  
@@ -280,7 +375,6 @@ class _SettingPageState extends State<SettingPage> {
                           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                           child: ListView(
                             children: [
-                              Text("${_showButton} ${_controlButton}"),
                               Column(children: [
                                 Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                   Expanded(
