@@ -16,7 +16,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/settings',
     routes: [
       GoRoute(
         path: '/main',
@@ -165,8 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
                
                   return Column(
                     children: [
-                      Text("${dd.rx} ${dd.x} ${dd.y}"),
+                      //Text("${dd.rx} ${dd.x} ${dd.y}"),
                       Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
+                      Text("${dd.controlByte}"),
                       // Text("1: ${byteData.getUint8(1)}"),
                       // Text("2: ${byteData.getUint16(2)}"),
                       // Text("3: ${byteData.getUint16(3)}"),

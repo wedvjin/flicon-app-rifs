@@ -32,6 +32,7 @@ dependencies:
   wire: ^1.5.4
   keyboard_mouse_indicator: ^0.1.2
   integer: ^2.0.1
+  blur: ^3.1.0
 
 dev_dependencies:
   flutter_test:

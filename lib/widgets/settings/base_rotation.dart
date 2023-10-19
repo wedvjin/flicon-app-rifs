@@ -28,7 +28,7 @@ class _BaseRotationState extends State<BaseRotation> {
   @override
   Widget build(BuildContext context) {
 
-    double rotationAngle = (widget.data.z * 100 /widget.data.zMin) - 50;
+    double rotationAngle = (widget.data.z * 100 / 32768) - 50;
 
     
     return Column(
@@ -127,35 +127,7 @@ class _BaseRotationState extends State<BaseRotation> {
             ],
           ),
         ),
-        
-        const Text('Rotation'),
-        Text("${widget.data.z} (min: ${widget.data.zMin} max: ${widget.data.zMax})"),
-        Text("Dead zone: ${widget.data.zDeadZone}, center: ${widget.data.zCentr}, avg: ${widget.data.zAveraging}"),
-        Text("_roration : ${(widget.data.z * 100 /widget.data.zMin) - 50}"),
-        Text("rotationAngle: ${rotationAngle / 100}"),
-        Text("flip : ${(rotationAngle - 0.5) < 0}"),
-        // Slider(
-        //   value: _rotationValue,
-        //   min: -0.35,
-        //   max: 0.35,
-        //   divisions: 100,
-        //   label: _rotationValue.toString(),
-        //   onChanged: (double value) {
-        //     setState(() {
-        //       _rotationValue = value;
-        //       if(value < 0) {
-        //         _negativeValue = true;
-        //         _realRotationValue = value.abs();
-        //       } else {
-        //         _negativeValue = false;
-        //         _realRotationValue = value;
-        //       }
-            
-        //     });
-        //   },
-        // ),
       
-        
         Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: ElevatedButton(

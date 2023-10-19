@@ -1,9 +1,10 @@
 
 import 'dart:async';
 
+import 'package:blur/blur.dart';
 import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/base_rotation.dart';
-import 'package:flicon/widgets/settings/button_8.dart';
+import 'package:flicon/widgets/settings/button_1.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
 
   late final KeyboardIndicatorController mouseController = KeyboardIndicatorController();
+  Offset? _tapPosition;
 
   String profileListValue = profiles.first;
   HSVColor color = HSVColor.fromColor(Colors.blue);
@@ -44,91 +46,96 @@ class _SettingPageState extends State<SettingPage> {
   final int max = 10;
   bool _flip = false;
 
+  void setControlButton(int buttonID) {
+    setState(() {
+      if(_controlButton == buttonID) {
+        _controlButton = 0;
+      } else {
+        _controlButton = buttonID;
+      }
+    });
+  }
 
-  double x = 0.0;
-  double y = 0.0;
+  void clickPostion(TapDownDetails details) async {
+    final tapPosition = details.globalPosition;
+    setState(() {
+      double x = details.globalPosition.dx;
+      double y = details.globalPosition.dy;
 
-
+      if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
+        setControlButton(1);
+      } else if(((x >136 && y > 176) && (x<162 && y<207))) {
+        setControlButton(2);
+      } else if(((x >152 && y > 222) && (x<163 && y<238))) {
+        setControlButton(3);
+      } else if(((x >175 && y > 186) && (x<197 && y<206))) {
+        setControlButton(4);
+      } else if(((x >183 && y > 139) && (x<208 && y<170))) {
+        setControlButton(5);
+      } else if(((x >153 && y > 143) && (x<171 && y<166))) {
+        setControlButton(6);
+      } else if(((x >243 && y > 168) && (x<268 && y<240))) {
+        setControlButton(7);
+      } else if(((x >535 && y > 389) && (x<556 && y<413))) {
+        setControlButton(8);
+      } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
+        setControlButton(9);
+      } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
+        setControlButton(10);
+      } else if(((x > 191 && y > 269) && (x<209 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
+        setControlButton(11);
+      } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
+        setControlButton(12);
+      } else if(((x >313 && y > 401) && (x<352 && y<435))) {
+        setControlButton(13);
+      } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
+        setControlButton(14);
+      } else if(((x >385 && y > 270) && (x<455 && y<297))) {
+        setControlButton(898);
+      } else {
+        setControlButton(0);
+      }
+    });
+  }
 
 
   void _updateLocation(PointerEvent details) {
     setState(() {
-      x = details.position.dx;
-      y = details.position.dy;
-
+      double x = details.position.dx;
+      double y = details.position.dy;
 
       if(controller == 'right') {
+        print(_tapPosition);
         if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
-          _showButton = 8;
-          if(_clicked) {
-            _controlButton = 8;
-          }
-        } else if(((x >535 && y > 389) && (x<556 && y<413))) {
           _showButton = 1;
-          if(_clicked) {
-            _controlButton = 1;
-          }
-        } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
-          _showButton = 3;
-          if(_clicked) {
-            _controlButton = 3;
-          }
-        } else if(((x >243 && y > 168) && (x<268 && y<240))) {
-          _showButton = 4;
-          if(_clicked) {
-            _controlButton = 4;
-          }
-        } else if(((x >152 && y > 222) && (x<163 && y<238))) {
-          _showButton = 5;
-          if(_clicked) {
-            _controlButton = 5;
-          }
-        } else if(((x > 193 && y > 269) && (x<200 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
-          _showButton = 6;
-          if(_clicked) {
-            _controlButton = 6;
-          }
-        } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
-          _showButton = 7;
-          if(_clicked) {
-            _controlButton = 7;
-          }
-        } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
-          _showButton = 9;
-          if(_clicked) {
-            _controlButton = 9;
-          }
-        } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
-          _showButton = 10;
-          if(_clicked) {
-            _controlButton = 10;
-          }
         } else if(((x >136 && y > 176) && (x<162 && y<207))) {
-          _showButton = 11;
-          if(_clicked) {
-            _controlButton = 11;
-          }
+          _showButton = 2;
+        } else if(((x >152 && y > 222) && (x<163 && y<238))) {
+          _showButton = 3;
+        } else if(((x >175 && y > 186) && (x<197 && y<206))) {
+          _showButton = 4;
         } else if(((x >183 && y > 139) && (x<208 && y<170))) {
+          _showButton = 5;
+        } else if(((x >153 && y > 143) && (x<171 && y<166))) {
+          _showButton = 6;
+        } else if(((x >243 && y > 168) && (x<268 && y<240))) {
+          _showButton = 7;
+        } else if(((x >535 && y > 389) && (x<556 && y<413))) {
+          _showButton = 8;
+        } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
+          _showButton = 9;
+        } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
+          _showButton = 10;
+        } else if(((x > 191 && y > 269) && (x<209 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
+          _showButton = 11;
+        } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
           _showButton = 12;
-          if(_clicked) {
-            _controlButton = 12;
-          }
         } else if(((x >313 && y > 401) && (x<352 && y<435))) {
           _showButton = 13;
-          if(_clicked) {
-            _controlButton = 13;
-          }
-        } else if(((x >153 && y > 143) && (x<171 && y<166))) {
-          _showButton = 2;
-          if(_clicked) {
-            _controlButton = 2;
-          }
+        } else if(((x > 100 && y > 499) && (x<169 && y<539)) || ((x>518 && y>469) && (x<579 && y<505))) {
+          _showButton = 14;
         } else if(((x >385 && y > 270) && (x<455 && y<297))) {
           _showButton = 898;
-          if(_clicked) {
-            _controlButton = 898;
-          }
-
         } else {
           _showButton = 0;
           cursor = SystemMouseCursors.basic;
@@ -185,67 +192,98 @@ class _SettingPageState extends State<SettingPage> {
                                 });
                               });
                             },
-                            child : MouseRegion(
-                            onHover: _updateLocation,
-                            cursor: cursor,
-                            child: Stack(
-                                fit: StackFit.expand,
-                                alignment: Alignment.center, 
-                                children: [
-                                  if(_flip) 
-                                    Positioned(
-                                      child: Image.asset('assets/controller-flipped.png', width: 595, height: 464),
-                                    ),
-                                  if(!_flip) 
-                                    Positioned(
-                                      child: Image.asset('assets/controllers_and_base.png', width: 595, height: 464),
-                                    ),
-                                  Positioned(
-                                    child: Image.asset('assets/${controller}/btn-${_showButton.toString()}-active.png', width: 595, height: 464),
-                                  ),
-                                  Positioned(
-                                    child: Image.asset('assets/${controller}/btn-${_controlButton.toString()}-active.png', width: 595, height: 464),
-                                  ),
-                                  Positioned(
-                                    top: 40,
-                                    child: Text('${data.buttons}'),
-                                  ),
-                                  Positioned(top: 20,child: Text('$x $y')),
-                                  Positioned(
-                                    bottom: 20,
-                                    child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
-                                      ToggleSwitch(
-                                        initialLabelIndex: initialController,
-                                        totalSwitches: 2,
-                                        inactiveBgColor: Color.fromRGBO(44, 44, 44, 1),
-                                        inactiveFgColor: Colors.grey,
+                            child : GestureDetector(
+                              onTapDown: (details) => clickPostion(details),
+                              child:  
+                                MouseRegion(
+                                  onHover: _updateLocation,
+                                  cursor: cursor,
+                                  child: Stack(
+                                      fit: StackFit.expand,
+                                      alignment: Alignment.center, 
+                                      children: [
+                                        if(_flip) 
+                                          Positioned(
+                                            child: Image.asset('assets/controller-flipped.png', width: 595, height: 464),
+                                          ),
+                                        if(!_flip) 
+                                          Positioned(
+                                            child: Image.asset('assets/controllers_and_base.png', width: 595, height: 464),
+                                          ),
+                                        Positioned(
+                                          child: Image.asset('assets/${controller}/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),
+                                        ),
 
-                                        activeBgColor: [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
-                                        activeFgColor: Colors.white,
+                                        // leds
+                                        Positioned(
+                                          child: Opacity(
+                                            opacity: 1, 
+                                            child: Image.asset('assets/$controller/led-w.png', width: 595, height: 464)
+                                          ),
+                                        ),
+                                        Positioned(
+                                          child: Opacity(
+                                            opacity: data.ledR * 100 / 255 * 0.01, 
+                                            child: Image.asset('assets/$controller/led-r.png', width: 595, height: 464)
+                                          ),
+                                        ),
+                                        Positioned(
+                                          child: Opacity(
+                                            opacity: data.ledG * 100 / 255 * 0.01, 
+                                            child: Image.asset('assets/$controller/led-g.png', width: 595, height: 464)
+                                          ),
+                                        ),
+                                        Positioned(
+                                          child: Opacity(
+                                            opacity: data.ledB * 100 / 255 * 0.01, 
+                                            child: Image.asset('assets/$controller/led-b.png', width: 595, height: 464)
+                                          ),
+                                        ),
+                                        
+                                        // active
+                                        Positioned(
+                                          child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 595, height: 464)),
+                                        ),
+                                        if(_controlButton != 0) 
+                                          Positioned(
+                                            child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
+                                          ),
 
-                                        labels: ['Left', 'Right'],
-                                        onToggle: (index) {
-                                          if(index == 0) {
-                                            setState(() {
-                                              initialController = index!;
-                                              _flip = true;
-                                              controller = 'left';
-                                            });
-                                          } else {
-                                            setState(() {
-                                              initialController = index!;
-                                              _flip = false;
-                                              controller = 'right';
-                                            });
-                                          }
-                                        },
-                                  ),
-                                ),
 
-                                ]
-                              )
-                            
+                                        Positioned(
+                                          top: 40,
+                                          child: Text('${data.buttons}'),
+                                        ),
+
+                                        Positioned(
+                                          top: 60,
+                                          child: Text('${data.ledR * 100 / 255 * 0.01} / ${data.ledG * 100 / 255 * 0.01} / ${data.ledB * 100 / 255 * 0.01}'),
+                                        ),
+                                        Positioned(
+                                          bottom: 20,
+                                          child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
+                                            ToggleSwitch(
+                                              initialLabelIndex: initialController,
+                                              totalSwitches: 2,
+                                              inactiveBgColor: Color.fromRGBO(44, 44, 44, 1),
+                                              inactiveFgColor: Colors.grey,
+
+                                              activeBgColor: [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
+                                              activeFgColor: Colors.white,
+                                              changeOnTap: false,
+
+                                              onToggle:(index) => {},
+
+                                              labels: ['Left', 'Right'],
+                                 
+                                        ),
+                                      ),
+
+                                      ]
+                                    )
+                                  
                           )
+                            ),
                           )
                         )
                       )
@@ -329,14 +367,15 @@ class _SettingPageState extends State<SettingPage> {
                                   endIndent: 0,
                                   color: Colors.black12,
                                 ),
-                                if(_showButton == 7)
-                                  BaseRotation(data: data),
-                                if(_showButton == 8)
-                                  Button8(data: data),
-                                if(_showButton == 13)
+                                if(_controlButton == 1)
+                                  Button1(data: data),
+                                if(_controlButton == 13)
                                   JoystickCalibartion(data: data),
-                                if(_showButton == 898)
+                                if(_controlButton == 14)
+                                  BaseRotation(data: data),
+                                if(_controlButton == 898)
                                   LedColorPicker(data: data)
+
                               ])
                             ],
                           )
