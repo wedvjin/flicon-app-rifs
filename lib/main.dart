@@ -122,9 +122,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void apply() {
     final c = color.toColor();
+    rust_request('discalibratehandle', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('discalibratebase', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
     rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
     rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
     rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+  }
+
+  void toggleLR() {
+    rust_request('discalibratehandle', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('discalibratebase', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('togglelr', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
@@ -177,6 +190,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: apply, 
               child: const Text("Apply")
+            ),
+            ElevatedButton(
+              onPressed: toggleLR, 
+              child: const Text("Toggle L/R")
             ),
             ElevatedButton(
               onPressed: () => {

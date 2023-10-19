@@ -77,8 +77,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
             ),
             Positioned(
-              bottom: 150 / 2 - 15 + (((widget.data.y * 100 / widget.data.xMax) - 50)),
-              left: 150 / 2 - 15 + (((widget.data.x * 100 / widget.data.xMax) - 50)),
+              bottom: 150 / 2 - 15 + (((widget.data.y * 100 / 32768) - 50)),
+              left: 150 / 2 - 15 + (((widget.data.x * 100 / 32768) - 50)),
               child: Container(
                 width: 30,
                 height: 30,
@@ -88,12 +88,26 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 ),
               ),
             ),
+            Positioned(
+              bottom: 150 / 2 - 5 + (((widget.data.yAxis * 100 / 32768) - 50)),
+              left: 150 / 2 - 5 + (((widget.data.xAxis * 100 / 32768) - 50)),
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(51, 255, 0, 1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
           ],
         ),
 
         const Text('Base'),
-        Text("${(widget.data.y).u_16} (min: ${widget.data.yMin.u_16} max: ${widget.data.yMax.u_16})"),
-        Text("${widget.data.x} (min: ${widget.data.xMin} max: ${widget.data.xMax})"),
+          Text("${widget.data.xAxis} / ${widget.data.yAxis}"),
+
+        Text("${widget.data.y} (min: ${widget.data.yMin.i_16} max: ${widget.data.yMax.i_16})"),
+        Text("${widget.data.x} (min: ${widget.data.xMin.i_16} max: ${widget.data.xMax.i_16})"),
         Text("Dead zone: ${widget.data.zDeadZone.u_16}, center: ${widget.data.zCentr.u_16}, avg: ${widget.data.zAveraging.u_16}"),
         
    
