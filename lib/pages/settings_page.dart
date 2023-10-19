@@ -2,11 +2,13 @@
 import 'dart:async';
 
 import 'package:blur/blur.dart';
+import 'package:flicon/pages/search_page.dart';
 import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/base_rotation.dart';
 import 'package:flicon/widgets/settings/button_1.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
@@ -248,7 +250,8 @@ class _SettingPageState extends State<SettingPage> {
             builder: (context, snapshot) {
               final rustSignal = snapshot.data;
               if (rustSignal == null) {
-                return Text("No reportMessage stream");
+                return const Search();
+                //return Text("No reportMessage stream");
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
               
