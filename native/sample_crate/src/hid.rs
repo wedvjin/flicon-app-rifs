@@ -126,42 +126,40 @@ impl DeviceState {
             ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
             ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
             rz_min: u16::from_le_bytes(buf[41..43].try_into().unwrap()),
-            _rz_centr: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
-            rz_max: u16::from_le_bytes(buf[45..47].try_into().unwrap()),
-            rz_averaging: u8::from_le_bytes(buf[47..48].try_into().unwrap()),
-            rz_dead_zone: u8::from_le_bytes(buf[48..49].try_into().unwrap()),
-            slider_min: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
-            slider_max: u16::from_le_bytes(buf[51..53].try_into().unwrap()),
-            slider_averaging: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
-            slider_dead_zone: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
-            encoder_time: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
-            led_r: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
-            led_g: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
-            led_b: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
-            hatka1_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
-            hatka2_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
-            hatka3_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
-            hatka4_mode: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-            control_byte: u8::from_le_bytes(buf[63..64].try_into().unwrap()),
-            gash_button1_min: u16::from_le_bytes(buf[64..66].try_into().unwrap()),
-            gash_button1_max: u16::from_le_bytes(buf[66..68].try_into().unwrap()),
-            gash_button2_min: u16::from_le_bytes(buf[68..70].try_into().unwrap()),
-            gash_button2_max: u16::from_le_bytes(buf[70..72].try_into().unwrap()),
-            gash_button3_min: u16::from_le_bytes(buf[72..74].try_into().unwrap()),
-            gash_button3_max: u16::from_le_bytes(buf[74..76].try_into().unwrap()),
-            spi_error_cnt: u8::from_le_bytes(buf[76..77].try_into().unwrap()),
-            //below are real values received
-            buttons: to_u64_from_6_bytes(buf[77..83].try_into().unwrap()),
-            x_axis: u16::from_le_bytes(buf[83..85].try_into().unwrap()),
-            y_axis: u16::from_le_bytes(buf[85..87].try_into().unwrap()),
-            z_axis: u16::from_le_bytes(buf[87..89].try_into().unwrap()),
-            rx_axis: u16::from_le_bytes(buf[89..91].try_into().unwrap()),
-            ry_axis: u16::from_le_bytes(buf[91..93].try_into().unwrap()),
-            rz_axis: u16::from_le_bytes(buf[93..95].try_into().unwrap()),
-            slider_axis: u16::from_le_bytes(buf[95..97].try_into().unwrap()),
-            fw_version: u16::from_le_bytes(buf[97..99].try_into().unwrap()),
+            rz_max: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
+            rz_averaging: u8::from_le_bytes(buf[45..46].try_into().unwrap()),
+            rz_dead_zone: u8::from_le_bytes(buf[46..47].try_into().unwrap()),
+            slider_min: u16::from_le_bytes(buf[47..49].try_into().unwrap()),
+            slider_max: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
+            slider_averaging: u8::from_le_bytes(buf[51..52].try_into().unwrap()),
+            slider_dead_zone: u8::from_le_bytes(buf[52..53].try_into().unwrap()),
+            encoder_time: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
+            led_r: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
+            led_g: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
+            led_b: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
+            id_grib: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
+            hatka1_mode: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
+            hatka2_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
+            hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
+            hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
+            control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
+            gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
+            gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
+            gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
+            gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
+            gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
+            gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
+            spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
+            buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
+            x_axis: u16::from_le_bytes(buf[82..84].try_into().unwrap()),
+            y_axis: u16::from_le_bytes(buf[84..86].try_into().unwrap()),
+            z_axis: u16::from_le_bytes(buf[86..88].try_into().unwrap()),
+            rx_axis: u16::from_le_bytes(buf[88..90].try_into().unwrap()),
+            ry_axis: u16::from_le_bytes(buf[90..92].try_into().unwrap()),
+            rz_axis: u16::from_le_bytes(buf[92..94].try_into().unwrap()),
+            slider_axis: u16::from_le_bytes(buf[94..96].try_into().unwrap()),
+            fw_version: u16::from_le_bytes(buf[96..98].try_into().unwrap()),
         };
-
 
         report_feature
     }
@@ -315,7 +313,7 @@ impl DeviceState {
 
     pub fn send_feature(&self) {
         let mut buf: [u8; 129] = [0; 129];
-        buf[0] = 2;
+        // buf[0] = 5;
         self.feature.to_bytes(&mut buf);
         self.device.send_feature_report(&buf).unwrap();
     }
@@ -458,7 +456,6 @@ pub struct ReportFeature {
     pub ry_averaging: u8,
     pub ry_dead_zone: u8,
     pub rz_min: u16,
-    pub _rz_centr: u16,
     pub rz_max: u16,
     pub rz_averaging: u8,
     pub rz_dead_zone: u8,
@@ -470,6 +467,7 @@ pub struct ReportFeature {
     pub led_r: u8,
     pub led_g: u8,
     pub led_b: u8,
+    pub id_grib: u8,
     pub hatka1_mode: u8,
     pub hatka2_mode: u8,
     pub hatka3_mode: u8,
@@ -496,7 +494,7 @@ pub struct ReportFeature {
 
 impl Default for ReportFeature {
     fn default() -> ReportFeature {
-        ReportFeature { id: 0, x_min: 0, _x_centr: 0, x_max: 0, x_averaging: 0, x_dead_zone: 0, y_min: 0, _y_centr: 0, y_max: 0, y_averaging: 0, y_dead_zone: 0, z_min: 0, _z_centr: 0, z_max: 0, z_averaging: 0, z_dead_zone: 0, rx_min: 0, _rx_centr: 0, rx_max: 0, rx_averaging: 0, rx_dead_zone: 0, ry_min: 0, _ry_centr: 0, ry_max: 0, ry_averaging: 0, ry_dead_zone: 0, rz_min: 0, _rz_centr: 0, rz_max: 0, rz_averaging: 0, rz_dead_zone: 0, slider_min: 0, slider_max: 0, slider_averaging: 0, slider_dead_zone: 0, encoder_time: 0, led_r: 0, led_g: 0, led_b: 0, hatka1_mode: 0, hatka2_mode: 0, hatka3_mode: 0, hatka4_mode: 0, control_byte: 0, gash_button1_min: 0, gash_button1_max: 0, gash_button2_min: 0, gash_button2_max: 0, gash_button3_min: 0, gash_button3_max: 0, spi_error_cnt: 0, buttons: 0, x_axis: 0, y_axis: 0, z_axis: 0, rx_axis: 0, ry_axis: 0, rz_axis: 0, slider_axis: 0, fw_version: 0 }
+        ReportFeature { id: 0, x_min: 0, _x_centr: 0, x_max: 0, x_averaging: 0, x_dead_zone: 0, y_min: 0, _y_centr: 0, y_max: 0, y_averaging: 0, y_dead_zone: 0, z_min: 0, _z_centr: 0, z_max: 0, z_averaging: 0, z_dead_zone: 0, rx_min: 0, _rx_centr: 0, rx_max: 0, rx_averaging: 0, rx_dead_zone: 0, ry_min: 0, _ry_centr: 0, ry_max: 0, ry_averaging: 0, ry_dead_zone: 0, rz_min: 0, rz_max: 0, rz_averaging: 0, rz_dead_zone: 0, slider_min: 0, slider_max: 0, slider_averaging: 0, slider_dead_zone: 0, encoder_time: 0, led_r: 0, led_g: 0, led_b: 0, id_grib: 0, hatka1_mode: 0, hatka2_mode: 0, hatka3_mode: 0, hatka4_mode: 0, control_byte: 0, gash_button1_min: 0, gash_button1_max: 0, gash_button2_min: 0, gash_button2_max: 0, gash_button3_min: 0, gash_button3_max: 0, spi_error_cnt: 0, buttons: 0, x_axis: 0, y_axis: 0, z_axis: 0, rx_axis: 0, ry_axis: 0, rz_axis: 0, slider_axis: 0, fw_version: 0 }
     }
 }
 
@@ -529,40 +527,40 @@ impl ReportFeature {
         buf[39..40].copy_from_slice(&to_bytes_from_u8(self.ry_averaging));
         buf[40..41].copy_from_slice(&to_bytes_from_u8(self.ry_dead_zone));
         buf[41..43].copy_from_slice(&to_bytes_from_u16(self.rz_min));
-        buf[43..45].copy_from_slice(&to_bytes_from_u16(self._rz_centr));
-        buf[45..47].copy_from_slice(&to_bytes_from_u16(self.rz_max));
-        buf[47..48].copy_from_slice(&to_bytes_from_u8(self.rz_averaging));
-        buf[48..49].copy_from_slice(&to_bytes_from_u8(self.rz_dead_zone));
-        buf[49..51].copy_from_slice(&to_bytes_from_u16(self.slider_min));
-        buf[51..53].copy_from_slice(&to_bytes_from_u16(self.slider_max));
-        buf[53..54].copy_from_slice(&to_bytes_from_u8(self.slider_averaging));
-        buf[54..55].copy_from_slice(&to_bytes_from_u8(self.slider_dead_zone));
-        buf[55..56].copy_from_slice(&to_bytes_from_u8(self.encoder_time));
-        buf[56..57].copy_from_slice(&to_bytes_from_u8(self.led_r));
-        buf[57..58].copy_from_slice(&to_bytes_from_u8(self.led_g));
-        buf[58..59].copy_from_slice(&to_bytes_from_u8(self.led_b));
-        buf[59..60].copy_from_slice(&to_bytes_from_u8(self.hatka1_mode));
-        buf[60..61].copy_from_slice(&to_bytes_from_u8(self.hatka2_mode));
-        buf[61..62].copy_from_slice(&to_bytes_from_u8(self.hatka3_mode));
-        buf[62..63].copy_from_slice(&to_bytes_from_u8(self.hatka4_mode));
-        buf[63..64].copy_from_slice(&to_bytes_from_u8(self.control_byte));
-        buf[64..66].copy_from_slice(&to_bytes_from_u16(self.gash_button1_min));
-        buf[66..68].copy_from_slice(&to_bytes_from_u16(self.gash_button1_max));
-        buf[68..70].copy_from_slice(&to_bytes_from_u16(self.gash_button2_min));
-        buf[70..72].copy_from_slice(&to_bytes_from_u16(self.gash_button2_max));
-        buf[72..74].copy_from_slice(&to_bytes_from_u16(self.gash_button3_min));
-        buf[74..76].copy_from_slice(&to_bytes_from_u16(self.gash_button3_max));
-        buf[76..77].copy_from_slice(&to_bytes_from_u8(self.spi_error_cnt));
-        buf[77..83].copy_from_slice(&to_bytes_from_u64(self.buttons));
-        buf[83..85].copy_from_slice(&to_bytes_from_u16(self.x_axis));
-        buf[85..87].copy_from_slice(&to_bytes_from_u16(self.y_axis));
-        buf[87..89].copy_from_slice(&to_bytes_from_u16(self.z_axis));
-        buf[89..91].copy_from_slice(&to_bytes_from_u16(self.rx_axis));
-        buf[91..93].copy_from_slice(&to_bytes_from_u16(self.ry_axis));
-        buf[93..95].copy_from_slice(&to_bytes_from_u16(self.rz_axis));
-        buf[95..97].copy_from_slice(&to_bytes_from_u16(self.slider_axis));
-        buf[97..99].copy_from_slice(&to_bytes_from_u16(self.fw_version));
-        
+
+        buf[43..45].copy_from_slice(&to_bytes_from_u16(self.rz_max));
+        buf[45..46].copy_from_slice(&to_bytes_from_u8(self.rz_averaging));
+        buf[46..47].copy_from_slice(&to_bytes_from_u8(self.rz_dead_zone));
+        buf[47..49].copy_from_slice(&to_bytes_from_u16(self.slider_min));
+        buf[49..51].copy_from_slice(&to_bytes_from_u16(self.slider_max));
+        buf[51..52].copy_from_slice(&to_bytes_from_u8(self.slider_averaging));
+        buf[52..53].copy_from_slice(&to_bytes_from_u8(self.slider_dead_zone));
+        buf[53..54].copy_from_slice(&to_bytes_from_u8(self.encoder_time));
+        buf[54..55].copy_from_slice(&to_bytes_from_u8(self.led_r));
+        buf[55..56].copy_from_slice(&to_bytes_from_u8(self.led_g));
+        buf[56..57].copy_from_slice(&to_bytes_from_u8(self.led_b));
+        buf[57..58].copy_from_slice(&to_bytes_from_u8(self.id_grib));
+        buf[58..59].copy_from_slice(&to_bytes_from_u8(self.hatka1_mode));
+        buf[59..60].copy_from_slice(&to_bytes_from_u8(self.hatka2_mode));
+        buf[60..61].copy_from_slice(&to_bytes_from_u8(self.hatka3_mode));
+        buf[61..62].copy_from_slice(&to_bytes_from_u8(self.hatka4_mode));
+        buf[62..63].copy_from_slice(&to_bytes_from_u8(self.control_byte));
+        buf[63..65].copy_from_slice(&to_bytes_from_u16(self.gash_button1_min));
+        buf[65..67].copy_from_slice(&to_bytes_from_u16(self.gash_button1_max));
+        buf[67..69].copy_from_slice(&to_bytes_from_u16(self.gash_button2_min));
+        buf[69..71].copy_from_slice(&to_bytes_from_u16(self.gash_button2_max));
+        buf[71..73].copy_from_slice(&to_bytes_from_u16(self.gash_button3_min));
+        buf[73..75].copy_from_slice(&to_bytes_from_u16(self.gash_button3_max));
+        buf[75..76].copy_from_slice(&to_bytes_from_u8(self.spi_error_cnt));
+        buf[76..82].copy_from_slice(&to_bytes_from_u64(self.buttons));
+        buf[82..84].copy_from_slice(&to_bytes_from_u16(self.x_axis));
+        buf[84..86].copy_from_slice(&to_bytes_from_u16(self.y_axis));
+        buf[86..88].copy_from_slice(&to_bytes_from_u16(self.z_axis));
+        buf[88..90].copy_from_slice(&to_bytes_from_u16(self.rx_axis));
+        buf[90..92].copy_from_slice(&to_bytes_from_u16(self.ry_axis));
+        buf[92..94].copy_from_slice(&to_bytes_from_u16(self.rz_axis));
+        buf[94..96].copy_from_slice(&to_bytes_from_u16(self.slider_axis));
+        buf[96..98].copy_from_slice(&to_bytes_from_u16(self.fw_version));
     }
 }
     
@@ -724,40 +722,39 @@ fn get_report(
         ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
         ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
         rz_min: u16::from_le_bytes(buf[41..43].try_into().unwrap()),
-        _rz_centr: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
-        rz_max: u16::from_le_bytes(buf[45..47].try_into().unwrap()),
-        rz_averaging: u8::from_le_bytes(buf[47..48].try_into().unwrap()),
-        rz_dead_zone: u8::from_le_bytes(buf[48..49].try_into().unwrap()),
-        slider_min: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
-        slider_max: u16::from_le_bytes(buf[51..53].try_into().unwrap()),
-        slider_averaging: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
-        slider_dead_zone: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
-        encoder_time: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
-        led_r: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
-        led_g: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
-        led_b: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
-        hatka1_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
-        hatka2_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
-        hatka3_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
-        hatka4_mode: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-        control_byte: u8::from_le_bytes(buf[63..64].try_into().unwrap()),
-        gash_button1_min: u16::from_le_bytes(buf[64..66].try_into().unwrap()),
-        gash_button1_max: u16::from_le_bytes(buf[66..68].try_into().unwrap()),
-        gash_button2_min: u16::from_le_bytes(buf[68..70].try_into().unwrap()),
-        gash_button2_max: u16::from_le_bytes(buf[70..72].try_into().unwrap()),
-        gash_button3_min: u16::from_le_bytes(buf[72..74].try_into().unwrap()),
-        gash_button3_max: u16::from_le_bytes(buf[74..76].try_into().unwrap()),
-        spi_error_cnt: u8::from_le_bytes(buf[76..77].try_into().unwrap()),
-        //below are real values received
-        buttons: to_u64_from_6_bytes(buf[77..83].try_into().unwrap()),
-        x_axis: u16::from_le_bytes(buf[83..85].try_into().unwrap()),
-        y_axis: u16::from_le_bytes(buf[85..87].try_into().unwrap()),
-        z_axis: u16::from_le_bytes(buf[87..89].try_into().unwrap()),
-        rx_axis: u16::from_le_bytes(buf[89..91].try_into().unwrap()),
-        ry_axis: u16::from_le_bytes(buf[91..93].try_into().unwrap()),
-        rz_axis: u16::from_le_bytes(buf[93..95].try_into().unwrap()),
-        slider_axis: u16::from_le_bytes(buf[95..97].try_into().unwrap()),
-        fw_version: u16::from_le_bytes(buf[97..99].try_into().unwrap()),
+        rz_max: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
+        rz_averaging: u8::from_le_bytes(buf[45..46].try_into().unwrap()),
+        rz_dead_zone: u8::from_le_bytes(buf[46..47].try_into().unwrap()),
+        slider_min: u16::from_le_bytes(buf[47..49].try_into().unwrap()),
+        slider_max: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
+        slider_averaging: u8::from_le_bytes(buf[51..52].try_into().unwrap()),
+        slider_dead_zone: u8::from_le_bytes(buf[52..53].try_into().unwrap()),
+        encoder_time: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
+        led_r: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
+        led_g: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
+        led_b: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
+        id_grib: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
+        hatka1_mode: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
+        hatka2_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
+        hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
+        hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
+        control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
+        gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
+        gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
+        gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
+        gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
+        gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
+        gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
+        spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
+        buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
+        x_axis: u16::from_le_bytes(buf[82..84].try_into().unwrap()),
+        y_axis: u16::from_le_bytes(buf[84..86].try_into().unwrap()),
+        z_axis: u16::from_le_bytes(buf[86..88].try_into().unwrap()),
+        rx_axis: u16::from_le_bytes(buf[88..90].try_into().unwrap()),
+        ry_axis: u16::from_le_bytes(buf[90..92].try_into().unwrap()),
+        rz_axis: u16::from_le_bytes(buf[92..94].try_into().unwrap()),
+        slider_axis: u16::from_le_bytes(buf[94..96].try_into().unwrap()),
+        fw_version: u16::from_le_bytes(buf[96..98].try_into().unwrap()),
     };
 
     // println!("Read: {:?}", &buf[..res]);
