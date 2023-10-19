@@ -91,12 +91,12 @@ impl DeviceState {
     }
 
     pub fn get_report_descriptor(&self) -> ReportFeature {
-        let mut buf_resreq: [u8; 4096] = [0; 4096]; //TODO:
-        // buf[0] = 3;
-        let res = (&self.device).get_report_descriptor(&mut buf_resreq).unwrap();
+        let mut buf: [u8; 4096] = [0; 4096]; //TODO:
+        buf[0] = 2;
+        let res = (&self.device).get_report_descriptor(&mut buf).unwrap();
         // let res = device.get_feature_report(&mut buf).unwrap();
 
-        let buf = &buf_resreq[44..];
+        // let buf = &buf_resreq[44..];
 
         let report_feature = ReportFeature {
             id: buf[0],
