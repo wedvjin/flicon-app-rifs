@@ -36,12 +36,10 @@ class _SettingPageState extends State<SettingPage> {
   String profileListValue = profiles.first;
   HSVColor color = HSVColor.fromColor(Colors.blue);
   int _showButton = 0;
-  bool _clicked = false;
   int _controlButton = 0;
   var cursor = SystemMouseCursors.basic;
   int initialController = 1; // right
   String controller = 'right';
-  bool _showLed = false;
   final int min = 0;
   final int max = 10;
   bool _flip = false;
@@ -57,7 +55,6 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void clickPostion(TapDownDetails details) async {
-    final tapPosition = details.globalPosition;
     setState(() {
       double x = details.globalPosition.dx;
       double y = details.globalPosition.dy;
@@ -105,7 +102,6 @@ class _SettingPageState extends State<SettingPage> {
       double y = details.position.dy;
 
       if(controller == 'right') {
-        print(_tapPosition);
         if(((x > 97 && y > 161) && (x<129 && y<193)) || ((x>547 && y>166) && (x<574 && y<198))) {
           _showButton = 1;
         } else if(((x >136 && y > 176) && (x<162 && y<207))) {
@@ -140,7 +136,6 @@ class _SettingPageState extends State<SettingPage> {
           _showButton = 0;
           cursor = SystemMouseCursors.basic;
         }
-
         if(_showButton != 0) {
           cursor = SystemMouseCursors.click;
         }
@@ -176,7 +171,7 @@ class _SettingPageState extends State<SettingPage> {
                         decoration: const BoxDecoration(
                           gradient: RadialGradient(
                             colors: [
-                              Colors.black12,
+                              Color.fromRGBO(30, 30, 30, 1),
                               Colors.black,
                             ],
                           )
@@ -184,17 +179,8 @@ class _SettingPageState extends State<SettingPage> {
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _clicked = true;
-                                Timer(Duration(seconds: 1), () {
-                                  _clicked = false;
-                                });
-                              });
-                            },
-                            child : GestureDetector(
-                              onTapDown: (details) => clickPostion(details),
-                              child:  
+                            onTapDown: (details) => clickPostion(details),
+                            child :
                                 MouseRegion(
                                   onHover: _updateLocation,
                                   cursor: cursor,
@@ -255,10 +241,7 @@ class _SettingPageState extends State<SettingPage> {
                                           child: Text('${data.buttons}'),
                                         ),
 
-                                        Positioned(
-                                          top: 60,
-                                          child: Text('${data.ledR * 100 / 255 * 0.01} / ${data.ledG * 100 / 255 * 0.01} / ${data.ledB * 100 / 255 * 0.01}'),
-                                        ),
+                                  
                                         Positioned(
                                           bottom: 20,
                                           child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
@@ -282,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
                                       ]
                                     )
                                   
-                          )
+                          
                             ),
                           )
                         )

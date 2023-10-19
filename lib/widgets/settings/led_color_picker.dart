@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flicon/functions/send_rust_request.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:rust_in_flutter/rust_in_flutter.dart';
+import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 
 
 class LedColorPicker extends StatefulWidget {
@@ -13,23 +16,55 @@ class LedColorPicker extends StatefulWidget {
   State<LedColorPicker> createState() => _LedColorPickerState();
 }
 
-class _LedColorPickerState extends State<LedColorPicker> {
+class LEDS {
+  int ledR;
+  int ledG;
+  int ledB;
 
+  LEDS(this.ledR, this.ledG, this.ledB);
+
+  // Copy constructor
+  LEDS.copy(LEDS other) : 
+    ledR = other.ledR,
+    ledG = other.ledG,
+    ledB = other.ledB; 
+}
+
+class _LedColorPickerState extends State<LedColorPicker> {
+  
+
+  HSVColor _color = HSVColor.fromColor(Colors.red);
+
+  Future<void> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
+    );
+    var rustResponse = await requestToRust(RustRequest(
+      resource: deviceInfo.ID,
+      operation: operation,
+      message: requestMessage.writeToBuffer(),
+    ));
+    var responseMessage =
+        deviceInfo.ReadResponse.fromBuffer(
+          rustResponse.message!,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-     
-    HSVColor color = HSVColor.fromColor(Color.fromRGBO(widget.data.ledR, widget.data.ledG, widget.data.ledB, 1));
 
     return Column(
       children: [
-        Text("${widget.data.ledR} ${widget.data.ledG} ${widget.data.ledB}"),
         WheelPicker(
-          color: color,
-          onChanged: (value){ 
+          showPalette: true,
+          color: _color,
+          onChanged: (value) {         
             setState(() {
-              color = value;
-              final c = color.toColor();
+              _color = value;
             });
           },
         ),
@@ -42,7 +77,15 @@ class _LedColorPickerState extends State<LedColorPicker> {
                 backgroundColor: const Color.fromARGB(255, 62, 62, 62),
                 foregroundColor: Colors.white),
             child: const Text('Apply & Save'),
-            onPressed: () => {},
+            onPressed: () {
+              final c = _color.toColor();
+              rust_request('discalibratehandle', 0, 0, 0, 0, RustOperation.Update);
+              rust_request('discalibratebase', 0, 0, 0, 0, RustOperation.Update);
+              rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+              rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
+              rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+              rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+            },
           ),
         )
       ]);
