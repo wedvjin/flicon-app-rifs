@@ -108,37 +108,37 @@ impl DeviceState {
 
         let report_feature = ReportFeature {
             id: buf[0],
-            x_min: u16::from_le_bytes(buf[1..3].try_into().unwrap()),
-            _x_centr: u16::from_le_bytes(buf[3..5].try_into().unwrap()),
-            x_max: u16::from_le_bytes(buf[5..7].try_into().unwrap()),
+            x_min: i16::from_le_bytes(buf[1..3].try_into().unwrap()),
+            _x_centr: i16::from_le_bytes(buf[3..5].try_into().unwrap()),
+            x_max: i16::from_le_bytes(buf[5..7].try_into().unwrap()),
             x_averaging: u8::from_le_bytes(buf[7..8].try_into().unwrap()),
             x_dead_zone: u8::from_le_bytes(buf[8..9].try_into().unwrap()),
-            y_min: u16::from_le_bytes(buf[9..11].try_into().unwrap()),
-            _y_centr: u16::from_le_bytes(buf[11..13].try_into().unwrap()),
-            y_max: u16::from_le_bytes(buf[13..15].try_into().unwrap()),
+            y_min: i16::from_le_bytes(buf[9..11].try_into().unwrap()),
+            _y_centr: i16::from_le_bytes(buf[11..13].try_into().unwrap()),
+            y_max: i16::from_le_bytes(buf[13..15].try_into().unwrap()),
             y_averaging: u8::from_le_bytes(buf[15..16].try_into().unwrap()),
             y_dead_zone: u8::from_le_bytes(buf[16..17].try_into().unwrap()),
-            z_min: u16::from_le_bytes(buf[17..19].try_into().unwrap()),
-            _z_centr: u16::from_le_bytes(buf[19..21].try_into().unwrap()),
-            z_max: u16::from_le_bytes(buf[21..23].try_into().unwrap()),
+            z_min: i16::from_le_bytes(buf[17..19].try_into().unwrap()),
+            _z_centr: i16::from_le_bytes(buf[19..21].try_into().unwrap()),
+            z_max: i16::from_le_bytes(buf[21..23].try_into().unwrap()),
             z_averaging: u8::from_le_bytes(buf[23..24].try_into().unwrap()),
             z_dead_zone: u8::from_le_bytes(buf[24..25].try_into().unwrap()),
-            rx_min: u16::from_le_bytes(buf[25..27].try_into().unwrap()),
-            _rx_centr: u16::from_le_bytes(buf[27..29].try_into().unwrap()),
-            rx_max: u16::from_le_bytes(buf[29..31].try_into().unwrap()),
+            rx_min: i16::from_le_bytes(buf[25..27].try_into().unwrap()),
+            _rx_centr: i16::from_le_bytes(buf[27..29].try_into().unwrap()),
+            rx_max: i16::from_le_bytes(buf[29..31].try_into().unwrap()),
             rx_averaging: u8::from_le_bytes(buf[31..32].try_into().unwrap()),
             rx_dead_zone: u8::from_le_bytes(buf[32..33].try_into().unwrap()),
-            ry_min: u16::from_le_bytes(buf[33..35].try_into().unwrap()),
-            _ry_centr: u16::from_le_bytes(buf[35..37].try_into().unwrap()),
-            ry_max: u16::from_le_bytes(buf[37..39].try_into().unwrap()),
+            ry_min: i16::from_le_bytes(buf[33..35].try_into().unwrap()),
+            _ry_centr: i16::from_le_bytes(buf[35..37].try_into().unwrap()),
+            ry_max: i16::from_le_bytes(buf[37..39].try_into().unwrap()),
             ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
             ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
-            rz_min: u16::from_le_bytes(buf[41..43].try_into().unwrap()),
-            rz_max: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
+            rz_min: i16::from_le_bytes(buf[41..43].try_into().unwrap()),
+            rz_max: i16::from_le_bytes(buf[43..45].try_into().unwrap()),
             rz_averaging: u8::from_le_bytes(buf[45..46].try_into().unwrap()),
             rz_dead_zone: u8::from_le_bytes(buf[46..47].try_into().unwrap()),
-            slider_min: u16::from_le_bytes(buf[47..49].try_into().unwrap()),
-            slider_max: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
+            slider_min: i16::from_le_bytes(buf[47..49].try_into().unwrap()),
+            slider_max: i16::from_le_bytes(buf[49..51].try_into().unwrap()),
             slider_averaging: u8::from_le_bytes(buf[51..52].try_into().unwrap()),
             slider_dead_zone: u8::from_le_bytes(buf[52..53].try_into().unwrap()),
             encoder_time: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
@@ -151,21 +151,21 @@ impl DeviceState {
             hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
             hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
             control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-            gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
-            gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
-            gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
-            gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
-            gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
-            gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
+            gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
+            gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
+            gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
+            gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
+            gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
+            gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
             spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
             buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
-            x_axis: u16::from_le_bytes(buf[82..84].try_into().unwrap()),
-            y_axis: u16::from_le_bytes(buf[84..86].try_into().unwrap()),
-            z_axis: u16::from_le_bytes(buf[86..88].try_into().unwrap()),
-            rx_axis: u16::from_le_bytes(buf[88..90].try_into().unwrap()),
-            ry_axis: u16::from_le_bytes(buf[90..92].try_into().unwrap()),
-            rz_axis: u16::from_le_bytes(buf[92..94].try_into().unwrap()),
-            slider_axis: u16::from_le_bytes(buf[94..96].try_into().unwrap()),
+            x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),
+            y_axis: i16::from_le_bytes(buf[84..86].try_into().unwrap()),
+            z_axis: i16::from_le_bytes(buf[86..88].try_into().unwrap()),
+            rx_axis: i16::from_le_bytes(buf[88..90].try_into().unwrap()),
+            ry_axis: i16::from_le_bytes(buf[90..92].try_into().unwrap()),
+            rz_axis: i16::from_le_bytes(buf[92..94].try_into().unwrap()),
+            slider_axis: i16::from_le_bytes(buf[94..96].try_into().unwrap()),
             fw_version: u16::from_le_bytes(buf[96..98].try_into().unwrap()),
         };
 
@@ -184,7 +184,7 @@ impl DeviceState {
         self.controller_info.as_ref().unwrap().serial_number().unwrap().to_string()
     }
 
-    pub fn set_x(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_x(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().x_min = value_min;
         self.feature.as_mut().unwrap().x_max = value_max;
         self.feature.as_mut().unwrap().x_averaging = averaging;
@@ -192,42 +192,42 @@ impl DeviceState {
 
     }
 
-    pub fn set_y(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_y(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().y_min = value_min;
         self.feature.as_mut().unwrap().y_max = value_max;
         self.feature.as_mut().unwrap().y_averaging = averaging;
         self.feature.as_mut().unwrap().y_dead_zone = dead_zone;
     }
 
-    pub fn set_z(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_z(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().z_min = value_min;
         self.feature.as_mut().unwrap().z_max = value_max;
         self.feature.as_mut().unwrap().z_averaging = averaging;
         self.feature.as_mut().unwrap().z_dead_zone = dead_zone;
     }
 
-    pub fn set_rx(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_rx(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().rx_min = value_min;
         self.feature.as_mut().unwrap().rx_max = value_max;
         self.feature.as_mut().unwrap().rx_averaging = averaging;
         self.feature.as_mut().unwrap().rx_dead_zone = dead_zone;
     }
 
-    pub fn set_ry(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_ry(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().ry_min = value_min;
         self.feature.as_mut().unwrap().ry_max = value_max;
         self.feature.as_mut().unwrap().ry_averaging = averaging;
         self.feature.as_mut().unwrap().ry_dead_zone = dead_zone;
     }
 
-    pub fn set_rz(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_rz(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().rz_min = value_min;
         self.feature.as_mut().unwrap().rz_max = value_max;
         self.feature.as_mut().unwrap().rz_averaging = averaging;
         self.feature.as_mut().unwrap().rz_dead_zone = dead_zone;
     }
 
-    pub fn set_slider(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
+    pub fn set_slider(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().slider_min = value_min;
         self.feature.as_mut().unwrap().slider_max = value_max;
         self.feature.as_mut().unwrap().slider_averaging = averaging;
@@ -278,15 +278,15 @@ impl DeviceState {
         }
     }
 
-    pub fn set_gash1(&mut self, value_min: u16, value_max: u16) {
+    pub fn set_gash1(&mut self, value_min: i16, value_max: i16) {
         self.feature.as_mut().unwrap().gash_button1_min = value_min;
         self.feature.as_mut().unwrap().gash_button1_max = value_max;
     }
-    pub fn set_gash2(&mut self, value_min: u16, value_max: u16) {
+    pub fn set_gash2(&mut self, value_min: i16, value_max: i16) {
         self.feature.as_mut().unwrap().gash_button2_min = value_min;
         self.feature.as_mut().unwrap().gash_button2_max = value_max;
     }
-    pub fn set_gash3(&mut self, value_min: u16, value_max: u16) {
+    pub fn set_gash3(&mut self, value_min: i16, value_max: i16) {
         self.feature.as_mut().unwrap().gash_button3_min = value_min;
         self.feature.as_mut().unwrap().gash_button3_max = value_max;
     }
@@ -368,7 +368,7 @@ impl DeviceState {
         self.feature.as_ref().as_mut().unwrap().control_byte
     }
 
-    pub fn get_x(&self) -> (u16, u16, u8, u8) {
+    pub fn get_x(&self) -> (i16, i16, u8, u8) {
         (
             self.feature.as_ref().as_mut().unwrap().x_min,
             self.feature.as_ref().as_mut().unwrap().x_max,
@@ -377,7 +377,7 @@ impl DeviceState {
         )
     }
 
-    pub fn get_y(&self) -> (u16, u16, u8, u8) {
+    pub fn get_y(&self) -> (i16, i16, u8, u8) {
         (
             self.feature.as_ref().as_mut().unwrap().y_min,
             self.feature.as_ref().as_mut().unwrap().y_max,
@@ -440,37 +440,37 @@ impl ReportIn {
 #[derive(Clone, Debug)]
 pub struct ReportFeature {
     pub id: u8,
-    pub x_min: u16,
-    pub _x_centr: u16,
-    pub x_max: u16,
+    pub x_min: i16,
+    pub _x_centr: i16,
+    pub x_max: i16,
     pub x_averaging: u8,
     pub x_dead_zone: u8,
-    pub y_min: u16,
-    pub _y_centr: u16,
-    pub y_max: u16,
+    pub y_min: i16,
+    pub _y_centr: i16,
+    pub y_max: i16,
     pub y_averaging: u8,
     pub y_dead_zone: u8,
-    pub z_min: u16,
-    pub _z_centr: u16,
-    pub z_max: u16,
+    pub z_min: i16,
+    pub _z_centr: i16,
+    pub z_max: i16,
     pub z_averaging: u8,
     pub z_dead_zone: u8,
-    pub rx_min: u16,
-    pub _rx_centr: u16,
-    pub rx_max: u16,
+    pub rx_min: i16,
+    pub _rx_centr: i16,
+    pub rx_max: i16,
     pub rx_averaging: u8,
     pub rx_dead_zone: u8,
-    pub ry_min: u16,
-    pub _ry_centr: u16,
-    pub ry_max: u16,
+    pub ry_min: i16,
+    pub _ry_centr: i16,
+    pub ry_max: i16,
     pub ry_averaging: u8,
     pub ry_dead_zone: u8,
-    pub rz_min: u16,
-    pub rz_max: u16,
+    pub rz_min: i16,
+    pub rz_max: i16,
     pub rz_averaging: u8,
     pub rz_dead_zone: u8,
-    pub slider_min: u16,
-    pub slider_max: u16,
+    pub slider_min: i16,
+    pub slider_max: i16,
     pub slider_averaging: u8,
     pub slider_dead_zone: u8,
     pub encoder_time: u8,
@@ -483,22 +483,22 @@ pub struct ReportFeature {
     pub hatka3_mode: u8,
     pub hatka4_mode: u8,
     pub control_byte: u8,
-    pub gash_button1_min: u16,
-    pub gash_button1_max: u16,
-    pub gash_button2_min: u16,
-    pub gash_button2_max: u16,
-    pub gash_button3_min: u16,
-    pub gash_button3_max: u16,
+    pub gash_button1_min: i16,
+    pub gash_button1_max: i16,
+    pub gash_button2_min: i16,
+    pub gash_button2_max: i16,
+    pub gash_button3_min: i16,
+    pub gash_button3_max: i16,
     pub spi_error_cnt: u8,
     //below are real values received
     pub buttons: u64,
-    pub x_axis: u16,
-    pub y_axis: u16,
-    pub z_axis: u16,
-    pub rx_axis: u16,
-    pub ry_axis: u16,
-    pub rz_axis: u16,
-    pub slider_axis: u16,
+    pub x_axis: i16,
+    pub y_axis: i16,
+    pub z_axis: i16,
+    pub rx_axis: i16,
+    pub ry_axis: i16,
+    pub rz_axis: i16,
+    pub slider_axis: i16,
     pub fw_version: u16,
 }
 
@@ -511,38 +511,38 @@ impl Default for ReportFeature {
 impl ReportFeature {
     fn to_bytes(&self, buf: &mut [u8; 129]) {
         buf[0] = self.id;
-        buf[1..3].copy_from_slice(&to_bytes_from_u16(self.x_min));
-        buf[3..5].copy_from_slice(&to_bytes_from_u16(self._x_centr));
-        buf[5..7].copy_from_slice(&to_bytes_from_u16(self.x_max));
+        buf[1..3].copy_from_slice(&to_bytes_from_i16(self.x_min));
+        buf[3..5].copy_from_slice(&to_bytes_from_i16(self._x_centr));
+        buf[5..7].copy_from_slice(&to_bytes_from_i16(self.x_max));
         buf[7..8].copy_from_slice(&to_bytes_from_u8(self.x_averaging));
         buf[8..9].copy_from_slice(&to_bytes_from_u8(self.x_dead_zone));
-        buf[9..11].copy_from_slice(&to_bytes_from_u16(self.y_min));
-        buf[11..13].copy_from_slice(&to_bytes_from_u16(self._y_centr));
-        buf[13..15].copy_from_slice(&to_bytes_from_u16(self.y_max));
+        buf[9..11].copy_from_slice(&to_bytes_from_i16(self.y_min));
+        buf[11..13].copy_from_slice(&to_bytes_from_i16(self._y_centr));
+        buf[13..15].copy_from_slice(&to_bytes_from_i16(self.y_max));
         buf[15..16].copy_from_slice(&to_bytes_from_u8(self.y_averaging));
         buf[16..17].copy_from_slice(&to_bytes_from_u8(self.y_dead_zone));
-        buf[17..19].copy_from_slice(&to_bytes_from_u16(self.z_min));
-        buf[19..21].copy_from_slice(&to_bytes_from_u16(self._z_centr));
-        buf[21..23].copy_from_slice(&to_bytes_from_u16(self.z_max));
+        buf[17..19].copy_from_slice(&to_bytes_from_i16(self.z_min));
+        buf[19..21].copy_from_slice(&to_bytes_from_i16(self._z_centr));
+        buf[21..23].copy_from_slice(&to_bytes_from_i16(self.z_max));
         buf[23..24].copy_from_slice(&to_bytes_from_u8(self.z_averaging));
         buf[24..25].copy_from_slice(&to_bytes_from_u8(self.z_dead_zone));
-        buf[25..27].copy_from_slice(&to_bytes_from_u16(self.rx_min));
-        buf[27..29].copy_from_slice(&to_bytes_from_u16(self._rx_centr));
-        buf[29..31].copy_from_slice(&to_bytes_from_u16(self.rx_max));
+        buf[25..27].copy_from_slice(&to_bytes_from_i16(self.rx_min));
+        buf[27..29].copy_from_slice(&to_bytes_from_i16(self._rx_centr));
+        buf[29..31].copy_from_slice(&to_bytes_from_i16(self.rx_max));
         buf[31..32].copy_from_slice(&to_bytes_from_u8(self.rx_averaging));
         buf[32..33].copy_from_slice(&to_bytes_from_u8(self.rx_dead_zone));
-        buf[33..35].copy_from_slice(&to_bytes_from_u16(self.ry_min));
-        buf[35..37].copy_from_slice(&to_bytes_from_u16(self._ry_centr));
-        buf[37..39].copy_from_slice(&to_bytes_from_u16(self.ry_max));
+        buf[33..35].copy_from_slice(&to_bytes_from_i16(self.ry_min));
+        buf[35..37].copy_from_slice(&to_bytes_from_i16(self._ry_centr));
+        buf[37..39].copy_from_slice(&to_bytes_from_i16(self.ry_max));
         buf[39..40].copy_from_slice(&to_bytes_from_u8(self.ry_averaging));
         buf[40..41].copy_from_slice(&to_bytes_from_u8(self.ry_dead_zone));
-        buf[41..43].copy_from_slice(&to_bytes_from_u16(self.rz_min));
+        buf[41..43].copy_from_slice(&to_bytes_from_i16(self.rz_min));
 
-        buf[43..45].copy_from_slice(&to_bytes_from_u16(self.rz_max));
+        buf[43..45].copy_from_slice(&to_bytes_from_i16(self.rz_max));
         buf[45..46].copy_from_slice(&to_bytes_from_u8(self.rz_averaging));
         buf[46..47].copy_from_slice(&to_bytes_from_u8(self.rz_dead_zone));
-        buf[47..49].copy_from_slice(&to_bytes_from_u16(self.slider_min));
-        buf[49..51].copy_from_slice(&to_bytes_from_u16(self.slider_max));
+        buf[47..49].copy_from_slice(&to_bytes_from_i16(self.slider_min));
+        buf[49..51].copy_from_slice(&to_bytes_from_i16(self.slider_max));
         buf[51..52].copy_from_slice(&to_bytes_from_u8(self.slider_averaging));
         buf[52..53].copy_from_slice(&to_bytes_from_u8(self.slider_dead_zone));
         buf[53..54].copy_from_slice(&to_bytes_from_u8(self.encoder_time));
@@ -555,27 +555,31 @@ impl ReportFeature {
         buf[60..61].copy_from_slice(&to_bytes_from_u8(self.hatka3_mode));
         buf[61..62].copy_from_slice(&to_bytes_from_u8(self.hatka4_mode));
         buf[62..63].copy_from_slice(&to_bytes_from_u8(self.control_byte));
-        buf[63..65].copy_from_slice(&to_bytes_from_u16(self.gash_button1_min));
-        buf[65..67].copy_from_slice(&to_bytes_from_u16(self.gash_button1_max));
-        buf[67..69].copy_from_slice(&to_bytes_from_u16(self.gash_button2_min));
-        buf[69..71].copy_from_slice(&to_bytes_from_u16(self.gash_button2_max));
-        buf[71..73].copy_from_slice(&to_bytes_from_u16(self.gash_button3_min));
-        buf[73..75].copy_from_slice(&to_bytes_from_u16(self.gash_button3_max));
+        buf[63..65].copy_from_slice(&to_bytes_from_i16(self.gash_button1_min));
+        buf[65..67].copy_from_slice(&to_bytes_from_i16(self.gash_button1_max));
+        buf[67..69].copy_from_slice(&to_bytes_from_i16(self.gash_button2_min));
+        buf[69..71].copy_from_slice(&to_bytes_from_i16(self.gash_button2_max));
+        buf[71..73].copy_from_slice(&to_bytes_from_i16(self.gash_button3_min));
+        buf[73..75].copy_from_slice(&to_bytes_from_i16(self.gash_button3_max));
         buf[75..76].copy_from_slice(&to_bytes_from_u8(self.spi_error_cnt));
         buf[76..82].copy_from_slice(&to_bytes_from_u64(self.buttons));
-        buf[82..84].copy_from_slice(&to_bytes_from_u16(self.x_axis));
-        buf[84..86].copy_from_slice(&to_bytes_from_u16(self.y_axis));
-        buf[86..88].copy_from_slice(&to_bytes_from_u16(self.z_axis));
-        buf[88..90].copy_from_slice(&to_bytes_from_u16(self.rx_axis));
-        buf[90..92].copy_from_slice(&to_bytes_from_u16(self.ry_axis));
-        buf[92..94].copy_from_slice(&to_bytes_from_u16(self.rz_axis));
-        buf[94..96].copy_from_slice(&to_bytes_from_u16(self.slider_axis));
+        buf[82..84].copy_from_slice(&to_bytes_from_i16(self.x_axis));
+        buf[84..86].copy_from_slice(&to_bytes_from_i16(self.y_axis));
+        buf[86..88].copy_from_slice(&to_bytes_from_i16(self.z_axis));
+        buf[88..90].copy_from_slice(&to_bytes_from_i16(self.rx_axis));
+        buf[90..92].copy_from_slice(&to_bytes_from_i16(self.ry_axis));
+        buf[92..94].copy_from_slice(&to_bytes_from_i16(self.rz_axis));
+        buf[94..96].copy_from_slice(&to_bytes_from_i16(self.slider_axis));
         buf[96..98].copy_from_slice(&to_bytes_from_u16(self.fw_version));
     }
 }
     
-    fn to_bytes_from_u16(value: u16) -> [u8; 2] {
-        value.to_le_bytes()
+fn to_bytes_from_u16(value: u16) -> [u8; 2] {
+     value.to_le_bytes()  
+}
+
+fn to_bytes_from_i16(value: i16) -> [u8; 2] {
+    value.to_le_bytes()  
 }
 
 fn to_bytes_from_u8(value: u8) -> [u8; 1] {
@@ -706,37 +710,37 @@ fn get_report(
 
     let report_feature = ReportFeature {
         id: buf[0],
-        x_min: u16::from_le_bytes(buf[1..3].try_into().unwrap()),
-        _x_centr: u16::from_le_bytes(buf[3..5].try_into().unwrap()),
-        x_max: u16::from_le_bytes(buf[5..7].try_into().unwrap()),
+        x_min: i16::from_le_bytes(buf[1..3].try_into().unwrap()),
+        _x_centr: i16::from_le_bytes(buf[3..5].try_into().unwrap()),
+        x_max: i16::from_le_bytes(buf[5..7].try_into().unwrap()),
         x_averaging: u8::from_le_bytes(buf[7..8].try_into().unwrap()),
         x_dead_zone: u8::from_le_bytes(buf[8..9].try_into().unwrap()),
-        y_min: u16::from_le_bytes(buf[9..11].try_into().unwrap()),
-        _y_centr: u16::from_le_bytes(buf[11..13].try_into().unwrap()),
-        y_max: u16::from_le_bytes(buf[13..15].try_into().unwrap()),
+        y_min: i16::from_le_bytes(buf[9..11].try_into().unwrap()),
+        _y_centr: i16::from_le_bytes(buf[11..13].try_into().unwrap()),
+        y_max: i16::from_le_bytes(buf[13..15].try_into().unwrap()),
         y_averaging: u8::from_le_bytes(buf[15..16].try_into().unwrap()),
         y_dead_zone: u8::from_le_bytes(buf[16..17].try_into().unwrap()),
-        z_min: u16::from_le_bytes(buf[17..19].try_into().unwrap()),
-        _z_centr: u16::from_le_bytes(buf[19..21].try_into().unwrap()),
-        z_max: u16::from_le_bytes(buf[21..23].try_into().unwrap()),
+        z_min: i16::from_le_bytes(buf[17..19].try_into().unwrap()),
+        _z_centr: i16::from_le_bytes(buf[19..21].try_into().unwrap()),
+        z_max: i16::from_le_bytes(buf[21..23].try_into().unwrap()),
         z_averaging: u8::from_le_bytes(buf[23..24].try_into().unwrap()),
         z_dead_zone: u8::from_le_bytes(buf[24..25].try_into().unwrap()),
-        rx_min: u16::from_le_bytes(buf[25..27].try_into().unwrap()),
-        _rx_centr: u16::from_le_bytes(buf[27..29].try_into().unwrap()),
-        rx_max: u16::from_le_bytes(buf[29..31].try_into().unwrap()),
+        rx_min: i16::from_le_bytes(buf[25..27].try_into().unwrap()),
+        _rx_centr: i16::from_le_bytes(buf[27..29].try_into().unwrap()),
+        rx_max: i16::from_le_bytes(buf[29..31].try_into().unwrap()),
         rx_averaging: u8::from_le_bytes(buf[31..32].try_into().unwrap()),
         rx_dead_zone: u8::from_le_bytes(buf[32..33].try_into().unwrap()),
-        ry_min: u16::from_le_bytes(buf[33..35].try_into().unwrap()),
-        _ry_centr: u16::from_le_bytes(buf[35..37].try_into().unwrap()),
-        ry_max: u16::from_le_bytes(buf[37..39].try_into().unwrap()),
+        ry_min: i16::from_le_bytes(buf[33..35].try_into().unwrap()),
+        _ry_centr: i16::from_le_bytes(buf[35..37].try_into().unwrap()),
+        ry_max: i16::from_le_bytes(buf[37..39].try_into().unwrap()),
         ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
         ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
-        rz_min: u16::from_le_bytes(buf[41..43].try_into().unwrap()),
-        rz_max: u16::from_le_bytes(buf[43..45].try_into().unwrap()),
+        rz_min: i16::from_le_bytes(buf[41..43].try_into().unwrap()),
+        rz_max: i16::from_le_bytes(buf[43..45].try_into().unwrap()),
         rz_averaging: u8::from_le_bytes(buf[45..46].try_into().unwrap()),
         rz_dead_zone: u8::from_le_bytes(buf[46..47].try_into().unwrap()),
-        slider_min: u16::from_le_bytes(buf[47..49].try_into().unwrap()),
-        slider_max: u16::from_le_bytes(buf[49..51].try_into().unwrap()),
+        slider_min: i16::from_le_bytes(buf[47..49].try_into().unwrap()),
+        slider_max: i16::from_le_bytes(buf[49..51].try_into().unwrap()),
         slider_averaging: u8::from_le_bytes(buf[51..52].try_into().unwrap()),
         slider_dead_zone: u8::from_le_bytes(buf[52..53].try_into().unwrap()),
         encoder_time: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
@@ -749,21 +753,21 @@ fn get_report(
         hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
         hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
         control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-        gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
-        gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
-        gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
-        gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
-        gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
-        gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
+        gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
+        gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
+        gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
+        gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
+        gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
+        gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
         spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
         buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
-        x_axis: u16::from_le_bytes(buf[82..84].try_into().unwrap()),
-        y_axis: u16::from_le_bytes(buf[84..86].try_into().unwrap()),
-        z_axis: u16::from_le_bytes(buf[86..88].try_into().unwrap()),
-        rx_axis: u16::from_le_bytes(buf[88..90].try_into().unwrap()),
-        ry_axis: u16::from_le_bytes(buf[90..92].try_into().unwrap()),
-        rz_axis: u16::from_le_bytes(buf[92..94].try_into().unwrap()),
-        slider_axis: u16::from_le_bytes(buf[94..96].try_into().unwrap()),
+        x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),
+        y_axis: i16::from_le_bytes(buf[84..86].try_into().unwrap()),
+        z_axis: i16::from_le_bytes(buf[86..88].try_into().unwrap()),
+        rx_axis: i16::from_le_bytes(buf[88..90].try_into().unwrap()),
+        ry_axis: i16::from_le_bytes(buf[90..92].try_into().unwrap()),
+        rz_axis: i16::from_le_bytes(buf[92..94].try_into().unwrap()),
+        slider_axis: i16::from_le_bytes(buf[94..96].try_into().unwrap()),
         fw_version: u16::from_le_bytes(buf[96..98].try_into().unwrap()),
     };
 
