@@ -13,7 +13,7 @@ import 'package:flicon/widgets/settings/button_2.dart';
 import 'package:flicon/widgets/settings/button_3.dart';
 import 'package:flicon/widgets/settings/button_5.dart';
 import 'package:flicon/widgets/settings/button_7.dart';
-import 'package:flicon/widgets/settings/button_9.dart';
+import 'package:flicon/widgets/settings/brakes.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -386,9 +386,7 @@ class _SettingPageState extends State<SettingPage> {
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
                                           ),
 
-                                        Positioned(
-                                          top: 40,
-                                          child: Text("${_showButtons}")),
+                                 
                            
                                         Positioned(
                                           bottom: 20,
@@ -520,7 +518,7 @@ class _SettingPageState extends State<SettingPage> {
                                 if(_controlButton == 7)
                                   Button7(data: data),
                                 if(_controlButton == 9)
-                                  Button9(data: data),
+                                  Brake(data: data),
                                 if(_controlButton == 10)
                                   Button10(data: data),
                                 if(_controlButton == 13)
