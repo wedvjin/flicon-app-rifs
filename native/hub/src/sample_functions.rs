@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
 use prost::Message;
-use sample_crate::DeviceState;
+use sample_crate::{DeviceState};
 
 pub async fn handle_sample_resource(rust_request: RustRequest) -> RustResponse {
     match rust_request.operation {
@@ -237,120 +237,120 @@ pub async fn stream_increasing_number() {
     }
 }
 
-pub async fn stream_report_in(
-    device: Arc<Mutex<DeviceState>>,
-) {
-    use crate::messages::report_in_message::{ReportInMessage, ID};
+// pub async fn stream_report_in(
+//     device: Arc<Mutex<DeviceState>>,
+// ) {
+//     use crate::messages::report_in_message::{ReportInMessage, ID};
 
-    // let device = sample_crate::DeviceState::new();
+//     // let device = sample_crate::DeviceState::new();
     
-    // let mut counter = 0;
-    loop {
-        crate::sleep(std::time::Duration::from_millis(40)).await;
-        let report_in_data = device.lock().unwrap().get_data();
+//     // let mut counter = 0;
+//     loop {
+//         crate::sleep(std::time::Duration::from_millis(40)).await;
+//         let report_in_data = device.lock().unwrap().get_data();
         
-        let report_in_signal_message = ReportInMessage {
-            id: report_in_data.id as u32,
-            buttons: report_in_data.buttons as u64,
-            x: report_in_data.x_axis as u32,
-            y: report_in_data.y_axis as u32,
-            z: report_in_data.z_axis as u32,
-            rx: report_in_data.rx_axis as u32,
-            ry: report_in_data.ry_axis as u32,
-            rz: report_in_data.rz_axis as u32,
-            slider: report_in_data.slider_axis as u32,
-        };
-        let rust_signal = RustSignal {
-            resource: ID,
-            message: Some(report_in_signal_message.encode_to_vec()),
-            blob: None,
-        };
+//         let report_in_signal_message = ReportInMessage {
+//             id: report_in_data.id as u32,
+//             buttons: report_in_data.buttons as u64,
+//             x: report_in_data.x_axis as u32,
+//             y: report_in_data.y_axis as u32,
+//             z: report_in_data.z_axis as u32,
+//             rx: report_in_data.rx_axis as u32,
+//             ry: report_in_data.ry_axis as u32,
+//             rz: report_in_data.rz_axis as u32,
+//             slider: report_in_data.slider_axis as u32,
+//         };
+//         let rust_signal = RustSignal {
+//             resource: ID,
+//             message: Some(report_in_signal_message.encode_to_vec()),
+//             blob: None,
+//         };
 
-        send_rust_signal(rust_signal);
-        // counter += 1;
+//         send_rust_signal(rust_signal);
+//         // counter += 1;
         
-    }
+//     }
 
-    // let (report_in_tx, mut report_in_rx) = tokio::sync::mpsc::channel(25);
+//     // let (report_in_tx, mut report_in_rx) = tokio::sync::mpsc::channel(25);
 
-    // let mut current_number: i32 = 1;
+//     // let mut current_number: i32 = 1;
 
-    // crate::spawn(async move {
-    //     let device = sample_crate::DeviceState::new();
-    //     loop {
-    //         // Wait for 40 milliseconds on each frame
-    //         crate::sleep(std::time::Duration::from_millis(40)).await;
-    //         if report_in_tx.capacity() == 0 {
-    //             continue;
-    //         }
+//     // crate::spawn(async move {
+//     //     let device = sample_crate::DeviceState::new();
+//     //     loop {
+//     //         // Wait for 40 milliseconds on each frame
+//     //         crate::sleep(std::time::Duration::from_millis(40)).await;
+//     //         if report_in_tx.capacity() == 0 {
+//     //             continue;
+//     //         }
 
-    //         // Calculate the mandelbrot image
-    //         // parallelly in a separate thread pool.
-    //         // let join_handle = crate::spawn_blocking(move || {
-    //         //     // sample_crate::mandelbrot(
-    //         //     //     sample_crate::Size {
-    //         //     //         width: 384,
-    //         //     //         height: 384,
-    //         //     //     },
-    //         //     //     sample_crate::Point {
-    //         //     //         x: 0.360,
-    //         //     //         y: -0.641,
-    //         //     //     },
-    //         //     //     scale,
-    //         //     //     4,
-    //         //     // )
-    //         //     device.get_data()
-    //         // });
-    //         let data = device.get_data();
-    //         let _ = report_in_tx.send(data).await;
-    //     }
-    // });
+//     //         // Calculate the mandelbrot image
+//     //         // parallelly in a separate thread pool.
+//     //         // let join_handle = crate::spawn_blocking(move || {
+//     //         //     // sample_crate::mandelbrot(
+//     //         //     //     sample_crate::Size {
+//     //         //     //         width: 384,
+//     //         //     //         height: 384,
+//     //         //     //     },
+//     //         //     //     sample_crate::Point {
+//     //         //     //         x: 0.360,
+//     //         //     //         y: -0.641,
+//     //         //     //     },
+//     //         //     //     scale,
+//     //         //     //     4,
+//     //         //     // )
+//     //         //     device.get_data()
+//     //         // });
+//     //         let data = device.get_data();
+//     //         let _ = report_in_tx.send(data).await;
+//     //     }
+//     // });
 
-    // // Receive frames in order.
-    // crate::spawn(async move {
-    //     loop {
-    //         let received_report_in = report_in_rx.recv().await.unwrap();
-    //         let signal_message = StateSignal {
-    //             current_number: 0
-    //         };
-    //         let rust_signal = RustSignal {
-    //             resource: ID,
-    //             message: Some(signal_message.encode_to_vec()),
-    //             blob: Some(received_report_in.to_vec()),
-    //         };
-    //         send_rust_signal(rust_signal);
-    //         // if let Some(mandelbrot) = received_frame {
-    //         //     // Stream the signal to Dart.
-    //         //     let signal_message = StateSignal {
-    //         //         id: 0,
-    //         //         current_scale: scale,
-    //         //     };
-    //         //     let rust_signal = RustSignal {
-    //         //         resource: ID,
-    //         //         message: Some(signal_message.encode_to_vec()),
-    //         //         blob: Some(mandelbrot),
-    //         //     };
-    //         //     send_rust_signal(rust_signal);
-    //         // };
-    //     }
-    // });
+//     // // Receive frames in order.
+//     // crate::spawn(async move {
+//     //     loop {
+//     //         let received_report_in = report_in_rx.recv().await.unwrap();
+//     //         let signal_message = StateSignal {
+//     //             current_number: 0
+//     //         };
+//     //         let rust_signal = RustSignal {
+//     //             resource: ID,
+//     //             message: Some(signal_message.encode_to_vec()),
+//     //             blob: Some(received_report_in.to_vec()),
+//     //         };
+//     //         send_rust_signal(rust_signal);
+//     //         // if let Some(mandelbrot) = received_frame {
+//     //         //     // Stream the signal to Dart.
+//     //         //     let signal_message = StateSignal {
+//     //         //         id: 0,
+//     //         //         current_scale: scale,
+//     //         //     };
+//     //         //     let rust_signal = RustSignal {
+//     //         //         resource: ID,
+//     //         //         message: Some(signal_message.encode_to_vec()),
+//     //         //         blob: Some(mandelbrot),
+//     //         //     };
+//     //         //     send_rust_signal(rust_signal);
+//     //         // };
+//     //     }
+//     // });
 
 
 
-    // loop {
-    //     crate::sleep(std::time::Duration::from_secs(1)).await;
+//     // loop {
+//     //     crate::sleep(std::time::Duration::from_secs(1)).await;
 
-    //     let signal_message = StateSignal { current_number };
-    //     let rust_signal = RustSignal {
-    //         resource: ID,
-    //         message: Some(signal_message.encode_to_vec()),
-    //         blob: None,
-    //     };
-    //     send_rust_signal(rust_signal);
+//     //     let signal_message = StateSignal { current_number };
+//     //     let rust_signal = RustSignal {
+//     //         resource: ID,
+//     //         message: Some(signal_message.encode_to_vec()),
+//     //         blob: None,
+//     //     };
+//     //     send_rust_signal(rust_signal);
 
-    //     current_number += 1;
-    // }
-}
+//     //     current_number += 1;
+//     // }
+// }
 
 pub async fn stream_report_feature(
     device: Arc<Mutex<DeviceState>>,
@@ -481,10 +481,13 @@ pub async fn stream_report(
 ) {
     use crate::messages::report_message::{ID};
     use crate::messages::report_message::ReportMessage;
+    use sample_crate::Buttons;
+
 
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_in_data = adevice.lock().unwrap().get_data();
+        let buttons = Buttons::new(report_in_data.buttons);
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_feature_data = adevice.lock().unwrap().get_report();
 
@@ -498,6 +501,56 @@ pub async fn stream_report(
             ry: report_in_data.ry_axis as u32,
             rz: report_in_data.rz_axis as u32,
             slider: report_in_data.slider_axis as u32,
+
+            b1: buttons.b1 as bool,
+            b2: buttons.b2 as bool,
+            b3: buttons.b3 as bool,
+            b4: buttons.b4 as bool,
+            b5: buttons.b5 as bool,
+            b6: buttons.b6 as bool,
+            b7: buttons.b7 as bool,
+            b8: buttons.b8 as bool,
+            b9: buttons.b9 as bool,
+            b10: buttons.b10 as bool,
+            b11: buttons.b11 as bool,
+            b12: buttons.b12 as bool,
+            b13: buttons.b13 as bool,
+            b14: buttons.b14 as bool,
+            b15: buttons.b15 as bool,
+            b16: buttons.b16 as bool,
+            b17: buttons.b17 as bool,
+            b18: buttons.b18 as bool,
+            b19: buttons.b19 as bool,
+            b20: buttons.b20 as bool,
+            b21: buttons.b21 as bool,
+            b22: buttons.b22 as bool,
+            b23: buttons.b23 as bool,
+            b24: buttons.b24 as bool,
+            b25: buttons.b25 as bool,
+            b26: buttons.b26 as bool,
+            b27: buttons.b27 as bool,
+            b28: buttons.b28 as bool,
+            b29: buttons.b29 as bool,
+            b30: buttons.b30 as bool,
+            b31: buttons.b31 as bool,
+            b32: buttons.b32 as bool,
+            b33: buttons.b33 as bool,
+            b34: buttons.b34 as bool,
+            b35: buttons.b35 as bool,
+            b36: buttons.b36 as bool,
+            b37: buttons.b37 as bool,
+            b38: buttons.b38 as bool,
+            b39: buttons.b39 as bool,
+            b40: buttons.b40 as bool,
+            b41: buttons.b41 as bool,
+            b42: buttons.b42 as bool,
+            b43: buttons.b43 as bool,
+            b44: buttons.b44 as bool,
+            b45: buttons.b45 as bool,
+            b46: buttons.b46 as bool,
+            b47: buttons.b47 as bool,
+            b48: buttons.b48 as bool,
+            b49: buttons.b49 as bool,
 
             fid: report_feature_data.id as u32,
             x_min: report_feature_data.x_min as u32,

@@ -2,7 +2,9 @@
 //! You might want to remove this crate in production.
 
 pub use hid::{DeviceState, ReportIn, ReportFeature};
+pub use buttons::Buttons;
 
+mod buttons;
 mod hid;
 
 pub use mandelbrot::{mandelbrot, Point, Size};

@@ -381,6 +381,8 @@ impl DeviceState {
     
 }
 
+
+
 #[derive(Clone, Debug)]
 pub struct ReportIn {
     pub id: u8,
