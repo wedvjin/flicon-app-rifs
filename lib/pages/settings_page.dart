@@ -9,6 +9,7 @@ import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/base_rotation.dart';
 import 'package:flicon/widgets/settings/button_1.dart';
 import 'package:flicon/widgets/settings/button_10.dart';
+import 'package:flicon/widgets/settings/button_2.dart';
 import 'package:flicon/widgets/settings/button_3.dart';
 import 'package:flicon/widgets/settings/button_5.dart';
 import 'package:flicon/widgets/settings/button_7.dart';
@@ -258,38 +259,45 @@ class _SettingPageState extends State<SettingPage> {
     }
 
     void updateShowButton(data) {
-      data.b2 ? addPressedButton(11) : removePressedButton(11);
-      data.b7 ? addPressedButton(1) : removePressedButton(1);
-      data.b8 ? addPressedButton(6) : removePressedButton(6);
-      data.b9 ? addPressedButton(4) : removePressedButton(4);
-      data.b12 ? addPressedButton(8) : removePressedButton(8);
+
+      if(_controlButton == 0 ) {
+        data.b2 ? addPressedButton(11) : removePressedButton(11);
+        data.b7 ? addPressedButton(1) : removePressedButton(1);
+        data.b8 ? addPressedButton(6) : removePressedButton(6);
+        data.b9 ? addPressedButton(4) : removePressedButton(4);
+        data.b12 ? addPressedButton(8) : removePressedButton(8);
 
 
-      if(data.b10 || data.b11 || data.b13 || data.b14) {
-        addPressedButton(3);
-      } else {
-        removePressedButton(3);
+        if(data.b10 || data.b11 || data.b13 || data.b14) {
+          addPressedButton(3);
+        } else {
+          removePressedButton(3);
+        }
+
+        if(data.b16 || data.b17 || data.b18) {
+          addPressedButton(7);
+        } else {
+          removePressedButton(7);
+        }
+
+        if(data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26 || data.b27) {
+          addPressedButton(10);
+        } else {
+          removePressedButton(10);
+        }
+
+        if(data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b35 || data.b36) {
+          addPressedButton(5);
+        } else {
+          removePressedButton(5);
+        }
+
+        if(data.b37 || data.b38 || data.b39 || data.b40 || data.b41 || data.b42 || data.b43 || data.b44 || data.b45) {
+          addPressedButton(2);
+        } else {
+          removePressedButton(2);
+        }
       }
-
-      if(data.b16 || data.b17 || data.b18) {
-        addPressedButton(7);
-      } else {
-        removePressedButton(7);
-      }
-
-      if(data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26) {
-        addPressedButton(10);
-      } else {
-        removePressedButton(10);
-      }
-
-      if(data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b34 || data.b35 || data.b36) {
-        addPressedButton(5);
-      } else {
-        removePressedButton(5);
-      }
-
-      data.b37 ? addPressedButton(2) : removePressedButton(2);
     }
 
 
@@ -341,6 +349,12 @@ class _SettingPageState extends State<SettingPage> {
 
                                         Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),),
                                         for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 595, height: 464),),
+
+                                        // active
+                                        Positioned(
+                                          child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 595, height: 464)),
+                                        ),
+
                                         // leds
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
                                           Positioned(
@@ -367,11 +381,6 @@ class _SettingPageState extends State<SettingPage> {
                                               child: Image.asset('assets/$controller/led-b.png', width: 595, height: 464)
                                             ),
                                           ),
-                                        
-                                        // active
-                                        Positioned(
-                                          child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 595, height: 464)),
-                                        ),
                                         if(_controlButton != 0) 
                                           Positioned(
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
@@ -502,6 +511,8 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
                                 if(_controlButton == 1)
                                   Button1(data: data),
+                                if(_controlButton == 2)
+                                  Button2(data: data),
                                 if(_controlButton == 3)
                                   Button3(data: data),
                                 if(_controlButton == 5)

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
-
+import 'package:rust_in_flutter/rust_in_flutter.dart';
+import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 
 class Button7 extends StatefulWidget {
   final reportMessage.ReportMessage data;
@@ -16,24 +17,65 @@ enum buttonType { all, b }
 
 class _Button7State extends State<Button7> {
 
-  int _centerPostion = 50;
+  buttonType? _currentValue = buttonType.all;
+  buttonType? _editableValue = buttonType.all; 
+  bool isChanged = false;
 
-  bool _showCalibation = false;
+  Future<deviceInfo.ReadResponse> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
+    );
+    var rustResponse = await requestToRust(RustRequest(
+      resource: deviceInfo.ID,
+      operation: operation,
+      message: requestMessage.writeToBuffer(),
+    ));
+    var responseMessage =
+        deviceInfo.ReadResponse.fromBuffer(
+          rustResponse.message!,
+        );
+    return responseMessage;
+  }
 
-  List<double> calibration = [5, 45, 65, 95];
-  buttonType? _character = buttonType.all;
+
 
 
   @override
   Widget build(BuildContext context) {
 
+    String image = 'none';
+
+    if(widget.data.b16 || widget.data.b17 || widget.data.b18) {
+      if(widget.data.b16) {
+        image = 'push';
+      }
+      if(widget.data.b17) {
+        image = 'top';
+      }
+      if(widget.data.b18) {
+        image = 'bottom';
+      }
+
+    } else {
+      image = 'none';
+    }
+
+    if(widget.data.hatka1Mode == 0) {
+      _currentValue = buttonType.all;
+    } else if(widget.data.hatka1Mode == 4) {
+      _currentValue = buttonType.b;
+    }
 
     return Column(
       children: [
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/2-axis-button/none.png', width: 100, height: 100),
+              child: Image.asset('assets/2-axis-button/${image}.png', width: 100, height: 100),
             )
           ],
         ),
@@ -57,10 +99,13 @@ class _Button7State extends State<Button7> {
           leading: Radio<buttonType>(
             value: buttonType.all,
             fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
-            groupValue: _character,
+            groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
-                _character = value;
+                if(!isChanged) {
+                  isChanged = true;
+                }
+                _editableValue = value;
               });
             },
           ),
@@ -81,11 +126,14 @@ class _Button7State extends State<Button7> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.b,
-            groupValue: _character,
             fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
-                _character = value;
+                if(!isChanged) {
+                  isChanged = true;
+                }
+                _editableValue = value;
               });
             },
           ),
@@ -99,10 +147,25 @@ class _Button7State extends State<Button7> {
               backgroundColor: const Color.fromARGB(255, 62, 62, 62),
               foregroundColor: Colors.white),
           child: const Text('Apply changes'),
-          onPressed: () => {
-            setState(() => _showCalibation = !_showCalibation)
-        
-          },
+          onPressed: isChanged ? () {
+            int hatka1 = 0;
+            if(_editableValue == buttonType.all) {
+              hatka1 = 0;
+            } else if (_editableValue == buttonType.b) {    
+              hatka1 = 4;
+            }
+
+            print(hatka1);
+            rust_request('sethatka1', hatka1, 0, 0, 0, RustOperation.Update);
+            rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+            rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+
+            setState(() {
+              Future.delayed(Duration(seconds: 2)).then((value) {
+                isChanged = false;
+              });
+            });
+          } : null,
         )),
 
        

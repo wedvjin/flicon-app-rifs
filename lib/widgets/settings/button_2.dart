@@ -5,17 +5,17 @@ import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
 
-class Button10 extends StatefulWidget {
+class Button2 extends StatefulWidget {
   final reportMessage.ReportMessage data;
-  const Button10({Key? key, required this.data}) : super(key: key);
+  const Button2({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<Button10> createState() => _Button10State();
+  State<Button2> createState() => _Button2State();
 }
 
 enum buttonType { all, hv, h, v, b }
 
-class _Button10State extends State<Button10> {
+class _Button2State extends State<Button2> {
 
   buttonType? _currentValue = buttonType.all;
   buttonType? _editableValue = buttonType.all; 
@@ -41,55 +41,55 @@ class _Button10State extends State<Button10> {
     return responseMessage;
   }
 
+
   @override
   Widget build(BuildContext context) {
 
     String image = 'none';
 
-    if(widget.data.b19 || widget.data.b20 || widget.data.b21 || widget.data.b22 || widget.data.b23 || widget.data.b24 || widget.data.b25 || widget.data.b26 || widget.data.b27) {
-      if(widget.data.b19) {
+    if(widget.data.b37 || widget.data.b38 || widget.data.b39 || widget.data.b40 || widget.data.b41 || widget.data.b42 || widget.data.b43 || widget.data.b44 || widget.data.b45) {
+      if(widget.data.b37) {
         image = 'push';
       }
-      if(widget.data.b20) {
+      if(widget.data.b38) {
         image = 'top';
       }
-      if(widget.data.b21) {
+      if(widget.data.b39) {
         image = 'right-top';
       }
-      if(widget.data.b22) {
+      if(widget.data.b40) {
         image = 'right';
       }
-      if(widget.data.b23) {
+      if(widget.data.b41) {
         image = 'right-bottom';
       }
-      if(widget.data.b24) {
+      if(widget.data.b42) {
         image = 'bottom';
       }
-      if(widget.data.b25) {
+      if(widget.data.b43) {
         image = 'left-bottom';
       }
-      if(widget.data.b26) {
+      if(widget.data.b44) {
         image = 'left';
       }
-      if(widget.data.b27) {
+      if(widget.data.b45) {
         image = 'left-top';
       }
     } else {
       image = 'none';
     }
 
-    if(widget.data.hatka2Mode == 0) {
+    if(widget.data.hatka4Mode == 0) {
       _currentValue = buttonType.all;
-    } else if(widget.data.hatka2Mode == 1) {
+    } else if(widget.data.hatka4Mode == 1) {
       _currentValue = buttonType.hv;
-    } else if(widget.data.hatka2Mode == 2) {
+    } else if(widget.data.hatka4Mode == 2) {
       _currentValue = buttonType.h;
-    } else if(widget.data.hatka2Mode == 3) {
+    } else if(widget.data.hatka4Mode == 3) {
       _currentValue = buttonType.v;
-    } else if(widget.data.hatka2Mode == 4) {
+    } else if(widget.data.hatka4Mode == 4) {
       _currentValue = buttonType.b;
     }
-
 
 
     return Column(
@@ -250,19 +250,19 @@ class _Button10State extends State<Button10> {
               foregroundColor: Colors.white),
           child: const Text('Apply changes'),
           onPressed: isChanged ? () {
-            int hatka2 = 0;
+            int hatka4 = 0;
             if(_editableValue == buttonType.all) {
-              hatka2 = 0;
+              hatka4 = 0;
             } else if (_editableValue == buttonType.hv) {
-              hatka2 = 1;
+              hatka4 = 1;
             } else if (_editableValue == buttonType.h) {
-              hatka2 = 2;
+              hatka4 = 2;
             } else if (_editableValue == buttonType.v) {  
-              hatka2 = 3;
+              hatka4 = 3;
             } else if (_editableValue == buttonType.b) {    
-              hatka2 = 4;
+              hatka4 = 4;
             }
-            rust_request('sethatka2', hatka2, 0, 0, 0, RustOperation.Update);
+            rust_request('sethatka4', hatka4, 0, 0, 0, RustOperation.Update);
             rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
             rust_request('save', 0, 0, 0, 0, RustOperation.Update);
 
