@@ -488,6 +488,8 @@ pub async fn stream_report(
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_in_data = adevice.lock().unwrap().get_data();
         let buttons = Buttons::new(report_in_data.buttons);
+        // println!("BUTTONS: {:?}", buttons);
+        println!("{:#048b}", report_in_data.buttons);
         crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_feature_data = adevice.lock().unwrap().get_report();
 
@@ -613,6 +615,7 @@ pub async fn stream_report(
             slider_axis: report_feature_data.slider_axis as u32,
             fw_version: report_feature_data.fw_version as u32,
         };
+        
         let rust_signal = RustSignal {
             resource: ID,
             message: Some(report_in_signal_message.encode_to_vec()),
