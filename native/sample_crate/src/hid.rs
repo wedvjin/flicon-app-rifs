@@ -8,6 +8,7 @@ use serde::de::value;
 const VENDOR_ID_CONST: u16 = 13911;
 
 pub struct DeviceState {
+    pub connected: bool,
     pub device: Box<HidDevice>,
     pub controller_info: DeviceInfo,
     pub feature: ReportFeature,
@@ -16,16 +17,23 @@ pub struct DeviceState {
 impl DeviceState {
     pub fn new() -> Self {
         let api = hidapi::HidApi::new().unwrap();
-        let controller_info = api
+ 
+        let device_info_res = api
             .device_list()
             .into_iter()
-            .find(|&device| device.vendor_id() == VENDOR_ID_CONST).unwrap();
+            .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
+
+        if let Some(device_info) = device_info_res {
+            let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
+            let feature_report = get_report(&device);
+            let boxed_device = Box::new(device);
+        } else {
+            
+        }
         // let bmd = Box::new(matching_device);
         // Ok(Box::leak(bmd))
         // let md = matching_device.clone();
 
-        let device = api.open(controller_info.vendor_id(), controller_info.product_id()).unwrap();
-        let boxed_device = Box::new(device);
         let feautre_report = ReportFeature {
             ..Default::default()
         };
