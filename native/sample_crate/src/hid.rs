@@ -40,10 +40,33 @@ impl DeviceState {
                 
     }
 
-    // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
-    pub fn set_report_internal(&mut self) {
-        self.feature = Some(self.get_report());
+    pub fn reinst() -> Self {
+        let api = hidapi::HidApi::new().unwrap();
+ 
+        let device_info_res = api
+            .device_list()
+            .into_iter()
+            .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
+
+        if let Some(device_info) = device_info_res {
+            let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
+            let feature_report = get_report(&device);
+            let boxed_device = Box::new(device);
+            return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            
+        } else {
+
+            // let feautre_report = ReportFeature {
+            //     ..Default::default()
+            // };
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None};
+        }
     }
+
+    // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
+    // pub fn set_report_internal(&mut self) {
+    //     self.feature = Some(self.get_report());
+    // }
 
     // pub fn get_feature_report(&self) {
     //     let feature_report = get_feature_report(&self.device).unwrap();
@@ -90,12 +113,113 @@ impl DeviceState {
         println!("{:?}", self.device.as_ref().unwrap().get_serial_number_string());
     }
 
-    pub fn get_data(&self) -> ReportIn {
-        get_data(&self.device.as_ref().unwrap()).unwrap()
+    pub fn get_data(
+        &self
+    ) -> Result<
+        ReportIn
+    > {
+        let mut buf = [0u8; 21];
+        let res = self.device.as_ref().unwrap().read(&mut buf[..]).unwrap_or_default();
+        let report_in = ReportIn {
+                id: buf[0],
+                buttons: to_u64_from_6_bytes(buf[1..7].try_into().unwrap()),
+                x_axis: u16::from_le_bytes(buf[7..9].try_into().unwrap()),
+                y_axis: u16::from_le_bytes(buf[9..11].try_into().unwrap()),
+                z_axis: u16::from_le_bytes(buf[11..13].try_into().unwrap()),
+                rx_axis: u16::from_le_bytes(buf[13..15].try_into().unwrap()),
+                ry_axis: u16::from_le_bytes(buf[15..17].try_into().unwrap()),
+                rz_axis: u16::from_le_bytes(buf[17..19].try_into().unwrap()),
+                slider_axis: u16::from_le_bytes(buf[19..21].try_into().unwrap()),
+            };
+        Ok(report_in)
     }
+    // pub fn get_data(&self) -> ReportIn {
+    //     get_data(&self.device.as_ref().unwrap()).unwrap()
+    // }
 
-    pub fn get_report(&self) -> ReportFeature {
-        get_report(&self.device.as_ref().unwrap()).unwrap()
+    // pub fn get_report(&self) -> ReportFeature {
+    //     get_report(&self.device.as_ref().unwrap()).unwrap()
+    // }
+
+    pub fn get_report(
+        &self
+    ) -> Result<ReportFeature> {
+        // let api = hidapi::HidApi::new().unwrap();
+    
+        // let controller = get_controller().unwrap();
+        // let device = api.open(controller.vendor_id(), controller.product_id()).unwrap();
+    
+        let mut buf: [u8; 129] = [0; 129];
+        buf[0] = 2;
+        let res = &self.device.as_ref().unwrap().get_feature_report(&mut buf).unwrap_or_default();
+        // let res = device.get_feature_report(&mut buf).unwrap();
+    
+        let report_feature = ReportFeature {
+            id: buf[0],
+            x_min: i16::from_le_bytes(buf[1..3].try_into().unwrap()),
+            _x_centr: i16::from_le_bytes(buf[3..5].try_into().unwrap()),
+            x_max: i16::from_le_bytes(buf[5..7].try_into().unwrap()),
+            x_averaging: u8::from_le_bytes(buf[7..8].try_into().unwrap()),
+            x_dead_zone: u8::from_le_bytes(buf[8..9].try_into().unwrap()),
+            y_min: i16::from_le_bytes(buf[9..11].try_into().unwrap()),
+            _y_centr: i16::from_le_bytes(buf[11..13].try_into().unwrap()),
+            y_max: i16::from_le_bytes(buf[13..15].try_into().unwrap()),
+            y_averaging: u8::from_le_bytes(buf[15..16].try_into().unwrap()),
+            y_dead_zone: u8::from_le_bytes(buf[16..17].try_into().unwrap()),
+            z_min: i16::from_le_bytes(buf[17..19].try_into().unwrap()),
+            _z_centr: i16::from_le_bytes(buf[19..21].try_into().unwrap()),
+            z_max: i16::from_le_bytes(buf[21..23].try_into().unwrap()),
+            z_averaging: u8::from_le_bytes(buf[23..24].try_into().unwrap()),
+            z_dead_zone: u8::from_le_bytes(buf[24..25].try_into().unwrap()),
+            rx_min: i16::from_le_bytes(buf[25..27].try_into().unwrap()),
+            _rx_centr: i16::from_le_bytes(buf[27..29].try_into().unwrap()),
+            rx_max: i16::from_le_bytes(buf[29..31].try_into().unwrap()),
+            rx_averaging: u8::from_le_bytes(buf[31..32].try_into().unwrap()),
+            rx_dead_zone: u8::from_le_bytes(buf[32..33].try_into().unwrap()),
+            ry_min: i16::from_le_bytes(buf[33..35].try_into().unwrap()),
+            _ry_centr: i16::from_le_bytes(buf[35..37].try_into().unwrap()),
+            ry_max: i16::from_le_bytes(buf[37..39].try_into().unwrap()),
+            ry_averaging: u8::from_le_bytes(buf[39..40].try_into().unwrap()),
+            ry_dead_zone: u8::from_le_bytes(buf[40..41].try_into().unwrap()),
+            rz_min: i16::from_le_bytes(buf[41..43].try_into().unwrap()),
+            rz_max: i16::from_le_bytes(buf[43..45].try_into().unwrap()),
+            rz_averaging: u8::from_le_bytes(buf[45..46].try_into().unwrap()),
+            rz_dead_zone: u8::from_le_bytes(buf[46..47].try_into().unwrap()),
+            slider_min: i16::from_le_bytes(buf[47..49].try_into().unwrap()),
+            slider_max: i16::from_le_bytes(buf[49..51].try_into().unwrap()),
+            slider_averaging: u8::from_le_bytes(buf[51..52].try_into().unwrap()),
+            slider_dead_zone: u8::from_le_bytes(buf[52..53].try_into().unwrap()),
+            encoder_time: u8::from_le_bytes(buf[53..54].try_into().unwrap()),
+            led_r: u8::from_le_bytes(buf[54..55].try_into().unwrap()),
+            led_g: u8::from_le_bytes(buf[55..56].try_into().unwrap()),
+            led_b: u8::from_le_bytes(buf[56..57].try_into().unwrap()),
+            id_grib: u8::from_le_bytes(buf[57..58].try_into().unwrap()),
+            hatka1_mode: u8::from_le_bytes(buf[58..59].try_into().unwrap()),
+            hatka2_mode: u8::from_le_bytes(buf[59..60].try_into().unwrap()),
+            hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
+            hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
+            control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
+            gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
+            gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
+            gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
+            gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
+            gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
+            gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
+            spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
+            buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
+            x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),
+            y_axis: i16::from_le_bytes(buf[84..86].try_into().unwrap()),
+            z_axis: i16::from_le_bytes(buf[86..88].try_into().unwrap()),
+            rx_axis: i16::from_le_bytes(buf[88..90].try_into().unwrap()),
+            ry_axis: i16::from_le_bytes(buf[90..92].try_into().unwrap()),
+            rz_axis: i16::from_le_bytes(buf[92..94].try_into().unwrap()),
+            slider_axis: i16::from_le_bytes(buf[94..96].try_into().unwrap()),
+            fw_version: u16::from_le_bytes(buf[96..98].try_into().unwrap()),
+        };
+    
+        // println!("Read: {:?}", &buf[..res]);
+        // println!("Feature report: {:?}",report_feature);
+        Ok(report_feature)
     }
 
     pub fn get_report_descriptor(&self) -> ReportFeature {
@@ -505,6 +629,12 @@ pub struct ReportFeature {
 impl Default for ReportFeature {
     fn default() -> ReportFeature {
         ReportFeature { id: 0, x_min: 0, _x_centr: 0, x_max: 0, x_averaging: 0, x_dead_zone: 0, y_min: 0, _y_centr: 0, y_max: 0, y_averaging: 0, y_dead_zone: 0, z_min: 0, _z_centr: 0, z_max: 0, z_averaging: 0, z_dead_zone: 0, rx_min: 0, _rx_centr: 0, rx_max: 0, rx_averaging: 0, rx_dead_zone: 0, ry_min: 0, _ry_centr: 0, ry_max: 0, ry_averaging: 0, ry_dead_zone: 0, rz_min: 0, rz_max: 0, rz_averaging: 0, rz_dead_zone: 0, slider_min: 0, slider_max: 0, slider_averaging: 0, slider_dead_zone: 0, encoder_time: 0, led_r: 0, led_g: 0, led_b: 0, id_grib: 0, hatka1_mode: 0, hatka2_mode: 0, hatka3_mode: 0, hatka4_mode: 0, control_byte: 0, gash_button1_min: 0, gash_button1_max: 0, gash_button2_min: 0, gash_button2_max: 0, gash_button3_min: 0, gash_button3_max: 0, spi_error_cnt: 0, buttons: 0, x_axis: 0, y_axis: 0, z_axis: 0, rx_axis: 0, ry_axis: 0, rz_axis: 0, slider_axis: 0, fw_version: 0 }
+    }
+}
+
+impl Default for ReportIn {
+    fn default() -> ReportIn {
+        ReportIn { id: 0, buttons: 0, x_axis: 0, y_axis: 0, z_axis: 0, rx_axis: 0, ry_axis: 0, rz_axis: 0, slider_axis: 0 }
     }
 }
 

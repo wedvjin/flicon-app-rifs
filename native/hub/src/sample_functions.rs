@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
 use prost::Message;
-use sample_crate::{DeviceState};
+use sample_crate::{DeviceState, ReportIn, ReportFeature};
 
 pub async fn handle_sample_resource(rust_request: RustRequest) -> RustResponse {
     match rust_request.operation {
@@ -116,17 +116,52 @@ pub async fn stream_report(
     use crate::messages::report_message::ReportMessage;
     use sample_crate::Buttons;
 
-
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
-        let report_in_data = adevice.lock().unwrap().get_data();
+
+        let mut device_state = adevice.lock().unwrap();
+
+        if !device_state.connected {
+            DeviceState::reinst();
+        }
+
+        let report_in_data_res = device_state.get_data();
+        let report_in_data: ReportIn = match report_in_data_res {
+            Ok(data) => {
+                device_state.connected = true;
+                data
+            },
+            Err(err) => {
+                device_state.connected = false;
+                ReportIn {
+                    ..Default::default()
+                }
+            }
+        };
+
+
         let buttons = Buttons::new(report_in_data.buttons);
         // println!("BUTTONS: {:?}", buttons);
         // println!("{:#048b}", report_in_data.buttons);
         // crate::sleep(std::time::Duration::from_millis(40)).await;
-        let report_feature_data = adevice.lock().unwrap().get_report();
+
+        // let report_feature_data = adevice.lock().unwrap().get_report();
+        let report_feature_data_res = device_state.get_report();
+        let report_feature_data: ReportFeature = match report_feature_data_res {
+            Ok(data) => {
+                device_state.connected = true;
+                data
+            },
+            Err(err) => {
+                device_state.connected = false;
+                ReportFeature {
+                    ..Default::default()
+                }
+            }
+        };
 
         let report_in_signal_message = ReportMessage {
+            connected: device_state.connected,
             id: report_in_data.id as u32,
             buttons: report_in_data.buttons as u64,
             x: report_in_data.x_axis as u32,

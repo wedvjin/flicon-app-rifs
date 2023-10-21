@@ -122,4 +122,6 @@ message ReportMessage {
     int32 rz_axis = 117;
     int32 slider_axis = 118;
     uint32 fw_version = 119;
+
+    bool connected = 120;
 }
