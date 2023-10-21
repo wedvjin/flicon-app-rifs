@@ -9,9 +9,9 @@ const VENDOR_ID_CONST: u16 = 13911;
 
 pub struct DeviceState {
     pub connected: bool,
-    pub device: Box<HidDevice>,
-    pub controller_info: DeviceInfo,
-    pub feature: ReportFeature,
+    pub device: Option<Box<HidDevice>>,
+    pub controller_info: Option<DeviceInfo>,
+    pub feature: Option<ReportFeature>,
 }
 
 impl DeviceState {
@@ -27,17 +27,21 @@ impl DeviceState {
             let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
             let feature_report = get_report(&device);
             let boxed_device = Box::new(device);
-        } else {
+            return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
             
+        } else {
+
+            let feautre_report = ReportFeature {
+                ..Default::default()
+            };
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None};
         }
         // let bmd = Box::new(matching_device);
         // Ok(Box::leak(bmd))
         // let md = matching_device.clone();
 
-        let feautre_report = ReportFeature {
-            ..Default::default()
-        };
-        DeviceState { device: boxed_device, controller_info: controller_info.clone(), feature: feautre_report}
+        
+        
     }
 
     // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
