@@ -333,19 +333,37 @@ class _SettingPageState extends State<SettingPage> {
 
                                          Positioned(
                                           top: 40,
-                                          child: Text("$_showButton")),
+                                          child: Text("${data.buttons.toBytes()}")),
                                         Positioned(
                                           top: 60,
-                                          child: Text("${data.hatka1Mode} ${data.hatka2Mode} ${data.hatka3Mode} ${data.hatka4Mode}")),
+                                          child: Text("${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5} ")),
                                         Positioned(
                                           top: 80,
-                                          child: Text("${data.isFrozen}")),
+                                          child: Text("${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10} ")),
                                         Positioned(
                                           top: 100,
-                                          child: Text("${data.buttons.toInt()}")),
-    
-
-                                  
+                                          child: Text("${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15} ")),
+                                        Positioned(
+                                          top: 120,
+                                          child: Text("${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20} ")),
+                                        Positioned(
+                                          top: 140,
+                                          child: Text("${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25} ")),
+                                        Positioned(
+                                          top: 160,
+                                          child: Text("${data.b26} ${data.b26} ${data.b27} ${data.b28} ${data.b29} ")),
+                                        Positioned(
+                                          top: 180,
+                                          child: Text("${data.b30} ${data.b31} ${data.b32} ${data.b33} ${data.b34} ")),
+                                        Positioned(
+                                          top: 200,
+                                          child: Text("${data.b35} ${data.b36} ${data.b37} ${data.b38} ${data.b39} ")),
+                                        Positioned(
+                                          top: 220,
+                                          child: Text("${data.b40} ${data.b41} ${data.b42} ${data.b43} ${data.b44} ")),
+                                        Positioned(
+                                          top: 240,
+                                          child: Text("${data.b45} ${data.b46} ${data.b47} ${data.b48} ${data.b49} ")),
                                         Positioned(
                                           bottom: 20,
                                           child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
