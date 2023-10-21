@@ -489,8 +489,8 @@ pub async fn stream_report(
         let report_in_data = adevice.lock().unwrap().get_data();
         let buttons = Buttons::new(report_in_data.buttons);
         // println!("BUTTONS: {:?}", buttons);
-        println!("{:#048b}", report_in_data.buttons);
-        crate::sleep(std::time::Duration::from_millis(40)).await;
+        // println!("{:#048b}", report_in_data.buttons);
+        // crate::sleep(std::time::Duration::from_millis(40)).await;
         let report_feature_data = adevice.lock().unwrap().get_report();
 
         let report_in_signal_message = ReportMessage {
