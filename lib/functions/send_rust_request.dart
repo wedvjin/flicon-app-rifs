@@ -1,7 +1,6 @@
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
-import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
 
 
 Future<void> to_rust(String message, int v1, int v2, int v3, int v4, RustOperation operation) async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
-import 'package:integer/integer.dart';
 
 
 class Button1 extends StatefulWidget {
@@ -24,16 +23,34 @@ class _Button1State extends State<Button1> {
   @override
   Widget build(BuildContext context) {
 
+    bool _isPressed = widget.data.buttons.toInt() == 2228224;
+
     return Column(
       children: [
         Stack(
           children: <Widget>[
             Container(
-              width: 150,
-              height: 150,
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(193, 10, 10, 1),
+              width: 170,
+              height: 170,
+              decoration: BoxDecoration(
+                color: _isPressed ? Color.fromRGBO(99, 6, 6, 1):  Color.fromRGBO(0, 0, 0, 1),
                 shape: BoxShape.circle,
+                border: Border.all(
+                  color: Color.fromRGBO(99, 6, 6, 1),// Border color
+                  width: 2.0,           // Border width
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(193, 10, 10, 1),
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
             
@@ -74,8 +91,8 @@ class _Button1State extends State<Button1> {
               ),
             ),
             Positioned(
-              top: 150 / 2 - 15 + (((widget.data.ry * 100 / 32768) - 50)),
-              left: 150 / 2 - 15 + (((widget.data.rx * 100 / 32768) - 50)),
+              top: 150 / 2 - 15 + (((widget.data.ry * 100 / 32768) - 50)) + 10,
+              left: 150 / 2 - 15 + (((widget.data.rx * 100 / 32768) - 50)) + 10,
               child: Container(
                 width: 30,
                 height: 30,
@@ -126,7 +143,7 @@ class _Button1State extends State<Button1> {
                   divisions: 48,
                 )
               ),
-              Text('Center average : ${_centerPostion}'),
+              Text('Center average : $_centerPostion'),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: Slider(

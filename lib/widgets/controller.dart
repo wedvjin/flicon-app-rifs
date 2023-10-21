@@ -1,15 +1,9 @@
-import 'package:flicon/widgets/settings/base_calibration.dart';
-import 'package:flicon/widgets/settings/base_rotation.dart';
-import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:provider/provider.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 
 
-import 'dart:math' as math;
 import 'package:toggle_switch/toggle_switch.dart';
 
 const List<String> profiles = <String>[
@@ -97,7 +91,7 @@ class _ControllersState extends State<Controllers> {
         builder: (context, snapshot) {
           final rustSignal = snapshot.data;
           if (rustSignal == null) {
-            return Text("No reportInMessage stream");
+            return const Text("No reportInMessage stream");
           } else {
               var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
             
@@ -138,7 +132,7 @@ class _ControllersState extends State<Controllers> {
                     top: 40,
                     child: Text('${data.buttons}'),
                   ),
-                  Positioned(top: 20,child: Text('${x} ${y}')),
+                  Positioned(top: 20,child: Text('$x $y')),
                   Positioned(
                     bottom: 20,
                     child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
@@ -183,7 +177,7 @@ class _ControllersState extends State<Controllers> {
                                   _showButton = _showButton + 1;
                                 }
                           }),
-                          child: Text('Button ${_showButton}')
+                          child: Text('Button $_showButton')
                           )),
                   Positioned(
                       bottom: 60,
@@ -198,15 +192,15 @@ class _ControllersState extends State<Controllers> {
                                 }
                             
                               }),
-                          child: Text('LED'))),
+                          child: const Text('LED'))),
 
               ]
             )),
-            Column(children: [Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(children: [const Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10),
               child: Text('ok'),
             ))
       ]),

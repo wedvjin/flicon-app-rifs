@@ -4,18 +4,15 @@ import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 
 
-class JoystickCalibartion extends StatefulWidget {
+class Button9 extends StatefulWidget {
   final reportMessage.ReportMessage data;
-  const JoystickCalibartion({Key? key, required this.data}) : super(key: key);
+  const Button9({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<JoystickCalibartion> createState() => _JoystickCalibartionState();
+  State<Button9> createState() => _Button9State();
 }
 
-class _JoystickCalibartionState extends State<JoystickCalibartion> {
-
-  final double _xAsis = 50;
-  final double _yAsis = 50;
+class _Button9State extends State<Button9> {
 
   int _centerPostion = 50;
 
@@ -31,66 +28,30 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
         Stack(
           children: <Widget>[
             Container(
-              width: 150,
-              height: 150,
+              width: 250,
+              height: 30,
               decoration: const BoxDecoration(
                 color: Color.fromRGBO(193, 10, 10, 1),
-                shape: BoxShape.circle,
-              ),
-            ),
-            
-            const Positioned(
-              top: 16.0,
-              left: 0.0,
-              right: 0.0,
-              child: Icon(
-                Icons.arrow_upward,
-                color: Colors.white54,
-              ),
-            ),
-            const Positioned(
-              top: 0.0,
-              bottom: 0.0,
-              left: 16.0,
-              child: Icon(
-                Icons.arrow_back,
-                color: Colors.white54,
-              ),
-            ),
-            const Positioned(
-              top: 0.0,
-              bottom: 0.0,
-              right: 16.0,
-              child: Icon(
-                Icons.arrow_forward,
-                color: Colors.white54,
-              ),
-            ),
-            const Positioned(
-              bottom: 16.0,
-              left: 0.0,
-              right: 0.0,
-              child: Icon(
-                Icons.arrow_downward,
-                color: Colors.white54,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
             Positioned(
-              bottom: 150 / 2 - 15 + (((widget.data.y * 100 / 32768) - 50)),
-              left: 150 / 2 - 15 + (((widget.data.x * 100 / 32768) - 50)),
+              top: 0,
+              left: 0,
               child: Container(
-                width: 30,
+                width: (widget.data.slider * 250 / 23000 ).toDouble(),
                 height: 30,
                 decoration: const BoxDecoration(
                   color: Color.fromRGBO(132, 5, 5, 1),
-                  shape: BoxShape.circle,
+                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+
                 ),
               ),
             ),
           ],
         ),
-
-   
         Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: ElevatedButton(
@@ -105,6 +66,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
         
           },
         )),
+
+        Text("${widget.data.slider} ${widget.data.sliderAveraging} ${widget.data.sliderMin} ${widget.data.sliderMax}"),
+  
         if(_showCalibation) 
           Column(
             children: [

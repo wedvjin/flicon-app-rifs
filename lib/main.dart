@@ -1,12 +1,9 @@
 import 'dart:ui';
 import 'package:flicon/theme.dart';
-import 'package:flicon/widgets/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
-import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
-import 'package:flicon/messages/report_feature_message.pb.dart' as reportFeatureMessage;
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
@@ -28,7 +25,7 @@ GoRouter router() {
       ),
       GoRoute(
         path: '/settings',
-        builder: (context, state) => SettingPage(),
+        builder: (context, state) => const SettingPage(),
       ),
     ],
   );
@@ -157,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No reportMessage stream");
+                  return const Text("No reportMessage stream");
                 } else {
                   var dd = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                   //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);

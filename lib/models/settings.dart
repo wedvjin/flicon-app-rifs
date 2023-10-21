@@ -28,7 +28,7 @@ class RGB {
   const RGB(this.r, this.g, this.b);
 
   @override
-  int get hashCode => (this.r + this.g + this.b);
+  int get hashCode => (r + g + b);
 
   @override
   bool operator ==(Object other) => other is RGB && other.r == r && other.g == g && other.b == b;

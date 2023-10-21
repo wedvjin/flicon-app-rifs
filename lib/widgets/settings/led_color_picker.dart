@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flicon/functions/send_rust_request.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
