@@ -44,6 +44,7 @@ class _SettingPageState extends State<SettingPage> {
   String profileListValue = profiles.first;
   HSVColor color = HSVColor.fromColor(Colors.blue);
   int _showButton = 0;
+  List<int> _showButtons = [0];
   int _controlButton = 0;
   var cursor = SystemMouseCursors.basic;
   int initialController = 1; // right
@@ -198,8 +199,6 @@ class _SettingPageState extends State<SettingPage> {
           _showButton = 1;
         } else if(((x >484 && y > 190) && (x<509 && y<215))) {
           _showButton = 2;
-        } else if(((x >484 && y > 190) && (x<509 && y<215))) {
-          _showButton = 2;
         } else if(((x >499 && y > 230) && (x<510 && y<247))) {
           _showButton = 3;
         } else if(((x >520 && y > 196) && (x<528 && y<218))) {
@@ -246,6 +245,54 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
 
+    void addPressedButton(btn) {
+      if(!_showButtons.contains(btn)) {
+        _showButtons.add(btn); 
+      }
+    }
+
+    void removePressedButton(btn) {
+      if(_showButtons.contains(btn)) {
+        _showButtons.removeAt(_showButtons.indexOf(btn));
+      }
+    }
+
+    void updateShowButton(data) {
+      data.b2 ? addPressedButton(11) : removePressedButton(11);
+      data.b7 ? addPressedButton(1) : removePressedButton(1);
+      data.b8 ? addPressedButton(6) : removePressedButton(6);
+      data.b9 ? addPressedButton(4) : removePressedButton(4);
+      data.b12 ? addPressedButton(8) : removePressedButton(8);
+
+
+      if(data.b10 || data.b11 || data.b13 || data.b14) {
+        addPressedButton(3);
+      } else {
+        removePressedButton(3);
+      }
+
+      if(data.b16 || data.b17 || data.b18) {
+        addPressedButton(7);
+      } else {
+        removePressedButton(7);
+      }
+
+      if(data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26) {
+        addPressedButton(10);
+      } else {
+        removePressedButton(10);
+      }
+
+      if(data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b34 || data.b35 || data.b36) {
+        addPressedButton(5);
+      } else {
+        removePressedButton(5);
+      }
+
+      data.b37 ? addPressedButton(2) : removePressedButton(2);
+    }
+
+
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -260,7 +307,8 @@ class _SettingPageState extends State<SettingPage> {
                 //return Text("No reportMessage stream");
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
-              
+                updateShowButton(data);
+
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
                   children: [
@@ -287,14 +335,12 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
-                                       
                                         Positioned(
                                           child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
-                                        Positioned(
-                                          child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),
-                                        ),
 
+                                        Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),),
+                                        for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 595, height: 464),),
                                         // leds
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
                                           Positioned(
@@ -331,39 +377,10 @@ class _SettingPageState extends State<SettingPage> {
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
                                           ),
 
-                                         Positioned(
+                                        Positioned(
                                           top: 40,
-                                          child: Text("${data.buttons.toBytes()}")),
-                                        Positioned(
-                                          top: 60,
-                                          child: Text("${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5} ")),
-                                        Positioned(
-                                          top: 80,
-                                          child: Text("${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10} ")),
-                                        Positioned(
-                                          top: 100,
-                                          child: Text("${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15} ")),
-                                        Positioned(
-                                          top: 120,
-                                          child: Text("${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20} ")),
-                                        Positioned(
-                                          top: 140,
-                                          child: Text("${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25} ")),
-                                        Positioned(
-                                          top: 160,
-                                          child: Text("${data.b26} ${data.b26} ${data.b27} ${data.b28} ${data.b29} ")),
-                                        Positioned(
-                                          top: 180,
-                                          child: Text("${data.b30} ${data.b31} ${data.b32} ${data.b33} ${data.b34} ")),
-                                        Positioned(
-                                          top: 200,
-                                          child: Text("${data.b35} ${data.b36} ${data.b37} ${data.b38} ${data.b39} ")),
-                                        Positioned(
-                                          top: 220,
-                                          child: Text("${data.b40} ${data.b41} ${data.b42} ${data.b43} ${data.b44} ")),
-                                        Positioned(
-                                          top: 240,
-                                          child: Text("${data.b45} ${data.b46} ${data.b47} ${data.b48} ${data.b49} ")),
+                                          child: Text("${_showButtons}")),
+                           
                                         Positioned(
                                           bottom: 20,
                                           child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
