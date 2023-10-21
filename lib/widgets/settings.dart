@@ -1,8 +1,4 @@
-import 'package:flicon/widgets/settings/base_rotation.dart';
-import 'package:flicon/widgets/settings/base_calibration.dart';
-import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -37,7 +33,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   String profileListValue = profiles.first;
   HSVColor color = HSVColor.fromColor(Colors.blue);
-  bool _ledExpanded = false;
+  final bool _ledExpanded = false;
   List<double> chartData = [1];
 
   @override

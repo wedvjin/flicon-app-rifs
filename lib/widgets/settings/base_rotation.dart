@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
@@ -14,16 +13,16 @@ class BaseRotation extends StatefulWidget {
 
 class _BaseRotationState extends State<BaseRotation> {
 
-  double _rotationValue = 0.0;
-  double _realRotationValue = 0.0;
+  final double _rotationValue = 0.0;
+  final double _realRotationValue = 0.0;
   
   double _centerPostion = 0.0;
 
   bool _showCalibation = false;
 
   List<double> calibration = [0, 0.05, 0.05, 0.1];
-  double _radiusValue = 0.0;
-  bool _negativeValue = false;
+  final double _radiusValue = 0.0;
+  final bool _negativeValue = false;
 
   @override
   Widget build(BuildContext context) {

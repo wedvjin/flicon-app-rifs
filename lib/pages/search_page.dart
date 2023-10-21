@@ -19,7 +19,7 @@ class _SearchState extends State<Search> {
       body: Stack( 
         children: [
           Center(child: Lottie.asset('assets/4scqCEpLd4.json', height: 200,)),
-          Center(child: Text('Device not found.')),
+          const Center(child: Text('Device not found.')),
           Positioned(
             bottom: 30,
             left: 400,
@@ -27,7 +27,7 @@ class _SearchState extends State<Search> {
             child:  ElevatedButton(
             
             style: ElevatedButton.styleFrom(
-                maximumSize: Size(200, 50),
+                maximumSize: const Size(200, 50),
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero),
                 backgroundColor: const Color.fromARGB(255, 62, 62, 62),

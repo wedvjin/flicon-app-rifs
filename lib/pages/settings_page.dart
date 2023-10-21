@@ -1,14 +1,20 @@
 
-import 'dart:async';
+
+import 'dart:ffi';
+import 'dart:typed_data';
 
 import 'package:blur/blur.dart';
 import 'package:flicon/pages/search_page.dart';
 import 'package:flicon/widgets/settings/base_calibration.dart';
 import 'package:flicon/widgets/settings/base_rotation.dart';
 import 'package:flicon/widgets/settings/button_1.dart';
+import 'package:flicon/widgets/settings/button_10.dart';
+import 'package:flicon/widgets/settings/button_3.dart';
+import 'package:flicon/widgets/settings/button_5.dart';
+import 'package:flicon/widgets/settings/button_7.dart';
+import 'package:flicon/widgets/settings/button_9.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
@@ -44,7 +50,7 @@ class _SettingPageState extends State<SettingPage> {
   String controller = 'right';
   final int min = 0;
   final int max = 10;
-  bool _flip = false;
+  final bool _flip = false;
 
   double realX = 0;
   double realY = 0;
@@ -234,12 +240,12 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
   
-  int mask = 64;
 
 
   
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
@@ -270,7 +276,7 @@ class _SettingPageState extends State<SettingPage> {
                           )
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
                             onTapDown: (details) => clickPostion(details),
                             child :
@@ -281,11 +287,12 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
+                                       
                                         Positioned(
-                                          child: Image.asset('assets/${controller}/controllers_and_base.png', width: 595, height: 464),
+                                          child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
                                         Positioned(
-                                          child: Image.asset('assets/${controller}/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),
+                                          child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),
                                         ),
 
                                         // leds
@@ -324,7 +331,18 @@ class _SettingPageState extends State<SettingPage> {
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
                                           ),
 
-
+                                         Positioned(
+                                          top: 40,
+                                          child: Text("$_showButton")),
+                                        Positioned(
+                                          top: 60,
+                                          child: Text("${data.hatka1Mode} ${data.hatka2Mode} ${data.hatka3Mode} ${data.hatka4Mode}")),
+                                        Positioned(
+                                          top: 80,
+                                          child: Text("${data.isFrozen}")),
+                                        Positioned(
+                                          top: 100,
+                                          child: Text("${data.buttons.toInt()}")),
     
 
                                   
@@ -334,10 +352,10 @@ class _SettingPageState extends State<SettingPage> {
                                             ToggleSwitch(
                                               initialLabelIndex: initialController,
                                               totalSwitches: 2,
-                                              inactiveBgColor: Color.fromRGBO(44, 44, 44, 1),
+                                              inactiveBgColor: const Color.fromRGBO(44, 44, 44, 1),
                                               inactiveFgColor: Colors.grey,
 
-                                              activeBgColor: [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
+                                              activeBgColor: const [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
                                               activeFgColor: Colors.white,
                                               //changeOnTap: false,
 
@@ -355,7 +373,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 });
                                               },
 
-                                              labels: ['Left', 'Right'],
+                                              labels: const ['Left', 'Right'],
                                  
                                         ),
                                       ),
@@ -375,7 +393,7 @@ class _SettingPageState extends State<SettingPage> {
                       child: Container(
                         color: Colors.black,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                           child: ListView(
                             children: [
                               Column(children: [
@@ -449,6 +467,16 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
                                 if(_controlButton == 1)
                                   Button1(data: data),
+                                if(_controlButton == 3)
+                                  Button3(data: data),
+                                if(_controlButton == 5)
+                                  Button5(data: data),
+                                if(_controlButton == 7)
+                                  Button7(data: data),
+                                if(_controlButton == 9)
+                                  Button9(data: data),
+                                if(_controlButton == 10)
+                                  Button10(data: data),
                                 if(_controlButton == 13)
                                   JoystickCalibartion(data: data),
                                 if(_controlButton == 14)
