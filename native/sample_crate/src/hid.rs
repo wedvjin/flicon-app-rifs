@@ -1,12 +1,14 @@
 extern crate hidapi;
+use std::{path::PathBuf, fs::{OpenOptions, File, self}, io::{Write, Read}};
+
 use anyhow::{anyhow, Result};
 use hidapi::{DeviceInfo, HidDevice};
 
 use byteorder::{LittleEndian, WriteBytesExt};
-use serde::de::value;
+use serde::{de::value, Serialize, Deserialize};
 
 const VENDOR_ID_CONST: u16 = 13911;
-
+const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
 
 pub struct DeviceState {
     pub connected: bool,
@@ -510,6 +512,51 @@ impl DeviceState {
         )
     }
     
+    pub fn write_to_file(&self, file_name: &str) -> Result<()> {
+        let json = serde_json::to_string(self.feature.as_ref().unwrap())?;
+        let mut file_path = PathBuf::from(BASE_PATH);
+        file_path.push(file_name);
+
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open(file_path)?;
+
+        file.write_all(json.as_bytes())?;
+        Ok(())
+    }
+
+    fn read_from_file(&mut self, file_name: &str) -> Result<()> {
+        let mut file_path = PathBuf::from(BASE_PATH);
+        file_path.push(file_name);
+        
+        let mut file = File::open(file_path)?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)?;
+        let report_feature: ReportFeature = serde_json::from_str(&contents)?;
+
+        self.feature = Some(report_feature);
+        // Ok(report_feature)
+        Ok(())
+    }
+
+    fn list_json_files() -> Result<String> {
+        let entries = fs::read_dir(BASE_PATH)?;
+        
+        let mut file_list = String::new();
+    
+        for entry in entries {
+            let entry = entry?;
+            let path = entry.path();
+            
+            if path.is_file() && path.extension() == Some(std::ffi::OsStr::new("json")) {
+                file_list.push_str(&path.display().to_string());
+                file_list.push_str(", ");
+            }
+        }
+    
+        Ok(file_list)
+    }
     
 }
 
@@ -561,7 +608,7 @@ impl ReportIn {
 //     }
 // }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ReportFeature {
     pub id: u8,
     pub x_min: i16,
