@@ -22,10 +22,10 @@ message ReadResponse {
 //and slider and everything, depending on string pass the value
 message SetValues {
     string target = 1;
-    uint32 value1 = 2;
-    uint32 value2 = 3;
-    uint32 value3 = 4;
-    uint32 value4 = 5;
+    int32 value1 = 2;
+    int32 value2 = 3;
+    int32 value3 = 4;
+    int32 value4 = 5;
 }
 
 //message SetEncoder {
