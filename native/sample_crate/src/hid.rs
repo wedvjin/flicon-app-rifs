@@ -7,34 +7,42 @@ use serde::de::value;
 
 const VENDOR_ID_CONST: u16 = 13911;
 
+
 pub struct DeviceState {
-    pub device: Box<HidDevice>,
-    pub controller_info: DeviceInfo,
-    pub feature: ReportFeature,
+    pub connected: bool,
+    pub device: Option<Box<HidDevice>>,
+    pub controller_info: Option<DeviceInfo>,
+    pub feature: Option<ReportFeature>,
 }
 
 impl DeviceState {
     pub fn new() -> Self {
         let api = hidapi::HidApi::new().unwrap();
-        let controller_info = api
+ 
+        let device_info_res = api
             .device_list()
             .into_iter()
-            .find(|&device| device.vendor_id() == VENDOR_ID_CONST).unwrap();
-        // let bmd = Box::new(matching_device);
-        // Ok(Box::leak(bmd))
-        // let md = matching_device.clone();
+            .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
 
-        let device = api.open(controller_info.vendor_id(), controller_info.product_id()).unwrap();
-        let boxed_device = Box::new(device);
-        let feautre_report = ReportFeature {
-            ..Default::default()
-        };
-        DeviceState { device: boxed_device, controller_info: controller_info.clone(), feature: feautre_report}
+        if let Some(device_info) = device_info_res {
+            let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
+            let feature_report = get_report(&device);
+            let boxed_device = Box::new(device);
+            return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            
+        } else {
+
+            // let feautre_report = ReportFeature {
+            //     ..Default::default()
+            // };
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None};
+        }
+                
     }
 
     // SHALL BE CALLED TO SET THE REPORT WORKAROUND FOR NOW
     pub fn set_report_internal(&mut self) {
-        self.feature = self.get_report();
+        self.feature = Some(self.get_report());
     }
 
     // pub fn get_feature_report(&self) {
@@ -54,7 +62,7 @@ impl DeviceState {
         // let res = self.device.get_report_descriptor(&mut buf);
         
         buf[0] = 2;
-        let res = self.device.get_feature_report(&mut buf).unwrap();
+        let res = self.device.as_ref().unwrap().get_feature_report(&mut buf).unwrap();
         //  {
         //     Ok(res) => {
         //         for byte in buf.iter() {
@@ -77,23 +85,23 @@ impl DeviceState {
     }
 
     pub fn get_device_name(&self) {
-        println!("{:?}", self.device.get_manufacturer_string());
-        println!("{:?}", self.device.get_product_string());
-        println!("{:?}", self.device.get_serial_number_string());
+        println!("{:?}", self.device.as_ref().unwrap().get_manufacturer_string());
+        println!("{:?}", self.device.as_ref().unwrap().get_product_string());
+        println!("{:?}", self.device.as_ref().unwrap().get_serial_number_string());
     }
 
     pub fn get_data(&self) -> ReportIn {
-        get_data(&self.device).unwrap()
+        get_data(&self.device.as_ref().unwrap()).unwrap()
     }
 
     pub fn get_report(&self) -> ReportFeature {
-        get_report(&self.device).unwrap()
+        get_report(&self.device.as_ref().unwrap()).unwrap()
     }
 
     pub fn get_report_descriptor(&self) -> ReportFeature {
         let mut buf: [u8; 4096] = [0; 4096]; //TODO:
         buf[0] = 2;
-        let res = (&self.device).get_report_descriptor(&mut buf).unwrap();
+        let res = (&self.device).as_ref().unwrap().get_report_descriptor(&mut buf).unwrap();
         // let res = device.get_feature_report(&mut buf).unwrap();
 
         // let buf = &buf_resreq[44..];
@@ -165,7 +173,7 @@ impl DeviceState {
     }
 
     pub fn get_side(&self) -> bool {
-        match self.controller_info.product_id() {
+        match self.controller_info.as_ref().unwrap().product_id() {
             10 => true,
             11 => false,
             _ => panic!("Not our device or bad product id")
@@ -173,67 +181,67 @@ impl DeviceState {
     }
 
     pub fn get_serial(&self) -> String {
-        self.controller_info.serial_number().unwrap().to_string()
+        self.controller_info.as_ref().unwrap().serial_number().unwrap().to_string()
     }
 
     pub fn set_x(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.x_min = value_min;
-        self.feature.x_max = value_max;
-        self.feature.x_averaging = averaging;
-        self.feature.x_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().x_min = value_min;
+        self.feature.as_mut().unwrap().x_max = value_max;
+        self.feature.as_mut().unwrap().x_averaging = averaging;
+        self.feature.as_mut().unwrap().x_dead_zone = dead_zone;
 
     }
 
     pub fn set_y(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.y_min = value_min;
-        self.feature.y_max = value_max;
-        self.feature.y_averaging = averaging;
-        self.feature.y_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().y_min = value_min;
+        self.feature.as_mut().unwrap().y_max = value_max;
+        self.feature.as_mut().unwrap().y_averaging = averaging;
+        self.feature.as_mut().unwrap().y_dead_zone = dead_zone;
     }
 
     pub fn set_z(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.z_min = value_min;
-        self.feature.z_max = value_max;
-        self.feature.z_averaging = averaging;
-        self.feature.z_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().z_min = value_min;
+        self.feature.as_mut().unwrap().z_max = value_max;
+        self.feature.as_mut().unwrap().z_averaging = averaging;
+        self.feature.as_mut().unwrap().z_dead_zone = dead_zone;
     }
 
     pub fn set_rx(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.rx_min = value_min;
-        self.feature.rx_max = value_max;
-        self.feature.rx_averaging = averaging;
-        self.feature.rx_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().rx_min = value_min;
+        self.feature.as_mut().unwrap().rx_max = value_max;
+        self.feature.as_mut().unwrap().rx_averaging = averaging;
+        self.feature.as_mut().unwrap().rx_dead_zone = dead_zone;
     }
 
     pub fn set_ry(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.ry_min = value_min;
-        self.feature.ry_max = value_max;
-        self.feature.ry_averaging = averaging;
-        self.feature.ry_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().ry_min = value_min;
+        self.feature.as_mut().unwrap().ry_max = value_max;
+        self.feature.as_mut().unwrap().ry_averaging = averaging;
+        self.feature.as_mut().unwrap().ry_dead_zone = dead_zone;
     }
 
     pub fn set_rz(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.rz_min = value_min;
-        self.feature.rz_max = value_max;
-        self.feature.rz_averaging = averaging;
-        self.feature.rz_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().rz_min = value_min;
+        self.feature.as_mut().unwrap().rz_max = value_max;
+        self.feature.as_mut().unwrap().rz_averaging = averaging;
+        self.feature.as_mut().unwrap().rz_dead_zone = dead_zone;
     }
 
     pub fn set_slider(&mut self, value_min: u16, value_max: u16, averaging: u8, dead_zone: u8) {
-        self.feature.slider_min = value_min;
-        self.feature.slider_max = value_max;
-        self.feature.slider_averaging = averaging;
-        self.feature.slider_dead_zone = dead_zone;
+        self.feature.as_mut().unwrap().slider_min = value_min;
+        self.feature.as_mut().unwrap().slider_max = value_max;
+        self.feature.as_mut().unwrap().slider_averaging = averaging;
+        self.feature.as_mut().unwrap().slider_dead_zone = dead_zone;
     }
 
     pub fn set_encoder(&mut self, value: u8) {
-        self.feature.encoder_time = value;
+        self.feature.as_mut().unwrap().encoder_time = value;
     }
 
     pub fn set_rgb_led(&mut self, r: u8, g: u8, b: u8) {
-        self.feature.led_r = r;
-        self.feature.led_g = g;
-        self.feature.led_b = b;
+        self.feature.as_mut().unwrap().led_r = r;
+        self.feature.as_mut().unwrap().led_g = g;
+        self.feature.as_mut().unwrap().led_b = b;
     }
 
     // TODO: add basic check for correctness of the value... but hey it is us so)
@@ -243,12 +251,12 @@ impl DeviceState {
         if (mode != 0 || mode != 4) {
             panic!("Incorrect value");
         }
-        self.feature.hatka1_mode = mode;
+        self.feature.as_mut().unwrap().hatka1_mode = mode;
     }
 
     pub fn set_hatka2_mode(&mut self, mode: u8) {
         if let 0 | 1 | 2 | 3 | 4 = mode {
-            self.feature.hatka2_mode = mode;
+            self.feature.as_mut().unwrap().hatka2_mode = mode;
         } else {
             panic!("Incorrect value")
         }
@@ -256,7 +264,7 @@ impl DeviceState {
 
     pub fn set_hatka3_mode(&mut self, mode: u8) {
         if let 0 | 1 | 2 | 3 | 4 = mode {
-            self.feature.hatka3_mode = mode;
+            self.feature.as_mut().unwrap().hatka3_mode = mode;
         } else {
             panic!("Incorrect value")
         }
@@ -264,58 +272,58 @@ impl DeviceState {
 
     pub fn set_hatka4_mode(&mut self, mode: u8) {
         if let 0 | 1 | 2 | 3 | 4 = mode {
-            self.feature.hatka4_mode = mode;
+            self.feature.as_mut().unwrap().hatka4_mode = mode;
         } else {
             panic!("Incorrect value")
         }
     }
 
     pub fn set_gash1(&mut self, value_min: u16, value_max: u16) {
-        self.feature.gash_button1_min = value_min;
-        self.feature.gash_button1_max = value_max;
+        self.feature.as_mut().unwrap().gash_button1_min = value_min;
+        self.feature.as_mut().unwrap().gash_button1_max = value_max;
     }
     pub fn set_gash2(&mut self, value_min: u16, value_max: u16) {
-        self.feature.gash_button2_min = value_min;
-        self.feature.gash_button2_max = value_max;
+        self.feature.as_mut().unwrap().gash_button2_min = value_min;
+        self.feature.as_mut().unwrap().gash_button2_max = value_max;
     }
     pub fn set_gash3(&mut self, value_min: u16, value_max: u16) {
-        self.feature.gash_button3_min = value_min;
-        self.feature.gash_button3_max = value_max;
+        self.feature.as_mut().unwrap().gash_button3_min = value_min;
+        self.feature.as_mut().unwrap().gash_button3_max = value_max;
     }
     // fn set_control_byte(&self) 
     pub fn set_toggle_lr(&mut self) {
-        self.feature.control_byte ^= 1 << 6;
+        self.feature.as_mut().unwrap().control_byte ^= 1 << 6;
     }
 
     pub fn set_enable_dfu(&mut self) {
-        self.feature.control_byte |= 1 << 7;
+        self.feature.as_mut().unwrap().control_byte |= 1 << 7;
     }
 
     pub fn set_enable_calibrate_base(&mut self) {
-        self.feature.control_byte |= 1 << 2;
+        self.feature.as_mut().unwrap().control_byte |= 1 << 2;
     }
 
     pub fn set_enable_calibrate_handle(&mut self) {
-        self.feature.control_byte |= 1 << 3;
+        self.feature.as_mut().unwrap().control_byte |= 1 << 3;
     }
 
     pub fn set_disable_calibrate_handle(&mut self) {
-        self.feature.control_byte &= !(1 << 3);
+        self.feature.as_mut().unwrap().control_byte &= !(1 << 3);
     }
 
     pub fn set_disable_calibrate_base(&mut self) {
-        self.feature.control_byte &= !(1 << 2);
+        self.feature.as_mut().unwrap().control_byte &= !(1 << 2);
     }
 
     pub fn set_save_config(&mut self) {
-        self.feature.control_byte |= 1 << 0;
+        self.feature.as_mut().unwrap().control_byte |= 1 << 0;
     }
 
     pub fn send_feature(&self) {
         let mut buf: [u8; 129] = [0; 129];
         buf[0] = 2;
-        self.feature.to_bytes(&mut buf);
-        self.device.send_feature_report(&buf).unwrap();
+        self.feature.as_ref().as_mut().unwrap().to_bytes(&mut buf);
+        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap();
     }
 
     pub fn print_feature(&self) {
@@ -326,7 +334,7 @@ impl DeviceState {
         let mut buf: [u8; 129] = [0; 129];
         // buf[0] = 2;
 
-        self.feature.to_bytes(&mut buf);
+        self.feature.as_ref().as_mut().unwrap().to_bytes(&mut buf);
         buf[0] = 2;
         // self.feature.to_bytes(&mut buf);
         // let mut write_buf: [u8; 178] = [0; 178];
@@ -343,7 +351,7 @@ impl DeviceState {
         // write_buf[44..172].copy_from_slice(&buf);
         // // write_buf[45] = 3;
         // println!("WRITTEN BUFFER: {:?}", write_buf );
-        self.device.send_feature_report(&buf).unwrap();
+        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap();
     }
 
     // pub fn set_x(&mut self, x_min: u16, x_max: u16) {
@@ -357,24 +365,24 @@ impl DeviceState {
     // }
 
     pub fn get_control_byte(&self) -> u8 {
-        self.feature.control_byte
+        self.feature.as_ref().as_mut().unwrap().control_byte
     }
 
     pub fn get_x(&self) -> (u16, u16, u8, u8) {
         (
-            self.feature.x_min,
-            self.feature.x_max,
-            self.feature.x_averaging,
-            self.feature.x_dead_zone
+            self.feature.as_ref().as_mut().unwrap().x_min,
+            self.feature.as_ref().as_mut().unwrap().x_max,
+            self.feature.as_ref().as_mut().unwrap().x_averaging,
+            self.feature.as_ref().as_mut().unwrap().x_dead_zone
         )
     }
 
     pub fn get_y(&self) -> (u16, u16, u8, u8) {
         (
-            self.feature.y_min,
-            self.feature.y_max,
-            self.feature.y_averaging,
-            self.feature.y_dead_zone
+            self.feature.as_ref().as_mut().unwrap().y_min,
+            self.feature.as_ref().as_mut().unwrap().y_max,
+            self.feature.as_ref().as_mut().unwrap().y_averaging,
+            self.feature.as_ref().as_mut().unwrap().y_dead_zone
         )
     }
     
