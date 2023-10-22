@@ -526,7 +526,7 @@ impl DeviceState {
         Ok(())
     }
 
-    fn read_from_file(&mut self, file_name: &str) -> Result<()> {
+    pub fn read_from_file(&mut self, file_name: &str) -> Result<()> {
         let mut file_path = PathBuf::from(BASE_PATH);
         file_path.push(file_name);
         
@@ -535,12 +535,13 @@ impl DeviceState {
         file.read_to_string(&mut contents)?;
         let report_feature: ReportFeature = serde_json::from_str(&contents)?;
 
+        // TODO: handle control bytes to be reset
         self.feature = Some(report_feature);
         // Ok(report_feature)
         Ok(())
     }
 
-    fn list_json_files() -> Result<String> {
+    pub fn list_json_files() -> Result<String> {
         let entries = fs::read_dir(BASE_PATH)?;
         
         let mut file_list = String::new();

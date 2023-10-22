@@ -2,9 +2,11 @@
 //! You might want to remove this module in production.
 
 use std::sync::{Arc, Mutex};
+use anyhow::Result as AResult;
 
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
+use crate::messages::device_info::SetValues;
 use prost::Message;
 use sample_crate::{DeviceState, ReportIn, ReportFeature};
 
@@ -309,91 +311,38 @@ pub async fn handle_device(
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
 
-            match set_message.target.as_str() {
-                "apply" => adevice.lock().unwrap().send_feature(),
-                "setx" => adevice.lock().unwrap().set_x(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "sety" => adevice.lock().unwrap().set_y(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setz" => adevice.lock().unwrap().set_z(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setrx" => adevice.lock().unwrap().set_rx(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setry" => adevice.lock().unwrap().set_ry(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setrz" => adevice.lock().unwrap().set_rz(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setslider" => adevice.lock().unwrap().set_slider(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                    set_message.value4.try_into().unwrap(),
-                ),
-                "setencoder" => adevice.lock().unwrap().set_encoder(
-                    set_message.value1.try_into().unwrap(),
-                ),
-                "setled" => adevice.lock().unwrap().set_rgb_led(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                    set_message.value3.try_into().unwrap(),
-                ),
-                "sethatka1" => adevice.lock().unwrap().set_hatka1_mode(
-                    set_message.value1.try_into().unwrap(),
-                ),
-                "sethatka2" => adevice.lock().unwrap().set_hatka2_mode(
-                    set_message.value1.try_into().unwrap(),
-                ),
-                "sethatka3" => adevice.lock().unwrap().set_hatka3_mode(
-                    set_message.value1.try_into().unwrap(),
-                ),
-                "sethatka4" => adevice.lock().unwrap().set_hatka4_mode(
-                    set_message.value1.try_into().unwrap(),
-                ),
-                "setgash1" => adevice.lock().unwrap().set_gash1(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                ),
-                "setgash2" => adevice.lock().unwrap().set_gash2(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                ),
-                "setgash3" => adevice.lock().unwrap().set_gash3(
-                    set_message.value1.try_into().unwrap(),
-                    set_message.value2.try_into().unwrap(),
-                ),
-                "togglelr" => adevice.lock().unwrap().set_toggle_lr(),
-                "enabledfu" => adevice.lock().unwrap().set_enable_dfu(),
-                "calibratehandle" => adevice.lock().unwrap().set_enable_calibrate_base(),
-                "calibratebase" => adevice.lock().unwrap().set_enable_calibrate_handle(),
-                "discalibratehandle" => adevice.lock().unwrap().set_disable_calibrate_base(),
-                "discalibratebase" => adevice.lock().unwrap().set_disable_calibrate_handle(),
-                "save" => adevice.lock().unwrap().set_save_config(),
-                _ => println!("INCORRECT OPTION PASSED or NOT IMPLEMENTED"),
-            }
+            if set_message.target.as_str().starts_with("readconf") {
+                let config_name = &set_message.target.as_str()[9..];
+                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                adevice.lock().unwrap().read_from_file(config_name);
+            };
+
+            if set_message.target.as_str().starts_with("saveconf") {
+                let config_name = &set_message.target.as_str()[9..];
+                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                adevice.lock().unwrap().write_to_file(config_name);
+            };
+
+            let output_string = if set_message.target.as_str().starts_with("listconf") {
+                // let config_name = &set_message.target.as_str()[9..];
+                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                DeviceState::list_json_files().unwrap()
+            } else {
+                "none".to_owned()
+            };
+
+            let mm_res = match_message(adevice, set_message);
+
+            let response_message = match mm_res {
+                Ok(suc) => ReadResponse {
+                    output_numbers: 200,
+                    output_string: output_string,
+                },
+                Err(err) => ReadResponse {
+                    output_numbers: 400,
+                    output_string: err.to_owned(),
+                }
+            };
             
 
             // adevice.lock().unwrap().set_rgb_led(
@@ -403,10 +352,10 @@ pub async fn handle_device(
             // );
             
             // Return the response that will be sent to Dart.
-            let response_message = ReadResponse {
-                output_numbers: 200,
-                output_string: "success".to_owned(),
-            };
+            // let response_message = ReadResponse {
+            //     output_numbers: 200,
+            //     output_string: "success".to_owned(),
+            // };
             RustResponse {
                 successful: true,
                 message: Some(response_message.encode_to_vec()),
@@ -433,4 +382,95 @@ pub async fn handle_device(
         },
         RustOperation::Delete => RustResponse::default(),
     }
+}
+
+pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -> Result<(), &'static str> {
+
+    match set_message.target.as_str() {
+        "apply" => adevice.lock().unwrap().send_feature(),
+        "setx" => adevice.lock().unwrap().set_x(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "sety" => adevice.lock().unwrap().set_y(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setz" => adevice.lock().unwrap().set_z(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setrx" => adevice.lock().unwrap().set_rx(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setry" => adevice.lock().unwrap().set_ry(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setrz" => adevice.lock().unwrap().set_rz(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setslider" => adevice.lock().unwrap().set_slider(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+            set_message.value4.try_into().unwrap(),
+        ),
+        "setencoder" => adevice.lock().unwrap().set_encoder(
+            set_message.value1.try_into().unwrap(),
+        ),
+        "setled" => adevice.lock().unwrap().set_rgb_led(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+            set_message.value3.try_into().unwrap(),
+        ),
+        "sethatka1" => adevice.lock().unwrap().set_hatka1_mode(
+            set_message.value1.try_into().unwrap(),
+        ),
+        "sethatka2" => adevice.lock().unwrap().set_hatka2_mode(
+            set_message.value1.try_into().unwrap(),
+        ),
+        "sethatka3" => adevice.lock().unwrap().set_hatka3_mode(
+            set_message.value1.try_into().unwrap(),
+        ),
+        "sethatka4" => adevice.lock().unwrap().set_hatka4_mode(
+            set_message.value1.try_into().unwrap(),
+        ),
+        "setgash1" => adevice.lock().unwrap().set_gash1(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+        ),
+        "setgash2" => adevice.lock().unwrap().set_gash2(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+        ),
+        "setgash3" => adevice.lock().unwrap().set_gash3(
+            set_message.value1.try_into().unwrap(),
+            set_message.value2.try_into().unwrap(),
+        ),
+        "togglelr" => adevice.lock().unwrap().set_toggle_lr(),
+        "enabledfu" => adevice.lock().unwrap().set_enable_dfu(),
+        "calibratehandle" => adevice.lock().unwrap().set_enable_calibrate_base(),
+        "calibratebase" => adevice.lock().unwrap().set_enable_calibrate_handle(),
+        "discalibratehandle" => adevice.lock().unwrap().set_disable_calibrate_base(),
+        "discalibratebase" => adevice.lock().unwrap().set_disable_calibrate_handle(),
+        "save" => adevice.lock().unwrap().set_save_config(),
+        _ => println!("CONFIG FUNCTION happened"),
+    }
+
+    Ok(())
 }
