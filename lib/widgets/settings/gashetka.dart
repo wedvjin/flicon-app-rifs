@@ -62,6 +62,7 @@ class _GashetkaState extends State<Gashetka> {
 
     return Column(
       children: [
+        Text("${widget.data.rzAxis}"),
         const Divider(
           color: Color.fromRGBO(41, 41, 41, 1)
         ),
