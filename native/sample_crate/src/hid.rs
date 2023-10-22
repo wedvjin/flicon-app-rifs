@@ -42,7 +42,7 @@ impl DeviceState {
                 
     }
 
-    pub fn reinst() -> Self {
+    pub fn reinst(&mut self) {
         let api = hidapi::HidApi::new().unwrap();
  
         let device_info_res = api
@@ -52,16 +52,25 @@ impl DeviceState {
 
         if let Some(device_info) = device_info_res {
             let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
-            let feature_report = get_report(&device);
-            let boxed_device = Box::new(device);
-            return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            self.feature = Some(get_report(&device).unwrap());
+            self.device = Some(Box::new(device));
+            self.controller_info = Some(device_info.clone());
+            self.connected = true;
+
+            // return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
             
         } else {
 
             // let feautre_report = ReportFeature {
             //     ..Default::default()
             // };
-            return DeviceState { connected: false, device: None, controller_info: None, feature: None};
+            self.connected = false;
+            self.device = None;
+            self.controller_info = None;
+            self.feature = Some(ReportFeature {
+                ..Default::default()
+            });
+            // return DeviceState { connected: false, device: None, controller_info: None, feature: None};
         }
     }
 
