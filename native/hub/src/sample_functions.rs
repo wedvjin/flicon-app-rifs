@@ -156,9 +156,7 @@ pub async fn stream_report(
             },
             Err(err) => {
                 device_state.connected = false;
-                ReportFeature {
-                    ..Default::default()
-                }
+                device_state.feature.as_ref().unwrap().clone()
             }
         };
 
