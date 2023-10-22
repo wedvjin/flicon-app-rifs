@@ -14,7 +14,10 @@ mod with_request;
 /// Always use non-blocking async functions such as `tokio::fs::File::open`.
 async fn main() {
 
+
+
     let mut device = sample_crate::DeviceState::new();
+    device.save_current_profile().unwrap();
 
     // device.set_report_internal();
     let adevice = Arc::new(Mutex::new(device));

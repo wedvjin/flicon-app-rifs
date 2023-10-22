@@ -1,5 +1,5 @@
 extern crate hidapi;
-use std::{path::PathBuf, fs::{OpenOptions, File, self}, io::{Write, Read}};
+use std::{path::{PathBuf, Path}, fs::{OpenOptions, File, self}, io::{Write, Read}, env};
 
 use anyhow::{anyhow, Result};
 use hidapi::{DeviceInfo, HidDevice};
@@ -9,9 +9,9 @@ use serde::{de::value, Serialize, Deserialize};
 
 const VENDOR_ID_CONST: u16 = 13911;
 #[cfg(target_os = "windows")]
-const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
+const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
 #[cfg(target_os = "macos")]
-const BASE_PATH: &str = "/Users/robertas/Downloads/axium/";
+const BASE_PATH: &str = "/Users/{}/Downloads/axium/";
 
 pub struct DeviceState {
     pub connected: bool,
@@ -22,6 +22,29 @@ pub struct DeviceState {
 
 impl DeviceState {
     pub fn new() -> Self {
+
+        #[cfg(target_os = "windows")]
+        let username = env::var("USERNAME").unwrap();
+
+        #[cfg(target_os = "windows")]
+        let mut dir_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+
+        #[cfg(target_os = "macos")]
+        let username = env::var("USER");
+        
+        #[cfg(target_os = "macos")]
+        let mut dir_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+
+        if Path::new(&dir_path).exists() {
+            println!("Directory already exists!");
+        } else {
+            // If the directory does not exist, create it
+            match fs::create_dir(dir_path) {
+                Ok(_) => println!("Directory created successfully!"),
+                Err(error) => println!("Error creating directory: {:?}", error),
+            }
+        }
+
         let api = hidapi::HidApi::new().unwrap();
  
         let device_info_res = api
@@ -61,6 +84,7 @@ impl DeviceState {
                     self.device = Some(Box::new(device));
                     self.controller_info = Some(device_info.clone());
                     self.connected = true;
+                    self.save_current_profile().unwrap();
                 },
                 Err(_) => {
 
@@ -553,9 +577,27 @@ impl DeviceState {
     }
     
     pub fn write_to_file(&self, file_name: &str) -> Result<()> {
-        let json = serde_json::to_string(self.feature.as_ref().unwrap())?;
-        let mut file_path = PathBuf::from(BASE_PATH);
+        // let username = match env::var("USER") { // On Unix-like OSes
+        //     Ok(val) => val,
+        //     Err(_) => env::var("USERNAME").unwrap(), // On Windows
+        // };
+        #[cfg(target_os = "windows")]
+        let username = env::var("USERNAME").unwrap();
+
+        #[cfg(target_os = "windows")]
+        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+
+        #[cfg(target_os = "macos")]
+        let username = env::var("USER");
+        
+        #[cfg(target_os = "macos")]
+        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+
+
         file_path.push(file_name);
+
+        let json = serde_json::to_string(self.feature.as_ref().unwrap())?;
+        // let mut file_path = PathBuf::from(BASE_PATH);
 
         let mut file = OpenOptions::new()
             .write(true)
@@ -567,7 +609,20 @@ impl DeviceState {
     }
 
     pub fn read_from_file(&mut self, file_name: &str) -> Result<()> {
-        let mut file_path = PathBuf::from(BASE_PATH);
+        // let mut file_path = PathBuf::from(BASE_PATH);
+        // file_path.push(file_name);
+        #[cfg(target_os = "windows")]
+        let username = env::var("USERNAME").unwrap();
+
+        #[cfg(target_os = "windows")]
+        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+
+        #[cfg(target_os = "macos")]
+        let username = env::var("USER");
+        
+        #[cfg(target_os = "macos")]
+        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+
         file_path.push(file_name);
         
         let mut file = File::open(file_path)?;
@@ -582,7 +637,22 @@ impl DeviceState {
     }
 
     pub fn list_json_files() -> Result<String> {
-        let entries = fs::read_dir(BASE_PATH)?;
+        #[cfg(target_os = "windows")]
+        let username = env::var("USERNAME").unwrap();
+
+        #[cfg(target_os = "windows")]
+        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+
+        #[cfg(target_os = "macos")]
+        let username = env::var("USER");
+        
+        #[cfg(target_os = "macos")]
+        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+
+        let entries = fs::read_dir(file_path)?;
+
+        // let entries = fs::read_dir(BASE_PATH)?;
+        // file_path.push(file_name);
         
         let mut file_list = String::new();
     
@@ -597,6 +667,12 @@ impl DeviceState {
         }
     
         Ok(file_list)
+    }
+
+    pub fn save_current_profile(&self) -> Result<()> {
+        self.write_to_file("CURRENTPROFILE").unwrap();
+
+        Ok(())
     }
     
 }
