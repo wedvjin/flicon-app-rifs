@@ -93,8 +93,8 @@ class _Button3State extends State<Button3> {
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
           child: Slider(
             value: changed ? editable : original, 
-            min: 0,
-            max: 200,
+            min: 20,
+            max: 255,
             divisions: 100,
             activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
             onChanged: (value) => {
@@ -119,10 +119,10 @@ class _Button3State extends State<Button3> {
                 foregroundColor: Colors.white),
             child: const Text('Apply changes'),
             onPressed: changed ? () => {
-              setState(() async {
-                await rust_request('setencoder', editable.toInt(), 0, 0, 0, RustOperation.Update);
-                await rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
-                await rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+              setState(() {
+                rust_request('setencoder', editable.toInt(), 0, 0, 0, RustOperation.Update);
+                rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                rust_request('save', 0, 0, 0, 0, RustOperation.Update);
                 changed = false;
                 editable = 0;
               })
