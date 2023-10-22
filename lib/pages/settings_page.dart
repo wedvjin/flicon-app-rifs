@@ -22,6 +22,7 @@ import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:keyboard_mouse_indicator/keyboard_mouse_indicator.dart';
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 
 
 const List<String> profiles = <String>[
@@ -66,6 +67,26 @@ class _SettingPageState extends State<SettingPage> {
         _controlButton = buttonID;
       }
     });
+  }
+
+  Future<deviceInfo.ReadResponse> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
+    );
+    var rustResponse = await requestToRust(RustRequest(
+      resource: deviceInfo.ID,
+      operation: operation,
+      message: requestMessage.writeToBuffer(),
+    ));
+    var responseMessage =
+        deviceInfo.ReadResponse.fromBuffer(
+          rustResponse.message!,
+        );
+    return responseMessage;
   }
 
   void clickPostion(TapDownDetails details) async {
@@ -317,10 +338,15 @@ class _SettingPageState extends State<SettingPage> {
               final rustSignal = snapshot.data;
               if (rustSignal == null) {
                 return const Search();
-                //return Text("No reportMessage stream");
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                 updateShowButton(data);
+
+                print(deviceInfo.ReadValues(target: profileListValue).target);
+
+                if(!data.connected) {
+                  return const Search();
+                }
 
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
@@ -348,9 +374,6 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
-                                        Positioned(
-                                          top: 0,
-                                          child: Text("${_showButton}")),
                                         Positioned(
                                           child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
