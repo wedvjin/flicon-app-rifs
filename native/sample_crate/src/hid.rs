@@ -8,7 +8,9 @@ use byteorder::{LittleEndian, WriteBytesExt};
 use serde::{de::value, Serialize, Deserialize};
 
 const VENDOR_ID_CONST: u16 = 13911;
-// const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
+#[cfg(target_os = "windows")]
+const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
+#[cfg(target_os = "macos")]
 const BASE_PATH: &str = "/Users/robertas/Downloads/axium/";
 
 pub struct DeviceState {
@@ -61,7 +63,7 @@ impl DeviceState {
                     self.connected = true;
                 },
                 Err(_) => {
-                    
+
                 }
             };
 
