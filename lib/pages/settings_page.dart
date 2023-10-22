@@ -348,7 +348,6 @@ class _SettingPageState extends State<SettingPage> {
                 if(!data.connected) {
                   return const Search();
                 }
-
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
                   children: [
