@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:Axium/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
@@ -13,8 +14,12 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/settings',
+    initialLocation: '/loading',
     routes: [
+      GoRoute(
+        path: '/loading',
+        builder: (context, state) => const LoadingPage(),
+      ),
       GoRoute(
         path: '/main',
         builder: (context, state) => const MyHomePage(),
@@ -41,7 +46,7 @@ void main() async {
     center: true,
     backgroundColor: Colors.transparent,
     skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.normal,
+    titleBarStyle: TitleBarStyle.hidden,
     windowButtonVisibility: true,
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -82,6 +87,34 @@ class _FliconAppState extends State<FliconApp> {
         theme: AppTheme().main,
         routerConfig: router(),
       );
+  }
+}
+
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
+
+  @override
+  State<LoadingPage> createState() => _LoadingPageState();
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+    @override
+  Widget build(BuildContext context) {  
+
+    Future.delayed(Duration(seconds: 3)).then((value) => {
+      context.go('/settings')
+    });
+    
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/logo.gif', width: 100,)
+          ]
+        )
+      )
+    );
   }
 }
 
