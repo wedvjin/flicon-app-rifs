@@ -80,21 +80,21 @@ class _SettingPageState extends State<SettingPage> {
         } else if(((x >152 && y > 222) && (x<163 && y<238))) {
           setControlButton(3);
         } else if(((x >175 && y > 186) && (x<197 && y<206))) {
-          setControlButton(4);
+          //setControlButton(4);
         } else if(((x >183 && y > 139) && (x<208 && y<170))) {
           setControlButton(5);
         } else if(((x >153 && y > 143) && (x<171 && y<166))) {
-          setControlButton(6);
+          //setControlButton(6);
         } else if(((x >243 && y > 168) && (x<268 && y<240))) {
           setControlButton(7);
         } else if(((x >535 && y > 389) && (x<556 && y<413))) {
-          setControlButton(8);
+          //setControlButton(8);
         } else if(((x > 188 && y > 348) && (x<222 && y<435)) || ((x>429 && y>370) && (x<484 && y<454))) {
           setControlButton(9);
         } else if(((x > 78 && y > 273) && (x<105 && y<285)) || ((x>563 && y>276) && (x<593 && y<300))) {
           setControlButton(10);
         } else if(((x > 191 && y > 269) && (x<209 && y<307)) || ((x>460 && y>286) && (x<502 && y<316))) {
-          setControlButton(11);
+          //setControlButton(11);
         } else if(((x > 215 && y > 271) && (x<252 && y<317)) || ((x>402 && y>309) && (x<434 && y<345))) {
           setControlButton(12);
         } else if(((x >291 && y > 404) && (x<372 && y<472))) {
@@ -116,21 +116,21 @@ class _SettingPageState extends State<SettingPage> {
         } else if(((x >499 && y > 230) && (x<510 && y<247))) {
           setControlButton(3);
         } else if(((x >520 && y > 196) && (x<528 && y<218))) {
-          setControlButton(4);
+          //setControlButton(4);
         } else if(((x >527 && y > 156) && (x<549 && y<183))) {
           setControlButton(5);
         } else if(((x >498 && y > 159) && (x<515 && y<179))) {
-          setControlButton(6);
+          //setControlButton(6);
         } else if(((x >581 && y > 179) && (x<603 && y<249))) {
           setControlButton(7);
         } else if(((x >184 && y > 413) && (x<210 && y<441))) {
-          setControlButton(8);
+          //setControlButton(8);
         } else if(((x > 70 && y > 391) && (x<143 && y<494)) || ((x>526 && y>341) && (x<562 && y<426))) {
           setControlButton(9);
         } else if(((x > 215 && y > 290) && (x<251 && y<317)) || ((x>433 && y>275) && (x<455 && y<286))) {
           setControlButton(10);
         } else if(((x > 101 && y > 296) && (x<156 && y<330)) || ((x>536 && y>271) && (x<546 && y<306))) {
-          setControlButton(11);
+          //setControlButton(11);
         } else if(((x > 37 && y > 326) && (x<78 && y<366)) || ((x>554 && y>274) && (x<590 && y<317))) {
           setControlButton(12);
         } else if(((x >291 && y > 404) && (x<372 && y<472))) {
@@ -191,7 +191,11 @@ class _SettingPageState extends State<SettingPage> {
           cursor = SystemMouseCursors.basic;
         }
         if(_showButton != 0) {
-          cursor = SystemMouseCursors.click;
+          if(_showButton == 4 || _showButton == 6 || _showButton == 8 || _showButton == 11) {
+            cursor = SystemMouseCursors.basic;
+          } else {
+            cursor = SystemMouseCursors.click;
+          }
         }
       }
 
@@ -343,7 +347,6 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
-                                        Positioned(child: Text("${data.connected}")),
                                         Positioned(
                                           child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
