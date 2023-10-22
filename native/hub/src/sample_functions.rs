@@ -141,7 +141,7 @@ pub async fn stream_report(
                         data
                     },
                     Err(err) => {
-                        println!("DISCONNECTED report in");
+                        // println!("DISCONNECTED report in");
                         connected = false;
                         // device_state.reinst();
                         device_state.connected = false;
@@ -159,7 +159,7 @@ pub async fn stream_report(
                         data
                     },
                     Err(err) => {
-                        println!("DISCONNECTED feature report");
+                        // println!("DISCONNECTED feature report");
                         connected = false;
                         device_state.connected = false;
                         device_state.reinst();
@@ -168,7 +168,7 @@ pub async fn stream_report(
                 };
             },
             Err(err) => {
-                println!("DISCONNECTED mutex lock poison");
+                // println!("DISCONNECTED mutex lock poison");
                 // err.into_inner().reinst();
             }
         };
