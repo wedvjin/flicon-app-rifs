@@ -30,7 +30,7 @@ impl DeviceState {
         let mut dir_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
         #[cfg(target_os = "macos")]
-        let username = env::var("USER");
+        let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
         let mut dir_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
@@ -588,7 +588,7 @@ impl DeviceState {
         let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
         #[cfg(target_os = "macos")]
-        let username = env::var("USER");
+        let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
         let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
@@ -618,7 +618,7 @@ impl DeviceState {
         let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
         #[cfg(target_os = "macos")]
-        let username = env::var("USER");
+        let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
         let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
@@ -644,7 +644,7 @@ impl DeviceState {
         let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
         #[cfg(target_os = "macos")]
-        let username = env::var("USER");
+        let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
         let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
