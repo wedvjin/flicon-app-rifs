@@ -1084,6 +1084,7 @@ name = "hub"
 version = "0.1.0"
 dependencies = [
  "allo-isolate",
+ "anyhow",
  "async_wasm_task",
  "backtrace",
  "bytemuck",
