@@ -107,3 +107,9 @@ impl Buttons {
         }
     }
 }
+
+impl Default for Buttons {
+    fn default() -> Buttons {
+        Buttons { b1: false, b2: false, b3: false, b4: false, b5: false, b6: false, b7: false, b8: false, b9: false, b10: false, b11: false, b12: false, b13: false, b14: false, b15: false, b16: false, b17: false, b18: false, b19: false, b20: false, b21: false, b22: false, b23: false, b24: false, b25: false, b26: false, b27: false, b28: false, b29: false, b30: false, b31: false, b32: false, b33: false, b34: false, b35: false, b36: false, b37: false, b38: false, b39: false, b40: false, b41: false, b42: false, b43: false, b44: false, b45: false, b46: false, b47: false, b48: false, b49: false }
+    }
+}
