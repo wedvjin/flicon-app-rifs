@@ -578,7 +578,7 @@ impl DeviceState {
             let entry = entry?;
             let path = entry.path();
             
-            if path.is_file() && path.extension() == Some(std::ffi::OsStr::new("json")) {
+            if path.is_file()/*  && path.extension() == Some(std::ffi::OsStr::new("json")) */{
                 file_list.push_str(&path.display().to_string());
                 file_list.push_str(", ");
             }
