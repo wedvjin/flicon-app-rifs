@@ -52,11 +52,21 @@ impl DeviceState {
             .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
 
         if let Some(device_info) = device_info_res {
-            let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
-            self.feature = Some(get_report(&device).unwrap());
-            self.device = Some(Box::new(device));
-            self.controller_info = Some(device_info.clone());
-            self.connected = true;
+            let device_res = api.open(device_info.vendor_id(), device_info.product_id());
+            let device = match device_res {
+                Ok(device) => {
+                    self.feature = Some(get_report(&device).unwrap());
+                    self.device = Some(Box::new(device));
+                    self.controller_info = Some(device_info.clone());
+                    self.connected = true;
+                },
+                Err(_) => {
+                    
+                }
+            };
+
+
+
 
             // return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
             
