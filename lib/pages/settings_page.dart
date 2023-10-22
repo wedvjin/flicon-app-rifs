@@ -4,22 +4,22 @@ import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:blur/blur.dart';
-import 'package:flicon/pages/search_page.dart';
-import 'package:flicon/widgets/settings/base_calibration.dart';
-import 'package:flicon/widgets/settings/base_rotation.dart';
-import 'package:flicon/widgets/settings/button_1.dart';
-import 'package:flicon/widgets/settings/button_10.dart';
-import 'package:flicon/widgets/settings/button_2.dart';
-import 'package:flicon/widgets/settings/button_3.dart';
-import 'package:flicon/widgets/settings/button_5.dart';
-import 'package:flicon/widgets/settings/button_7.dart';
-import 'package:flicon/widgets/settings/brakes.dart';
-import 'package:flicon/widgets/settings/gashetka.dart';
-import 'package:flicon/widgets/settings/led_color_picker.dart';
+import 'package:Axium/pages/search_page.dart';
+import 'package:Axium/widgets/settings/base_calibration.dart';
+import 'package:Axium/widgets/settings/base_rotation.dart';
+import 'package:Axium/widgets/settings/button_1.dart';
+import 'package:Axium/widgets/settings/button_10.dart';
+import 'package:Axium/widgets/settings/button_2.dart';
+import 'package:Axium/widgets/settings/button_3.dart';
+import 'package:Axium/widgets/settings/button_5.dart';
+import 'package:Axium/widgets/settings/button_7.dart';
+import 'package:Axium/widgets/settings/brakes.dart';
+import 'package:Axium/widgets/settings/gashetka.dart';
+import 'package:Axium/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:keyboard_mouse_indicator/keyboard_mouse_indicator.dart';
 

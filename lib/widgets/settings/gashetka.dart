@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
-import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 
 
 class Gashetka extends StatefulWidget {
@@ -220,7 +220,7 @@ class _GashetkaState extends State<Gashetka> {
               }
 
               rust_request('setgash3', t3Min, t3Max, 0, 0, RustOperation.Update);
-              
+
               rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
               rust_request('save', 0, 0, 0, 0, RustOperation.Update);
 

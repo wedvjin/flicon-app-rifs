@@ -1,14 +1,14 @@
 import 'dart:ui';
-import 'package:flicon/theme.dart';
+import 'package:Axium/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
-import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
-import 'package:flicon/pages/search_page.dart';
-import 'package:flicon/pages/settings_page.dart';
+import 'package:Axium/pages/search_page.dart';
+import 'package:Axium/pages/settings_page.dart';
 import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
@@ -40,10 +40,12 @@ void main() async {
     size: Size(1000, 650),
     center: true,
     backgroundColor: Colors.transparent,
-    skipTaskbar: true,
+    skipTaskbar: false,
     titleBarStyle: TitleBarStyle.hidden,
+    windowButtonVisibility: true,
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setTitle('Axium');
     await windowManager.setResizable(false);
     await windowManager.show();
     await windowManager.focus();
@@ -76,7 +78,6 @@ class _FliconAppState extends State<FliconApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        debugShowCheckedModeBanner: false,
         title: 'EVO Flight Controller',
         theme: AppTheme().main,
         routerConfig: router(),
