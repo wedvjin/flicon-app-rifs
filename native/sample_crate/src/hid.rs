@@ -35,6 +35,7 @@ impl DeviceState {
         #[cfg(target_os = "macos")]
         let mut dir_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
 
+        #[cfg(target_os = "windows")]
         if Path::new(&dir_path).exists() {
             println!("Directory already exists!");
         } else {
@@ -84,6 +85,8 @@ impl DeviceState {
                     self.device = Some(Box::new(device));
                     self.controller_info = Some(device_info.clone());
                     self.connected = true;
+
+                    #[cfg(target_os = "windows")]
                     self.save_current_profile().unwrap();
                 },
                 Err(_) => {
@@ -674,6 +677,8 @@ impl DeviceState {
 
         Ok(())
     }
+
+
     
 }
 
