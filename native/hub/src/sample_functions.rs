@@ -121,9 +121,56 @@ pub async fn stream_report(
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
         // TODO: REMAKE IT IS A QUICK WORKAROUND
-        let mut connected_flag = false;
+        let mut report_in_data: ReportIn = ReportIn {
+            ..Default::default()
+        };
+        let mut buttons: Buttons = Buttons { .. Default::default()};
+        let mut report_feature_data: ReportFeature = ReportFeature {
+            ..Default::default()
+        };
+        let mut connected: bool = false;
+        let device_lock = adevice.lock();
 
-        let mut device_state = adevice.lock().unwrap();
+        match device_lock {
+                Ok(mut device_state) => {
+                let report_in_data_res = device_state.get_data();
+                report_in_data = match report_in_data_res {
+                    Ok(data) => {
+                        connected = true;
+                        device_state.connected = true;
+                        data
+                    },
+                    Err(err) => {
+                        println!("DISCONNECTED report in");
+                        connected = false;
+                        device_state.connected = false;
+                        ReportIn {
+                            ..Default::default()
+                        }
+                    }
+                };
+                buttons = Buttons::new(report_in_data.buttons);
+                let report_feature_data_res = device_state.get_report();
+                report_feature_data = match report_feature_data_res {
+                    Ok(data) => {
+                        connected = true;
+                        device_state.connected = true;
+                        data
+                    },
+                    Err(err) => {
+                        println!("DISCONNECTED feature report");
+                        connected = false;
+                        device_state.connected = false;
+                        device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
+                    }
+                };
+            },
+            Err(err) => {
+                println!("DISCONNECTED mutex lock poison");
+                // err.into_inner().reinst();
+            }
+        };
+        
 
         // let mut device_state = device_state_res.unwrap();
         // WIP!!!
@@ -144,45 +191,45 @@ pub async fn stream_report(
         //     device_state.reinst();
         // };
 
-        let report_in_data_res = device_state.get_data();
-        let report_in_data: ReportIn = match report_in_data_res {
-            Ok(data) => {
-                device_state.connected = true;
-                data
-            },
-            Err(err) => {
-                println!("DISCONNECTED report in");
+        // let report_in_data_res = device_state.get_data();
+        // let report_in_data: ReportIn = match report_in_data_res {
+        //     Ok(data) => {
+        //         device_state.connected = true;
+        //         data
+        //     },
+        //     Err(err) => {
+        //         println!("DISCONNECTED report in");
 
-                device_state.connected = false;
-                ReportIn {
-                    ..Default::default()
-                }
-            }
-        };
+        //         device_state.connected = false;
+        //         ReportIn {
+        //             ..Default::default()
+        //         }
+        //     }
+        // };
 
 
-        let buttons = Buttons::new(report_in_data.buttons);
+        // let buttons = Buttons::new(report_in_data.buttons);
         // println!("BUTTONS: {:?}", buttons);
         // println!("{:#048b}", report_in_data.buttons);
         // crate::sleep(std::time::Duration::from_millis(40)).await;
 
         // let report_feature_data = adevice.lock().unwrap().get_report();
-        let report_feature_data_res = device_state.get_report();
-        let report_feature_data: ReportFeature = match report_feature_data_res {
-            Ok(data) => {
-                device_state.connected = true;
-                data
-            },
-            Err(err) => {
-                println!("DISCONNECTED feature report");
+        // let report_feature_data_res = device_state.get_report();
+        // let report_feature_data: ReportFeature = match report_feature_data_res {
+        //     Ok(data) => {
+        //         device_state.connected = true;
+        //         data
+        //     },
+        //     Err(err) => {
+        //         println!("DISCONNECTED feature report");
 
-                device_state.connected = false;
-                device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
-            }
-        };
+        //         device_state.connected = false;
+        //         device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
+        //     }
+        // };
 
         let report_in_signal_message = ReportMessage {
-            connected: device_state.connected,
+            connected: connected,
             id: report_in_data.id as u32,
             buttons: report_in_data.buttons as u64,
             x: report_in_data.x_axis as u32,
@@ -329,29 +376,32 @@ pub async fn handle_device(
             let message_bytes = rust_request.message.unwrap();
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
+            let mut output_string = "disconnected".to_string();
+            if adevice.lock().unwrap().connected {
 
-            if set_message.target.as_str().starts_with("readconf") {
-                let config_name = &set_message.target.as_str()[9..];
-                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
-                adevice.lock().unwrap().read_from_file(config_name);
-            };
-
-            if set_message.target.as_str().starts_with("saveconf") {
-                let config_name = &set_message.target.as_str()[9..];
-                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
-                adevice.lock().unwrap().write_to_file(config_name);
-            };
-
-            let output_string = if set_message.target.as_str().starts_with("listconf") {
-                // let config_name = &set_message.target.as_str()[9..];
-                // adevice.is_poisoned() // TODO: use together with error handling on disconnect
-                DeviceState::list_json_files().unwrap()
-            } else {
-                "none".to_owned()
-            };
-
+                if set_message.target.as_str().starts_with("readconf") {
+                    let config_name = &set_message.target.as_str()[9..];
+                    // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                    adevice.lock().unwrap().read_from_file(config_name);
+                };
+                
+                if set_message.target.as_str().starts_with("saveconf") {
+                    let config_name = &set_message.target.as_str()[9..];
+                    // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                    adevice.lock().unwrap().write_to_file(config_name);
+                };
+                
+                output_string = if set_message.target.as_str().starts_with("listconf") {
+                    // let config_name = &set_message.target.as_str()[9..];
+                    // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                    DeviceState::list_json_files().unwrap()
+                } else {
+                    "none".to_owned()
+                };
+                
+            }
             let mm_res = match_message(adevice, set_message);
-
+                
             let response_message = match mm_res {
                 Ok(suc) => ReadResponse {
                     output_numbers: 200,
