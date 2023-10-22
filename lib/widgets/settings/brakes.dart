@@ -272,7 +272,7 @@ class _BrakeState extends State<Brake> {
                 )
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Averaging: ${averageChanged ? _editableAverage.toInt() : _currentAverage.toInt()}'),
               ),
 
@@ -296,7 +296,7 @@ class _BrakeState extends State<Brake> {
               ),
 
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Dead zone : ${deadZoneChanged ? _editableDeadZoneValue.toInt() : _currentDeadZoneValue.toInt()}%'),
               ),
               Padding(

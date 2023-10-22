@@ -343,7 +343,7 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center, 
                                       children: [
-                                        Positioned(child: Text("${_showButtons}")),
+                                        Positioned(child: Text("${data.connected}")),
                                         Positioned(
                                           child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
