@@ -1,7 +1,7 @@
 //! This module is only for demonstration purposes.
 //! You might want to remove this module in production.
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, PoisonError};
 use anyhow::Result as AResult;
 
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
@@ -120,12 +120,29 @@ pub async fn stream_report(
 
     loop {
         crate::sleep(std::time::Duration::from_millis(40)).await;
+        // TODO: REMAKE IT IS A QUICK WORKAROUND
+        let mut connected_flag = false;
 
         let mut device_state = adevice.lock().unwrap();
 
-        if !device_state.connected {
-            DeviceState::reinst();
-        }
+        // let mut device_state = device_state_res.unwrap();
+        // WIP!!!
+        // let mut device_state = match device_state_res {
+        //     Ok(mut success) => {
+        //         connected_flag = true;
+        //         success.connected = true;
+        //         success
+        //     },
+        //     Err(err) => {
+        //         // println!("DISCONNECTED lock");
+        //         // err.into_inner().reinst()
+        //     }
+        // };
+
+        // device_state = if !device_state.connected || !connected_flag {
+        //     println!("REINST started");
+        //     device_state.reinst();
+        // };
 
         let report_in_data_res = device_state.get_data();
         let report_in_data: ReportIn = match report_in_data_res {
@@ -134,6 +151,8 @@ pub async fn stream_report(
                 data
             },
             Err(err) => {
+                println!("DISCONNECTED report in");
+
                 device_state.connected = false;
                 ReportIn {
                     ..Default::default()
@@ -155,8 +174,10 @@ pub async fn stream_report(
                 data
             },
             Err(err) => {
+                println!("DISCONNECTED feature report");
+
                 device_state.connected = false;
-                device_state.feature.as_ref().unwrap().clone()
+                device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
             }
         };
 
