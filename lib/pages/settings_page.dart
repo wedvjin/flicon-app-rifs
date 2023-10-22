@@ -3,6 +3,8 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
+
 import 'package:blur/blur.dart';
 import 'package:Axium/pages/search_page.dart';
 import 'package:Axium/widgets/settings/base_calibration.dart';
@@ -17,6 +19,7 @@ import 'package:Axium/widgets/settings/brakes.dart';
 import 'package:Axium/widgets/settings/gashetka.dart';
 import 'package:Axium/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
@@ -55,6 +58,8 @@ class _SettingPageState extends State<SettingPage> {
   final int min = 0;
   final int max = 10;
   final bool _flip = false;
+
+  String? _directoryPath;
 
   double realX = 0;
   double realY = 0;
@@ -166,6 +171,38 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
     });
+  }
+
+  final _dialogTitleController = TextEditingController();
+  final _initialDirectoryController = TextEditingController();
+  bool _lockParentWindow = false;
+  bool _userAborted = false;
+  FileType _pickingType = FileType.any;
+  bool _multiPick = false;
+  List<PlatformFile>? _paths;
+  String? _extension;
+
+  void _updateHW() async {
+    try {
+      _directoryPath = null;
+      await FilePicker.platform.pickFiles(
+        type: _pickingType,
+        allowMultiple: _multiPick,
+        onFileLoading: (FilePickerStatus status) => print(status),
+        allowedExtensions: (_extension?.isNotEmpty ?? false)
+            ? _extension?.replaceAll(' ', '').split(',')
+            : null,
+        dialogTitle: _dialogTitleController.text,
+        initialDirectory: _initialDirectoryController.text,
+        lockParentWindow: _lockParentWindow,
+      ).then((value) => {
+        if(value?.files != null) {
+          print(value?.files[0].path)
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
 
@@ -343,7 +380,7 @@ class _SettingPageState extends State<SettingPage> {
                 updateShowButton(data);
 
                 //print(deviceInfo.ReadValues(target: profileListValue).target);
-                print(rust_request('listconfig', 0, 0, 0, 0, RustOperation.Update));
+                //print(rust_request('listconfig', 0, 0, 0, 0, RustOperation.Update));
 
                 if(!data.connected) {
                   return const Search();
