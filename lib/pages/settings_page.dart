@@ -343,7 +343,7 @@ class _SettingPageState extends State<SettingPage> {
                 updateShowButton(data);
 
                 //print(deviceInfo.ReadValues(target: profileListValue).target);
-                //print(rust_request('listconfig', 0, 0, 0, 0, RustOperation.Update));
+                print(rust_request('listconfig', 0, 0, 0, 0, RustOperation.Update));
 
                 if(!data.connected) {
                   return const Search();

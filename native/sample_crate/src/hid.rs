@@ -9,7 +9,7 @@ use serde::{de::value, Serialize, Deserialize};
 
 const VENDOR_ID_CONST: u16 = 13911;
 // const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
-const BASE_PATH: &str = "/Users/robertas/Downloads/axium/";
+const BASE_PATH: &str = "/Users/robertas/Library/Application Support/Axium/";
 
 pub struct DeviceState {
     pub connected: bool,
