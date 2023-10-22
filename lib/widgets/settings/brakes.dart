@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
-import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:integer/integer.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 
 class Brake extends StatefulWidget {
   final reportMessage.ReportMessage data;
@@ -29,11 +29,9 @@ class _BrakeState extends State<Brake> {
   bool averageChanged = false;
 
   double _currentMin = 0;
-  double _editableMin = 0;
   bool minChanged = false;
 
   double _currentMax= 0;
-  double _editableMax = 0;
   bool maxChanged = false;
 
   var minValue = 10000000000; 
@@ -209,19 +207,6 @@ class _BrakeState extends State<Brake> {
                             ),
                           ),
                         ),
-                      
-                        // Positioned(
-                        //   top: 0,
-                        //   right: 0,
-                        //   child: Container(
-                        //     width: (((maxValue - _editableMax) / (maxValue - minValue)) * 250).clamp(0, 250),
-                        //     height: 10,
-                        //     decoration: const BoxDecoration(
-                        //       color:Color.fromRGBO(190, 4, 4, 0.8),
-                        //       shape: BoxShape.rectangle,
-                        //     ),
-                        //   ),
-                        // ),
                         Positioned(
                           top: 0,
                           left: 0,
@@ -238,26 +223,6 @@ class _BrakeState extends State<Brake> {
                     ],
                   ),
               ),
-              // if(sliderCalibration)
-              //   Padding(
-              //   padding: const EdgeInsets.only(top: 5, bottom: 10),
-              //   child: Slider(
-              //     value: rangeEdited ? _editedRangeValue : _currentRangeValue, 
-              //     min: _editedRangeMin,
-              //     max: _editedRangeMax,
-              //     divisions: 100,
-              //     activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
-              //     onChanged: (value) => {
-              //       setState(() {
-              //         if(!rangeEdited) {
-              //           rangeEdited = true;
-              //         }
-              //         _editedRangeValue = value;
-              //       })
-              //     }
-              //   )
-              // ),
-              // Text("${(maxValue - _editedRangeMax) / (maxValue - minValue) * 250}"),
               if(sliderCalibration)
                 Text('Move slider to get MIN and MAX values'),
               Padding(
@@ -307,7 +272,7 @@ class _BrakeState extends State<Brake> {
                 )
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Averaging: ${averageChanged ? _editableAverage.toInt() : _currentAverage.toInt()}'),
               ),
 
@@ -331,7 +296,7 @@ class _BrakeState extends State<Brake> {
               ),
 
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Dead zone : ${deadZoneChanged ? _editableDeadZoneValue.toInt() : _currentDeadZoneValue.toInt()}%'),
               ),
               Padding(
@@ -409,7 +374,7 @@ class _BrakeState extends State<Brake> {
                   callbackMessage = true;
                   sliderCalibration = false;
 
-                  Future.delayed(Duration(seconds: 5)).then((value) => callbackMessage = false);
+                  Future.delayed(const Duration(seconds: 5)).then((value) => callbackMessage = false);
                   
                 },
               ),

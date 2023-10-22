@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
-import 'package:flicon/messages/report_message.pb.dart' as reportMessage;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 
 
 class LedColorPicker extends StatefulWidget {
