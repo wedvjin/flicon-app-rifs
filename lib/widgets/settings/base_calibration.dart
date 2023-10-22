@@ -87,12 +87,12 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
         Stack(
           children: <Widget>[
             Container(
-              width: 170,
-              height: 170,
+              width: 150,
+              height: 150,
             ),
             Positioned(
-              top: 10,
-              left: 10,
+              top: 0,
+              left: 0,
               child: Container(
                 width: 150,
                 height: 150,
@@ -144,8 +144,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
             ),
             Positioned(
-              bottom: (((widget.data.yAxis - widget.data.yMin) / (widget.data.yMax - widget.data.yMin)) * 120).clamp(20, 120),
-              left: (((widget.data.xAxis - widget.data.xMin) / (widget.data.xMax - widget.data.xMin)) * 120).clamp(20, 120),
+              bottom: widget.data.y * 120 / 32768,
+              left: widget.data.x * 120 / 32768,
               child: Container(
                 width: 30,
                 height: 30,
