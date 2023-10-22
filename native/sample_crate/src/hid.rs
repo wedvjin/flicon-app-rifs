@@ -130,7 +130,16 @@ impl DeviceState {
         ReportIn
     > {
         let mut buf = [0u8; 21];
-        let res = self.device.as_ref().unwrap().read(&mut buf[..]).unwrap_or_default();
+        let dd_res = self.device.as_ref();
+        let dd = match dd_res{
+            Some(dd) => dd,
+            None => return Err(anyhow!("DISCONNECTED"))
+        };
+        let res = dd.read(&mut buf[..]).unwrap_or_default();
+        if res == 0 {
+            return Err(anyhow!("DISCONNECTED"));
+        }
+        // println!("res data {}", res);
         let report_in = ReportIn {
                 id: buf[0],
                 buttons: to_u64_from_6_bytes(buf[1..7].try_into().unwrap()),
@@ -162,7 +171,16 @@ impl DeviceState {
     
         let mut buf: [u8; 129] = [0; 129];
         buf[0] = 2;
-        let res = &self.device.as_ref().unwrap().get_feature_report(&mut buf).unwrap_or_default();
+        let dd_res = self.device.as_ref();
+        let dd = match dd_res{
+            Some(dd) => dd,
+            None => return Err(anyhow!("DISCONNECTED"))
+        };
+        let res = dd.get_feature_report(&mut buf).unwrap_or_default();
+        if res == 0 {
+            return Err(anyhow!("DISCONNECTED"));
+        }
+        // println!("res: {}", res);
         // let res = device.get_feature_report(&mut buf).unwrap();
     
         let report_feature = ReportFeature {
