@@ -76,7 +76,10 @@ class _BrakeState extends State<Brake> {
     _currentMin = widget.data.sliderMin.toDouble();
     _currentMax = widget.data.sliderMax.toDouble();
 
-    double originalProgress = (((widget.data.sliderAxis - widget.data.sliderMin) / (widget.data.sliderMax - widget.data.sliderMin)) * 300);
+    // double originalProgress = (((widget.data.sliderAxis - widget.data.sliderMin) / (widget.data.sliderMax - widget.data.sliderMin)) * 300);
+    // double progress = originalProgress.clamp(0, 300);
+
+    double originalProgress = (((widget.data.slider - 0) / (65536 / 2 - 0)) * 300);
     double progress = originalProgress.clamp(0, 300);
 
     return Column(
@@ -250,7 +253,7 @@ class _BrakeState extends State<Brake> {
                         _editedRangeMin = minValue.toDouble();
                         _editedRangeMax = maxValue.toDouble();
 
-                        _periodicTimer = Timer.periodic(Duration(seconds: 1), (timer) { 
+                        _periodicTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
                           var valueInRange = widget.data.sliderAxis;
                           minValue = valueInRange < minValue ? valueInRange : minValue;
                           maxValue = valueInRange > maxValue ? valueInRange : maxValue;

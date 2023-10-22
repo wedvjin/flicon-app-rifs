@@ -154,8 +154,8 @@ class _Button1State extends State<Button1> {
               ),
             ),
             Positioned(
-              top: (widget.data.ryAxis * 100 / widget.data.ryMax) + 5,
-              left: (widget.data.rxAxis * 100 / widget.data.rxMax) + 5,
+              top: widget.data.ry * 140 / 32768,
+              left: widget.data.rx * 140 / 32768,
               child: Container(
                 width: 30,
                 height: 30,
