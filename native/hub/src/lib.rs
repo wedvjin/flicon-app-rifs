@@ -17,6 +17,8 @@ async fn main() {
 
 
     let mut device = sample_crate::DeviceState::new();
+
+    #[cfg(target_os = "windows")]
     device.save_current_profile().unwrap();
 
     // device.set_report_internal();
