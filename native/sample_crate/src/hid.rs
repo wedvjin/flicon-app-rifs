@@ -8,7 +8,8 @@ use byteorder::{LittleEndian, WriteBytesExt};
 use serde::{de::value, Serialize, Deserialize};
 
 const VENDOR_ID_CONST: u16 = 13911;
-const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
+// const BASE_PATH: &str = "C:\\Users\\YourUsername\\Documents\\Flicon\\";
+const BASE_PATH: &str = "~";
 
 pub struct DeviceState {
     pub connected: bool,
