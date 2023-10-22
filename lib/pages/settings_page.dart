@@ -14,6 +14,7 @@ import 'package:flicon/widgets/settings/button_3.dart';
 import 'package:flicon/widgets/settings/button_5.dart';
 import 'package:flicon/widgets/settings/button_7.dart';
 import 'package:flicon/widgets/settings/brakes.dart';
+import 'package:flicon/widgets/settings/gashetka.dart';
 import 'package:flicon/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -348,6 +349,9 @@ class _SettingPageState extends State<SettingPage> {
                                       alignment: Alignment.center, 
                                       children: [
                                         Positioned(
+                                          top: 0,
+                                          child: Text("${_showButton}")),
+                                        Positioned(
                                           child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
                                         ),
 
@@ -525,6 +529,8 @@ class _SettingPageState extends State<SettingPage> {
                                   Brake(data: data),
                                 if(_controlButton == 10)
                                   Button10(data: data),
+                                if(_controlButton == 12)
+                                  Gashetka(data: data),
                                 if(_controlButton == 13)
                                   JoystickCalibartion(data: data),
                                 if(_controlButton == 14)
