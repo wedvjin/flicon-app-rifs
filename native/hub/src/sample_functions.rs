@@ -132,7 +132,7 @@ pub async fn stream_report(
         let device_lock = adevice.lock();
 
         match device_lock {
-                Ok(mut device_state) => {
+            Ok(mut device_state) => {
                 let report_in_data_res = device_state.get_data();
                 report_in_data = match report_in_data_res {
                     Ok(data) => {
@@ -143,6 +143,7 @@ pub async fn stream_report(
                     Err(err) => {
                         println!("DISCONNECTED report in");
                         connected = false;
+                        device_state.reinst();
                         device_state.connected = false;
                         ReportIn {
                             ..Default::default()
@@ -161,6 +162,7 @@ pub async fn stream_report(
                         println!("DISCONNECTED feature report");
                         connected = false;
                         device_state.connected = false;
+                        device_state.reinst();
                         device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
                     }
                 };
