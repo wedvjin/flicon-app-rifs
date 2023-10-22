@@ -47,6 +47,7 @@ class _BrakeState extends State<Brake> {
   double _editedRangeMax = 1000000000;
   double _editedRangeValue = 0;
   bool rangeEdited = false;
+  bool callbackMessage = false;
 
 
   Future<deviceInfo.ReadResponse> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
@@ -137,6 +138,21 @@ class _BrakeState extends State<Brake> {
             
           ],
         ),
+
+        if(callbackMessage)
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                child: Container(
+              width: 300,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  color: Color.fromRGBO(2, 42, 22, 1),
+                  shape: BoxShape.rectangle,
+                ),
+              child: Text('Settings sent do device.'),
+            )),
+
         Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: ElevatedButton(
@@ -151,7 +167,6 @@ class _BrakeState extends State<Brake> {
               _showCalibation = !_showCalibation;
 
             })
-        
           },
         )),
 
@@ -389,6 +404,12 @@ class _BrakeState extends State<Brake> {
                   rust_request('setslider', minRange, maxRange, average, deadZone, RustOperation.Update);
                   rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                   rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+
+                  _showCalibation = false;
+                  callbackMessage = true;
+                  sliderCalibration = false;
+
+                  Future.delayed(Duration(seconds: 5)).then((value) => callbackMessage = false);
                   
                 },
               ),
