@@ -143,7 +143,7 @@ pub async fn stream_report(
                     Err(err) => {
                         println!("DISCONNECTED report in");
                         connected = false;
-                        device_state.reinst();
+                        // device_state.reinst();
                         device_state.connected = false;
                         ReportIn {
                             ..Default::default()
