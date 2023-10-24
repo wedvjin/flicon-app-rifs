@@ -8,9 +8,7 @@ mod utils;
 mod buttons;
 mod hid;
 mod firmware;
-pub use mandelbrot::{mandelbrot, Point, Size};
 
-mod mandelbrot;
 
 // This is just a simple Rust function.
 
