@@ -7,7 +7,7 @@ use crate::utils::{get_current_dir, get_username};
 
 pub fn upgrade_firmware() {
     let current_dir = get_current_dir().unwrap();
-    let complete_path = current_dir.join("CubeProgrammer_API.dll");
+    let complete_path = current_dir.join("stm32/CubeProgrammer_API.dll");
     println!("path to dll: {:?}", complete_path);
 
     // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
