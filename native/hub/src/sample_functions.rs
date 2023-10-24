@@ -379,7 +379,7 @@ pub async fn handle_device(
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
             let mut output_string = "disconnected".to_string();
-            println!("MESSAGE FROM FLUTTER: {:?}", set_message.target);
+            // println!("MESSAGE FROM FLUTTER: {:?}", set_message.target);
             let mut mm_res = Ok(());
             if adevice.lock().unwrap().connected {
 
