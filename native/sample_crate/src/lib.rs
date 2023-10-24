@@ -4,9 +4,10 @@
 pub use hid::{DeviceState, ReportIn, ReportFeature};
 pub use buttons::Buttons;
 
+mod utils;
 mod buttons;
 mod hid;
-
+mod firmware;
 pub use mandelbrot::{mandelbrot, Point, Size};
 
 mod mandelbrot;

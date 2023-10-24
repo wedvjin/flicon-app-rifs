@@ -119,7 +119,7 @@ pub async fn stream_report(
     use sample_crate::Buttons;
 
     loop {
-        crate::sleep(std::time::Duration::from_millis(40)).await;
+        crate::sleep(std::time::Duration::from_millis(1)).await;
         // TODO: REMAKE IT IS A QUICK WORKAROUND
         let mut report_in_data: ReportIn = ReportIn {
             ..Default::default()
@@ -540,7 +540,7 @@ pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -
         "discalibratehandle" => adevice.lock().unwrap().set_disable_calibrate_base(),
         "discalibratebase" => adevice.lock().unwrap().set_disable_calibrate_handle(),
         "save" => adevice.lock().unwrap().set_save_config(),
-        _ => println!("CONFIG FUNCTION happened"),
+        _ => println!("CONFIG FUNCTION happened OR NOT IMPLEMENTED"),
     }
 
     Ok(())

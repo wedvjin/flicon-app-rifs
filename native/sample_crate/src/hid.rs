@@ -7,6 +7,8 @@ use hidapi::{DeviceInfo, HidDevice};
 use byteorder::{LittleEndian, WriteBytesExt};
 use serde::{de::value, Serialize, Deserialize};
 
+use crate::firmware::upgrade_firmware;
+
 const VENDOR_ID_CONST: u16 = 13911;
 #[cfg(target_os = "windows")]
 const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
@@ -27,7 +29,7 @@ impl DeviceState {
         let username = env::var("USERNAME").unwrap();
 
         #[cfg(target_os = "windows")]
-        let mut dir_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+        let mut dir_path = PathBuf::from(format!("/Users/{}/Documents/Axium/FLICON_base_2.0.hex", username));
 
         #[cfg(target_os = "macos")]
         let username = env::var("USER").unwrap();
@@ -490,6 +492,8 @@ impl DeviceState {
 
     pub fn set_enable_dfu(&mut self) {
         self.feature.as_mut().unwrap().control_byte |= 1 << 7;
+        self.write_feature();
+        upgrade_firmware();
     }
 
     pub fn set_enable_calibrate_base(&mut self) {
@@ -652,23 +656,39 @@ impl DeviceState {
         #[cfg(target_os = "macos")]
         let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
 
-        let entries = fs::read_dir(file_path)?;
-
-        // let entries = fs::read_dir(BASE_PATH)?;
-        // file_path.push(file_name);
-        
         let mut file_list = String::new();
-    
-        for entry in entries {
-            let entry = entry?;
-            let path = entry.path();
+
+        #[cfg(target_os = "windows")]
+            {
+
             
-            if path.is_file()/*  && path.extension() == Some(std::ffi::OsStr::new("json")) */{
-                file_list.push_str(&path.display().to_string());
-                file_list.push_str(", ");
+            let entries = fs::read_dir(file_path)?;
+
+            // let entries = fs::read_dir(BASE_PATH)?;
+            // file_path.push(file_name);
+            
+        
+            for entry in entries {
+                let entry = entry?;
+                let path = entry.path();
+                
+                if path.is_file()/*  && path.extension() == Some(std::ffi::OsStr::new("json")) */{
+                    file_list.push_str(&entry.file_name().into_string().unwrap());
+                    file_list.push_str(", ");
+                }
             }
         }
-    
+
+        #[cfg(target_os = "macos")]
+        {
+            // file_list.push_str(&path.display().to_string());
+            // file_list.push_str(", ");
+            file_list.push_str("MacOSmockCurrentProfile, ");
+            file_list.push_str("MacOSmockProfile1, ");
+            file_list.push_str("MacOSmockProfile2, ");
+            file_list.push_str("MacOSmockProfile3, ")
+        }
+        
         Ok(file_list)
     }
 
