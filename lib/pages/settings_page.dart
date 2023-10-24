@@ -522,42 +522,42 @@ class _SettingPageState extends State<SettingPage> {
                               Column(children: [
                                 Row(crossAxisAlignment: CrossAxisAlignment.start, 
                                   children: [
-                                  Expanded(
-                                    flex: 2,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: DropdownMenu<String>(
-                                          enableFilter: false,
-                                          enableSearch: false,
-                                          width: 160,
-                                          label: const Text("Profile"),
-                                          leadingIcon: const Icon(Icons.person),
-                                          inputDecorationTheme: const InputDecorationTheme(
-                                            filled: true,
-                                            fillColor: Color.fromARGB(255, 5, 5, 5),
-                                            outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
-                                            border: InputBorder.none,
-                                            contentPadding:
-                                                EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                                          ),
-                                          onSelected: (String? value) {
-                                            // This is called when the user selects an item.
-                                            setState(() {
-                                              currentProfile = value!;
-                                            });
-                                          },
-                                          dropdownMenuEntries:
-                                            profiles.map<DropdownMenuEntry<String>>((String value) {
-                                            return DropdownMenuEntry<String>(value: value, label: value);
-                                          }).toList(),
-                                        ),
-                                      )),
+                                  // Expanded(
+                                  //   flex: 2,
+                                  //     child: Padding(
+                                  //       padding: const EdgeInsets.only(top: 10),
+                                  //       child: DropdownMenu<String>(
+                                  //         enableFilter: false,
+                                  //         enableSearch: false,
+                                  //         width: 160,
+                                  //         label: const Text("Profile"),
+                                  //         leadingIcon: const Icon(Icons.person),
+                                  //         inputDecorationTheme: const InputDecorationTheme(
+                                  //           filled: true,
+                                  //           fillColor: Color.fromARGB(255, 5, 5, 5),
+                                  //           outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
+                                  //           border: InputBorder.none,
+                                  //           contentPadding:
+                                  //               EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                                  //         ),
+                                  //         onSelected: (String? value) {
+                                  //           // This is called when the user selects an item.
+                                  //           setState(() {
+                                  //             currentProfile = value!;
+                                  //           });
+                                  //         },
+                                  //         dropdownMenuEntries:
+                                  //           profiles.map<DropdownMenuEntry<String>>((String value) {
+                                  //           return DropdownMenuEntry<String>(value: value, label: value);
+                                  //         }).toList(),
+                                  //       ),
+                                  //     )),
                                       Expanded(
                                         flex: 1,
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 10),
                                           child:Tooltip(
-                                          message: 'Load selected profile',
+                                          message: 'Load profile from list',
                                           child: ElevatedButton(
                                           
                                             style: ElevatedButton.styleFrom(
@@ -567,16 +567,51 @@ class _SettingPageState extends State<SettingPage> {
                                                 foregroundColor: Colors.white),
                                             child: const SizedBox(
                                               height: 48, // Set a specific height
-                                              child: Center(child:Icon(Icons.file_upload))
+                                              child: Center(child:Icon(Icons.person))
                                             ),
-                                            onPressed: () => {},
+                                            onPressed: () {
+                                              rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
+                                                List<String> currentProfiles = value.outputString.split(',');
+                                                showDialog<String>(
+                                                context: context,
+                                                  builder: (BuildContext context) => AlertDialog(
+                                                    title: const Text('Load profile'),
+                                                    content: Column(
+                                                        children: currentProfiles.map((String option) {
+                                                          return RadioListTile(
+                                                            title: Text(option),
+                                                            value: option,
+                                                            groupValue: currentProfile,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                currentProfile = value;
+                                                              });
+                                                            },
+                                                          );
+                                                        }).toList(),
+                                                      ),
+                                                  
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                        child: const Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () => Navigator.pop(context, 'OK'),
+                                                        child: const Text('OK'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                            }
                                           ),)
                                       )),
                                       Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.only(top: 10),
                                         child: Tooltip(
-                                          message: 'Save current settings to new profile',
+                                          message: 'Save current settings',
                                           child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               elevation: 1,
@@ -587,7 +622,10 @@ class _SettingPageState extends State<SettingPage> {
                                               
                                           child: const SizedBox(
                                               height: 48, // Set a specific height
-                                              child: Center(child:Icon(Icons.save))
+                                              child: Center(
+                                                child: 
+                                                Icon(Icons.save)
+                                              )
                                             ),
                                           onPressed: () => {},
                                         ),
