@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:typed_data';
 
+import 'package:drop_down_selector/drop_down_selector.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:blur/blur.dart';
@@ -47,7 +48,8 @@ class _SettingPageState extends State<SettingPage> {
   late final KeyboardIndicatorController mouseController = KeyboardIndicatorController();
   Offset? _tapPosition;
 
-  String profileListValue = profiles.first;
+  List<String> profiles = <String>[];
+
   HSVColor color = HSVColor.fromColor(Colors.blue);
   int _showButton = 0;
   List<int> _showButtons = [0];
@@ -181,6 +183,7 @@ class _SettingPageState extends State<SettingPage> {
   bool _multiPick = false;
   List<PlatformFile>? _paths;
   String? _extension;
+  String? currentProfile;
 
   void _updateHW() async {
     try {
@@ -302,6 +305,19 @@ class _SettingPageState extends State<SettingPage> {
 
     });
   }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
+      profiles = value.outputString.split(',');
+    }).catchError((err) {
+      profiles = ['Oooooops'];
+      // do something...
+    });
+  }
   
 
 
@@ -378,13 +394,6 @@ class _SettingPageState extends State<SettingPage> {
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                 updateShowButton(data);
-
-                //print(deviceInfo.ReadValues(target: profileListValue).target);
-                rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-                  print(value);
-                }).catchError((err) => {
-                  print(err)
-                });
 
                 if(!data.connected) {
                   return const Search();
@@ -511,20 +520,21 @@ class _SettingPageState extends State<SettingPage> {
                           child: ListView(
                             children: [
                               Column(children: [
-                                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Row(crossAxisAlignment: CrossAxisAlignment.start, 
+                                  children: [
                                   Expanded(
-                                      flex: 3,
+                                    flex: 2,
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        padding: const EdgeInsets.only(top: 10),
                                         child: DropdownMenu<String>(
                                           enableFilter: false,
                                           enableSearch: false,
-                                          width: 270,
+                                          width: 160,
                                           label: const Text("Profile"),
-                                          leadingIcon: const Icon(Icons.folder),
+                                          leadingIcon: const Icon(Icons.person),
                                           inputDecorationTheme: const InputDecorationTheme(
                                             filled: true,
-                                            fillColor: Colors.black,
+                                            fillColor: Color.fromARGB(255, 5, 5, 5),
                                             outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
                                             border: InputBorder.none,
                                             contentPadding:
@@ -533,45 +543,57 @@ class _SettingPageState extends State<SettingPage> {
                                           onSelected: (String? value) {
                                             // This is called when the user selects an item.
                                             setState(() {
-                                              profileListValue = value!;
+                                              currentProfile = value!;
                                             });
                                           },
                                           dropdownMenuEntries:
-                                              profiles.map<DropdownMenuEntry<String>>((String value) {
+                                            profiles.map<DropdownMenuEntry<String>>((String value) {
                                             return DropdownMenuEntry<String>(value: value, label: value);
                                           }).toList(),
                                         ),
-                                      ))
-                                ]),
-                                Row(children: [
-                                  Expanded(
+                                      )),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child:Tooltip(
+                                          message: 'Load selected profile',
+                                          child: ElevatedButton(
+                                          
+                                            style: ElevatedButton.styleFrom(
+                                                shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.zero),
+                                                backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                                foregroundColor: Colors.white),
+                                            child: const SizedBox(
+                                              height: 48, // Set a specific height
+                                              child: Center(child:Icon(Icons.file_upload))
+                                            ),
+                                            onPressed: () => {},
+                                          ),)
+                                      )),
+                                      Expanded(
                                       child: Padding(
-                                    padding: const EdgeInsets.only(right: 2),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.zero),
-                                          backgroundColor: const Color.fromARGB(255, 62, 62, 62),
-                                          foregroundColor: Colors.white),
-                                      child: const Text('Load'),
-                                      onPressed: () => {},
-                                    ),
-                                  )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 2),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.zero),
-                                            backgroundColor: const Color.fromARGB(255, 62, 62, 62),
-                                            foregroundColor: Colors.white),
-                                        child: const Text('Save'),
-                                        onPressed: () => {},
-                                      ),
-                                    ),
-                                  )
-                                ]),
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Tooltip(
+                                          message: 'Save current settings to new profile',
+                                          child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              elevation: 1,
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.zero),
+                                              backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                              foregroundColor: Colors.white),
+                                              
+                                          child: const SizedBox(
+                                              height: 48, // Set a specific height
+                                              child: Center(child:Icon(Icons.save))
+                                            ),
+                                          onPressed: () => {},
+                                        ),
+                                      ))),
+                              
+                                  ]),
                                 
                                 const Divider(
                                   height: 20,
