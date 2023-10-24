@@ -301,10 +301,21 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   String selectedProfile = '';
+  final TextEditingController newProfile = TextEditingController();
+
 
   void loadProfile () {
     // do logic here
+    // send rus_request
+    // selected value = selectedProfile (string)
     print(selectedProfile);
+  }
+
+  void saveProfile() {
+    // do logic here
+    // send rus_request
+    // entered value = newProfile.text (string)
+    print(newProfile.text);
   }
 
 
@@ -384,6 +395,36 @@ class _SettingPageState extends State<SettingPage> {
           ],
       );
     }
+  }
+
+    Widget buildSaveDialog(BuildContext context) {
+
+      return AlertDialog(
+        title: const Text('Save to profile'),
+        content: TextField(
+          controller: newProfile,
+          decoration: InputDecoration(
+            labelText: 'Enter profile name',
+          ),
+        ),
+          
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              saveProfile();
+              Navigator.pop(context);
+            },
+            child: Text('Save'),
+          ),
+        ],
+      );
+
   }
   
 
@@ -595,7 +636,7 @@ class _SettingPageState extends State<SettingPage> {
                                         child: Padding(
                                           padding: const EdgeInsets.only(top: 10),
                                           child:Tooltip(
-                                          message: 'Load profile from list',
+                                          message: 'Load saved profile settings',
                                           child: ElevatedButton(
                                           
                                             style: ElevatedButton.styleFrom(
@@ -621,7 +662,7 @@ class _SettingPageState extends State<SettingPage> {
                                       child: Padding(
                                         padding: const EdgeInsets.only(top: 10),
                                         child: Tooltip(
-                                          message: 'Save current settings',
+                                          message: 'Save current settings to profile',
                                           child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               elevation: 1,
@@ -637,7 +678,14 @@ class _SettingPageState extends State<SettingPage> {
                                                 Icon(Icons.save)
                                               )
                                             ),
-                                          onPressed: () => {},
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return buildSaveDialog(context); // Call the buildDialog function
+                                              },
+                                            );
+                                          },
                                         ),
                                       ))),
                               
