@@ -46,9 +46,9 @@ class _GashetkaState extends State<Gashetka> {
 
   late Timer _periodicTimer;
 
-  RangeValues trigger1 = RangeValues(0, 65536);
-  RangeValues trigger2 = RangeValues(0, 65536);
-  RangeValues trigger3 = RangeValues(0, 65536);
+  RangeValues trigger1 = RangeValues(-32768, 32768);
+  RangeValues trigger2 = RangeValues(-32768, 32768);
+  RangeValues trigger3 = RangeValues(-32768, 32768);
 
   bool trigger1Changed = false;
   bool trigger2Changed = false;
@@ -70,7 +70,7 @@ class _GashetkaState extends State<Gashetka> {
   var minValue = 10000000000; 
   var maxValue = -10000000000; 
 
-  RangeValues globalMinMax = RangeValues(0, 65536);
+  RangeValues globalMinMax = RangeValues(-32768, 32768);
 
   bool _showCalibation = false;
 
@@ -82,6 +82,8 @@ class _GashetkaState extends State<Gashetka> {
     double originalProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 300);
     double progress = originalProgress.clamp(0, 300);
 
+    double originalSmallProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 270);
+    double progressSmall = originalSmallProgress.clamp(0, 270);
 
     return Column(
       children: [
@@ -318,9 +320,8 @@ class _GashetkaState extends State<Gashetka> {
             SliderTheme(
               data: const SliderThemeData(
                 thumbColor: Color.fromRGBO(193, 10, 10, 1),
-                activeTrackColor: Color.fromRGBO(13, 193, 10, 1),
-                inactiveTrackColor: Color.fromRGBO(193, 10, 10, 1),
-                
+                activeTrackColor: Color.fromRGBO(59, 59, 59, 1),
+                inactiveTrackColor: Color.fromRGBO(122, 122, 122, 1),
               ),
               child: 
           
@@ -343,6 +344,54 @@ class _GashetkaState extends State<Gashetka> {
                 },
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child:
+              Stack(
+                children: <Widget>[
+                  Container(
+                    width: 270,
+                    height: 5,
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: 270,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(22, 22, 22, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: progressSmall,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(50, 50, 50, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: (270 *  (deadZoneChanged ? _editableDeadZoneValue : widget.data.rzDeadZone.toDouble()) /100),
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(111, 19, 19, 0.685),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                ]
+              ),
+            ),
 
             const Divider(
               color: Color.fromRGBO(41, 41, 41, 1)
@@ -351,8 +400,8 @@ class _GashetkaState extends State<Gashetka> {
             SliderTheme(
               data: const SliderThemeData(
                 thumbColor: Color.fromRGBO(193, 10, 10, 1),
-                activeTrackColor: Color.fromRGBO(13, 193, 10, 1),
-                inactiveTrackColor: Color.fromRGBO(193, 10, 10, 1),
+                activeTrackColor: Color.fromRGBO(59, 59, 59, 1),
+                inactiveTrackColor: Color.fromRGBO(122, 122, 122, 1),
                 
               ),
               child: 
@@ -375,6 +424,54 @@ class _GashetkaState extends State<Gashetka> {
                 },
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child:
+              Stack(
+                children: <Widget>[
+                  Container(
+                    width: 270,
+                    height: 5,
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: 270,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(22, 22, 22, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: progressSmall,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(50, 50, 50, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: (270 *  (deadZoneChanged ? _editableDeadZoneValue : widget.data.rzDeadZone.toDouble()) /100),
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(111, 19, 19, 0.685),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                ]
+              ),
+            ),
 
             const Divider(
               color: Color.fromRGBO(41, 41, 41, 1)
@@ -383,9 +480,8 @@ class _GashetkaState extends State<Gashetka> {
             SliderTheme(
               data: const SliderThemeData(
                 thumbColor: Color.fromRGBO(193, 10, 10, 1),
-                activeTrackColor: Color.fromRGBO(13, 193, 10, 1),
-                inactiveTrackColor: Color.fromRGBO(193, 10, 10, 1),
-                
+                activeTrackColor: Color.fromRGBO(59, 59, 59, 1),
+                inactiveTrackColor: Color.fromRGBO(122, 122, 122, 1),
               ),
               child: 
           
@@ -405,6 +501,54 @@ class _GashetkaState extends State<Gashetka> {
                     trigger3 = value;
                   });
                 },
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child:
+              Stack(
+                children: <Widget>[
+                  Container(
+                    width: 270,
+                    height: 5,
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: 270,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(22, 22, 22, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: progressSmall,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(50, 50, 50, 1),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      width: (270 * (deadZoneChanged ? _editableDeadZoneValue : widget.data.rzDeadZone.toDouble()) /100),
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(111, 19, 19, 0.685),
+                        shape: BoxShape.rectangle,
+                      ),
+                    ),
+                  ),
+                ]
               ),
             ),
             if(callbackMessage)
