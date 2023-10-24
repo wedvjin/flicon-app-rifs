@@ -13,7 +13,8 @@ const VENDOR_ID_CONST: u16 = 13911;
 #[cfg(target_os = "windows")]
 const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
 #[cfg(target_os = "macos")]
-const BASE_PATH: &str = "/Users/{}/Downloads/axium/";
+const BASE_PATH: &str = "/Users/{}/Library/Preferences/Axium/";
+// /Users/username/Library/Preferences
 
 pub struct DeviceState {
     pub connected: bool,
@@ -29,15 +30,17 @@ impl DeviceState {
         let username = env::var("USERNAME").unwrap();
 
         #[cfg(target_os = "windows")]
-        let mut dir_path = PathBuf::from(format!("/Users/{}/Documents/Axium/FLICON_base_2.0.hex", username));
+        let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
+        
 
         #[cfg(target_os = "macos")]
         let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
-        let mut dir_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+        let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
 
-        #[cfg(target_os = "windows")]
+        println!("dir_path: {:?}", dir_path);
+        // #[cfg(target_os = "windows")]
         if Path::new(&dir_path).exists() {
             println!("Directory already exists!");
         } else {
@@ -622,13 +625,13 @@ impl DeviceState {
         let username = env::var("USERNAME").unwrap();
 
         #[cfg(target_os = "windows")]
-        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+        let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
 
         #[cfg(target_os = "macos")]
         let username = env::var("USER").unwrap();
         
         #[cfg(target_os = "macos")]
-        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+        let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
 
         file_path.push(file_name);
         
@@ -639,6 +642,7 @@ impl DeviceState {
 
         // TODO: handle control bytes to be reset
         self.feature = Some(report_feature);
+        self.write_feature();
         // Ok(report_feature)
         Ok(())
     }
@@ -658,7 +662,7 @@ impl DeviceState {
 
         let mut file_list = String::new();
 
-        #[cfg(target_os = "windows")]
+        // #[cfg(target_os = "windows")]
             {
 
             
@@ -679,15 +683,15 @@ impl DeviceState {
             }
         }
 
-        #[cfg(target_os = "macos")]
-        {
-            // file_list.push_str(&path.display().to_string());
-            // file_list.push_str(", ");
-            file_list.push_str("MacOSmockCurrentProfile, ");
-            file_list.push_str("MacOSmockProfile1, ");
-            file_list.push_str("MacOSmockProfile2, ");
-            file_list.push_str("MacOSmockProfile3, ")
-        }
+        // #[cfg(target_os = "macos")]
+        // {
+        //     // file_list.push_str(&path.display().to_string());
+        //     // file_list.push_str(", ");
+        //     file_list.push_str("MacOSmockCurrentProfile, ");
+        //     file_list.push_str("MacOSmockProfile1, ");
+        //     file_list.push_str("MacOSmockProfile2, ");
+        //     file_list.push_str("MacOSmockProfile3, ")
+        // }
         
         Ok(file_list)
     }
