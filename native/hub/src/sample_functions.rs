@@ -2,7 +2,7 @@
 //! You might want to remove this module in production.
 
 use std::sync::{Arc, Mutex, PoisonError};
-use anyhow::Result as AResult;
+use anyhow::{Result as AResult, anyhow, Error};
 
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
@@ -379,30 +379,27 @@ pub async fn handle_device(
             let set_message = SetValues::decode(message_bytes.as_slice()).unwrap();
             // crate::debug_print!("{}", request_message.letter);
             let mut output_string = "disconnected".to_string();
+            // println!("MESSAGE FROM FLUTTER: {:?}", set_message.target);
+            let mut mm_res = Ok(());
             if adevice.lock().unwrap().connected {
 
                 if set_message.target.as_str().starts_with("readconf") {
                     let config_name = &set_message.target.as_str()[9..];
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
                     adevice.lock().unwrap().read_from_file(config_name);
-                };
-                
-                if set_message.target.as_str().starts_with("saveconf") {
+                } else if set_message.target.as_str().starts_with("saveconf") {
                     let config_name = &set_message.target.as_str()[9..];
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
                     adevice.lock().unwrap().write_to_file(config_name);
-                };
-                
-                output_string = if set_message.target.as_str().starts_with("listconf") {
+                } else if set_message.target.as_str().starts_with("listconf") {
                     // let config_name = &set_message.target.as_str()[9..];
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
-                    DeviceState::list_json_files().unwrap()
+                    output_string = DeviceState::list_json_files().unwrap()
                 } else {
-                    "none".to_owned()
+                    mm_res = match_message(adevice, set_message);
                 };
-                
             }
-            let mm_res = match_message(adevice, set_message);
+            
                 
             let response_message = match mm_res {
                 Ok(suc) => ReadResponse {
@@ -411,7 +408,7 @@ pub async fn handle_device(
                 },
                 Err(err) => ReadResponse {
                     output_numbers: 400,
-                    output_string: err.to_owned(),
+                    output_string: err.to_string(),
                 }
             };
             
@@ -455,7 +452,7 @@ pub async fn handle_device(
     }
 }
 
-pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -> Result<(), &'static str> {
+pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -> anyhow::Result<()> {
 
     match set_message.target.as_str() {
         "apply" => adevice.lock().unwrap().send_feature(),
