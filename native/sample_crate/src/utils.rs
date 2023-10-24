@@ -11,3 +11,23 @@ pub fn get_username() -> Result<String> {
     Ok(username)
 }
 
+pub fn get_profiles_path() -> Result<PathBuf> {
+    let username = get_username().unwrap();
+
+    #[cfg(target_os = "windows")]
+    let base_path = "C:\\Users";
+
+    #[cfg(target_os = "macos")]
+    let base_path = "/Users/";
+
+    #[cfg(target_os = "windows")]
+    let dir_path = PathBuf::from(format!("{}\\{}\\Documents\\Axium", base_path, username));
+
+    #[cfg(target_os = "macos")]
+    let dir_path = PathBuf::from(format!("{}/{}/Library/Preferences/Axium/", base_path, username));
+
+    #[cfg(debug_assertions)]
+    println!("dir_path: {:?}", dir_path);
+
+    Ok(dir_path)
+}

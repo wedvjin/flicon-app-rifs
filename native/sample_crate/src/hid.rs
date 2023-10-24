@@ -7,14 +7,14 @@ use hidapi::{DeviceInfo, HidDevice};
 use byteorder::{LittleEndian, WriteBytesExt};
 use serde::{de::value, Serialize, Deserialize};
 
-use crate::firmware::upgrade_firmware;
+use crate::{firmware::upgrade_firmware, utils::get_profiles_path};
 
 const VENDOR_ID_CONST: u16 = 13911;
-#[cfg(target_os = "windows")]
-const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
-#[cfg(target_os = "macos")]
-const BASE_PATH: &str = "/Users/{}/Library/Preferences/Axium/";
-// /Users/username/Library/Preferences
+// #[cfg(target_os = "windows")]
+// const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
+// #[cfg(target_os = "macos")]
+// const BASE_PATH: &str = "/Users/{}/Library/Preferences/Axium/";
+// // /Users/username/Library/Preferences
 
 pub struct DeviceState {
     pub connected: bool,
@@ -26,21 +26,25 @@ pub struct DeviceState {
 impl DeviceState {
     pub fn new() -> Self {
 
-        #[cfg(target_os = "windows")]
-        let username = env::var("USERNAME").unwrap();
-
-        #[cfg(target_os = "windows")]
-        let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
-        
-
-        #[cfg(target_os = "macos")]
-        let username = env::var("USER").unwrap();
-        
-        #[cfg(target_os = "macos")]
-        let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
-
-        println!("dir_path: {:?}", dir_path);
         // #[cfg(target_os = "windows")]
+        // let username = env::var("USERNAME").unwrap();
+
+        // #[cfg(target_os = "windows")]
+        // let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
+        
+
+        // #[cfg(target_os = "macos")]
+        // let username = env::var("USER").unwrap();
+        
+        // #[cfg(target_os = "macos")]
+        // let mut dir_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
+
+        // println!("username: {:?}", username);
+        // println!("dir_path: {:?}", dir_path);
+        // #[cfg(target_os = "windows")]
+
+        let dir_path = get_profiles_path().unwrap();
+
         if Path::new(&dir_path).exists() {
             println!("Directory already exists!");
         } else {
@@ -591,18 +595,19 @@ impl DeviceState {
         //     Ok(val) => val,
         //     Err(_) => env::var("USERNAME").unwrap(), // On Windows
         // };
-        #[cfg(target_os = "windows")]
-        let username = env::var("USERNAME").unwrap();
+        // #[cfg(target_os = "windows")]
+        // let username = env::var("USERNAME").unwrap();
 
-        #[cfg(target_os = "windows")]
-        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+        // #[cfg(target_os = "windows")]
+        // let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
-        #[cfg(target_os = "macos")]
-        let username = env::var("USER").unwrap();
+        // #[cfg(target_os = "macos")]
+        // let username = env::var("USER").unwrap();
         
-        #[cfg(target_os = "macos")]
-        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+        // #[cfg(target_os = "macos")]
+        // let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
 
+        let mut file_path = get_profiles_path().unwrap();
 
         file_path.push(file_name);
 
@@ -621,18 +626,19 @@ impl DeviceState {
     pub fn read_from_file(&mut self, file_name: &str) -> Result<()> {
         // let mut file_path = PathBuf::from(BASE_PATH);
         // file_path.push(file_name);
-        #[cfg(target_os = "windows")]
-        let username = env::var("USERNAME").unwrap();
+        // #[cfg(target_os = "windows")]
+        // let username = env::var("USERNAME").unwrap();
 
-        #[cfg(target_os = "windows")]
-        let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
+        // #[cfg(target_os = "windows")]
+        // let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
 
-        #[cfg(target_os = "macos")]
-        let username = env::var("USER").unwrap();
+        // #[cfg(target_os = "macos")]
+        // let username = env::var("USER").unwrap();
         
-        #[cfg(target_os = "macos")]
-        let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
+        // #[cfg(target_os = "macos")]
+        // let mut file_path = PathBuf::from(format!("{} {}", BASE_PATH, username));
 
+        let mut file_path = get_profiles_path().unwrap();
         file_path.push(file_name);
         
         let mut file = File::open(file_path)?;
@@ -648,17 +654,19 @@ impl DeviceState {
     }
 
     pub fn list_json_files() -> Result<String> {
-        #[cfg(target_os = "windows")]
-        let username = env::var("USERNAME").unwrap();
+        // #[cfg(target_os = "windows")]
+        // let username = env::var("USERNAME").unwrap();
 
-        #[cfg(target_os = "windows")]
-        let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
+        // #[cfg(target_os = "windows")]
+        // let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
 
-        #[cfg(target_os = "macos")]
-        let username = env::var("USER").unwrap();
+        // #[cfg(target_os = "macos")]
+        // let username = env::var("USER").unwrap();
         
-        #[cfg(target_os = "macos")]
-        let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+        // #[cfg(target_os = "macos")]
+        // let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
+
+        let mut file_path = get_profiles_path().unwrap();
 
         let mut file_list = String::new();
 

@@ -18,6 +18,7 @@ pub fn upgrade_firmware() {
 
     // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
     let username = get_username().unwrap();
+    // TODO: take the same name of the latest version
     let mut file_path = PathBuf::from(format!("/Users/{}/Downloads/FLICON_base_2.0.hex", username));
 
     let os_str: &OsStr = OsStr::new(&file_path);
