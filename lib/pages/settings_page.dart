@@ -28,14 +28,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:keyboard_mouse_indicator/keyboard_mouse_indicator.dart';
 import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
 
-
-const List<String> profiles = <String>[
-  'Profile 1',
-  'Profile 2',
-  'Profile 3',
-  'Profile 4'
-];
-
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
@@ -183,7 +175,7 @@ class _SettingPageState extends State<SettingPage> {
   bool _multiPick = false;
   List<PlatformFile>? _paths;
   String? _extension;
-  String? currentProfile;
+  String currentProfile = '';
 
   void _updateHW() async {
     try {
@@ -306,18 +298,6 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
-
-
-  @override
-  void initState() {
-    super.initState();
-    rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-      profiles = value.outputString.split(',');
-    }).catchError((err) {
-      profiles = ['Oooooops'];
-      // do something...
-    });
-  }
   
 
 
@@ -570,8 +550,9 @@ class _SettingPageState extends State<SettingPage> {
                                               child: Center(child:Icon(Icons.person))
                                             ),
                                             onPressed: () {
-                                              rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-                                                List<String> currentProfiles = value.outputString.split(',');
+                                              //rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
+                                              //  List<String> currentProfiles = value.outputString.split(',');
+                                              List<String> currentProfiles = ['Rob', 'Ed', 'Flex', 'Keks'];
                                                 showDialog<String>(
                                                 context: context,
                                                   builder: (BuildContext context) => AlertDialog(
@@ -583,8 +564,9 @@ class _SettingPageState extends State<SettingPage> {
                                                             value: option,
                                                             groupValue: currentProfile,
                                                             onChanged: (value) {
+                                                              print(value);
                                                               setState(() {
-                                                                currentProfile = value;
+                                                                currentProfile = value.toString();
                                                               });
                                                             },
                                                           );
@@ -603,7 +585,7 @@ class _SettingPageState extends State<SettingPage> {
                                                     ],
                                                   ),
                                                 );
-                                              });
+                                              //});
                                             }
                                           ),)
                                       )),
