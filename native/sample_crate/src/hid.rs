@@ -65,9 +65,14 @@ impl DeviceState {
         if let Some(device_info) = device_info_res {
             let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
             let feature_report = get_report(&device);
+
             let boxed_device = Box::new(device);
-            return DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            let device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
             
+            #[cfg(target_os = "windows")]
+            device_state.save_current_profile().unwrap();
+
+            device_state
         } else {
 
             // let feautre_report = ReportFeature {
