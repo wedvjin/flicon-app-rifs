@@ -1,6 +1,7 @@
 
 
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:drop_down_selector/drop_down_selector.dart';
@@ -20,7 +21,9 @@ import 'package:Axium/widgets/settings/brakes.dart';
 import 'package:Axium/widgets/settings/gashetka.dart';
 import 'package:Axium/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
@@ -175,7 +178,6 @@ class _SettingPageState extends State<SettingPage> {
   bool _multiPick = false;
   List<PlatformFile>? _paths;
   String? _extension;
-  String currentProfile = '';
 
   void _updateHW() async {
     try {
@@ -298,6 +300,91 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
+  String selectedProfile = '';
+
+  void loadProfile () {
+    // do logic here
+    print(selectedProfile);
+  }
+
+
+
+  Widget buildLoadDialog(BuildContext context) {
+    if(!Platform.isWindows) {
+      return AlertDialog(
+        title: const Text('Oops'),
+        content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+        actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+      );
+    } else {
+      rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
+        List<String> currentProfiles = value.outputString.split(',');
+        return AlertDialog(
+          title: const Text('Select profile'),
+          content: DropdownMenu<String>(
+              enableFilter: false,
+              enableSearch: false,
+              width: 230,
+              leadingIcon: const Icon(Icons.person),
+              inputDecorationTheme: const InputDecorationTheme(
+                filled: true,
+                fillColor: Color.fromARGB(255, 5, 5, 5),
+                outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
+                border: InputBorder.none,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+              ),
+              onSelected: (String? value) {
+                // This is called when the user selects an item.
+                setState(() {
+                  selectedProfile = value.toString();
+                });
+              },
+              dropdownMenuEntries:
+                currentProfiles.map<DropdownMenuEntry<String>>((String value) {
+                return DropdownMenuEntry<String>(value: value, label: value);
+              }).toList(),
+            ),
+            
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                loadProfile();
+                Navigator.pop(context);
+              },
+              child: Text('Load'),
+            ),
+          ],
+        );
+      });
+
+      return AlertDialog(
+        title: const Text('Oops'),
+        content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+        actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+      );
+    }
+  }
   
 
 
@@ -502,36 +589,7 @@ class _SettingPageState extends State<SettingPage> {
                               Column(children: [
                                 Row(crossAxisAlignment: CrossAxisAlignment.start, 
                                   children: [
-                                  // Expanded(
-                                  //   flex: 2,
-                                  //     child: Padding(
-                                  //       padding: const EdgeInsets.only(top: 10),
-                                  //       child: DropdownMenu<String>(
-                                  //         enableFilter: false,
-                                  //         enableSearch: false,
-                                  //         width: 160,
-                                  //         label: const Text("Profile"),
-                                  //         leadingIcon: const Icon(Icons.person),
-                                  //         inputDecorationTheme: const InputDecorationTheme(
-                                  //           filled: true,
-                                  //           fillColor: Color.fromARGB(255, 5, 5, 5),
-                                  //           outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
-                                  //           border: InputBorder.none,
-                                  //           contentPadding:
-                                  //               EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                                  //         ),
-                                  //         onSelected: (String? value) {
-                                  //           // This is called when the user selects an item.
-                                  //           setState(() {
-                                  //             currentProfile = value!;
-                                  //           });
-                                  //         },
-                                  //         dropdownMenuEntries:
-                                  //           profiles.map<DropdownMenuEntry<String>>((String value) {
-                                  //           return DropdownMenuEntry<String>(value: value, label: value);
-                                  //         }).toList(),
-                                  //       ),
-                                  //     )),
+            
                                       Expanded(
                                         flex: 1,
                                         child: Padding(
@@ -550,43 +608,13 @@ class _SettingPageState extends State<SettingPage> {
                                               child: Center(child:Icon(Icons.person))
                                             ),
                                             onPressed: () {
-                                              //rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-                                              //  List<String> currentProfiles = value.outputString.split(',');
-                                              List<String> currentProfiles = ['Rob', 'Ed', 'Flex', 'Keks'];
-                                                showDialog<String>(
+                                              showDialog(
                                                 context: context,
-                                                  builder: (BuildContext context) => AlertDialog(
-                                                    title: const Text('Load profile'),
-                                                    content: Column(
-                                                        children: currentProfiles.map((String option) {
-                                                          return RadioListTile(
-                                                            title: Text(option),
-                                                            value: option,
-                                                            groupValue: currentProfile,
-                                                            onChanged: (value) {
-                                                              print(value);
-                                                              setState(() {
-                                                                currentProfile = value.toString();
-                                                              });
-                                                            },
-                                                          );
-                                                        }).toList(),
-                                                      ),
-                                                  
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                                                        child: const Text('Cancel'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed: () => Navigator.pop(context, 'OK'),
-                                                        child: const Text('OK'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              //});
-                                            }
+                                                builder: (context) {
+                                                  return buildLoadDialog(context); // Call the buildDialog function
+                                                },
+                                              );
+                                            },
                                           ),)
                                       )),
                                       Expanded(
