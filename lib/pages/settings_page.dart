@@ -325,6 +325,10 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
+  void upgradeFW() {
+    // do stuff here
+  }
+
 
 
   Widget buildLoadDialog(BuildContext context) {
@@ -692,6 +696,31 @@ class _SettingPageState extends State<SettingPage> {
                                                 return buildSaveDialog(context); // Call the buildDialog function
                                               },
                                             );
+                                          },
+                                        ),
+                                      ))),
+                                      Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Tooltip(
+                                          message: 'Update firmware',
+                                          child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              elevation: 1,
+                                              shape: const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.zero),
+                                              backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                              foregroundColor: Colors.white),
+                                              
+                                          child: const SizedBox(
+                                              height: 48, // Set a specific height
+                                              child: Center(
+                                                child: 
+                                                Icon(Icons.upgrade)
+                                              )
+                                            ),
+                                          onPressed: () {
+                                            upgradeFW();
                                           },
                                         ),
                                       ))),
