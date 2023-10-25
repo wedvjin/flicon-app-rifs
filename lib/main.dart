@@ -46,7 +46,7 @@ void main() async {
     center: true,
     backgroundColor: Colors.transparent,
     skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
+    titleBarStyle: TitleBarStyle.normal,
     windowButtonVisibility: true,
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -56,17 +56,17 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const FliconApp());
+  runApp(const AxiumApp());
 }
 
-class FliconApp extends StatefulWidget {
-  const FliconApp({super.key});
+class AxiumApp extends StatefulWidget {
+  const AxiumApp({super.key});
 
   @override
-  State<FliconApp> createState() => _FliconAppState();
+  State<AxiumApp> createState() => _AxiumAppState();
 }
 
-class _FliconAppState extends State<FliconApp> {
+class _AxiumAppState extends State<AxiumApp> {
   final _appLifecycleListener = AppLifecycleListener(
     onExitRequested: () async {
       await RustInFlutter.ensureFinalized();
