@@ -1,4 +1,4 @@
-# flicon
+# Axium
 
 A new Flutter project.
 
