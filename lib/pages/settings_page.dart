@@ -309,13 +309,20 @@ class _SettingPageState extends State<SettingPage> {
     // send rus_request
     // selected value = selectedProfile (string)
     print(selectedProfile);
+    if (Platform.isWindows) {
+      rust_request('readconf ' + selectedProfile, 0, 0, 0, 0, RustOperation.Update);
+    }
   }
 
   void saveProfile() {
     // do logic here
     // send rus_request
     // entered value = newProfile.text (string)
+
     print(newProfile.text);
+    if (Platform.isWindows) {
+      rust_request('saveconf ' + newProfile.text, 0, 0, 0, 0, RustOperation.Update);
+    }
   }
 
 
