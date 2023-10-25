@@ -7,19 +7,20 @@ use crate::utils::{get_current_dir, get_username};
 
 pub fn upgrade_firmware() {
     let current_dir = get_current_dir().unwrap();
+    let username = get_username().unwrap();
 
     #[cfg(not(debug_assertions))]
-    let complete_path = current_dir.join("stm32/CubeProgrammer_API.dll");
+    let complete_path = current_dir.join("stm32\\CubeProgrammer_API.dll");
 
     #[cfg(debug_assertions)]
-    let complete_path = current_dir.join("C:\\Users\\Viktor\\Desktop\\stm32_bin\\CubeProgrammer_API.dll");
+    let complete_path = PathBuf::from(format!("C:\\Users{}\\Downloads\\stm32\\CubeProgrammer_API.dll", username));
 
     println!("path to dll: {:?}", complete_path);
 
     // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
-    let username = get_username().unwrap();
+    
     // TODO: take the same name of the latest version
-    let mut file_path = PathBuf::from(format!("/Users/{}/Downloads/FLICON_base_2.0.hex", username));
+    let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
 
     let os_str: &OsStr = OsStr::new(&file_path);
     let mut wide_string: Vec<u16> = os_str.encode_wide().collect();
@@ -38,6 +39,8 @@ pub fn upgrade_firmware() {
         let skip_erase = 0; // to not skip erasing
         let verify = 1;
         let bin_path: *const u16 = std::ptr::null();
+        println!("FW upgrade started");
+        std::thread::sleep(std::time::Duration::from_millis(5000));
 
         let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
 

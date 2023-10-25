@@ -282,12 +282,12 @@ impl DeviceState {
             hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
             hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
             control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-            gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
-            gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
-            gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
-            gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
-            gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
-            gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
+            gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
+            gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
+            gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
+            gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
+            gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
+            gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
             spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
             buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
             x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),
@@ -358,12 +358,12 @@ impl DeviceState {
             hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
             hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
             control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-            gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
-            gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
-            gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
-            gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
-            gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
-            gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
+            gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
+            gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
+            gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
+            gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
+            gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
+            gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
             spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
             buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
             x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),
@@ -485,15 +485,15 @@ impl DeviceState {
         }
     }
 
-    pub fn set_gash1(&mut self, value_min: i16, value_max: i16) {
+    pub fn set_gash1(&mut self, value_min: u16, value_max: u16) {
         self.feature.as_mut().unwrap().gash_button1_min = value_min;
         self.feature.as_mut().unwrap().gash_button1_max = value_max;
     }
-    pub fn set_gash2(&mut self, value_min: i16, value_max: i16) {
+    pub fn set_gash2(&mut self, value_min: u16, value_max: u16) {
         self.feature.as_mut().unwrap().gash_button2_min = value_min;
         self.feature.as_mut().unwrap().gash_button2_max = value_max;
     }
-    pub fn set_gash3(&mut self, value_min: i16, value_max: i16) {
+    pub fn set_gash3(&mut self, value_min: u16, value_max: u16) {
         self.feature.as_mut().unwrap().gash_button3_min = value_min;
         self.feature.as_mut().unwrap().gash_button3_max = value_max;
     }
@@ -813,12 +813,12 @@ pub struct ReportFeature {
     pub hatka3_mode: u8,
     pub hatka4_mode: u8,
     pub control_byte: u8,
-    pub gash_button1_min: i16,
-    pub gash_button1_max: i16,
-    pub gash_button2_min: i16,
-    pub gash_button2_max: i16,
-    pub gash_button3_min: i16,
-    pub gash_button3_max: i16,
+    pub gash_button1_min: u16,
+    pub gash_button1_max: u16,
+    pub gash_button2_min: u16,
+    pub gash_button2_max: u16,
+    pub gash_button3_min: u16,
+    pub gash_button3_max: u16,
     pub spi_error_cnt: u8,
     //below are real values received
     pub buttons: u64,
@@ -891,12 +891,12 @@ impl ReportFeature {
         buf[60..61].copy_from_slice(&to_bytes_from_u8(self.hatka3_mode));
         buf[61..62].copy_from_slice(&to_bytes_from_u8(self.hatka4_mode));
         buf[62..63].copy_from_slice(&to_bytes_from_u8(self.control_byte));
-        buf[63..65].copy_from_slice(&to_bytes_from_i16(self.gash_button1_min));
-        buf[65..67].copy_from_slice(&to_bytes_from_i16(self.gash_button1_max));
-        buf[67..69].copy_from_slice(&to_bytes_from_i16(self.gash_button2_min));
-        buf[69..71].copy_from_slice(&to_bytes_from_i16(self.gash_button2_max));
-        buf[71..73].copy_from_slice(&to_bytes_from_i16(self.gash_button3_min));
-        buf[73..75].copy_from_slice(&to_bytes_from_i16(self.gash_button3_max));
+        buf[63..65].copy_from_slice(&to_bytes_from_u16(self.gash_button1_min));
+        buf[65..67].copy_from_slice(&to_bytes_from_u16(self.gash_button1_max));
+        buf[67..69].copy_from_slice(&to_bytes_from_u16(self.gash_button2_min));
+        buf[69..71].copy_from_slice(&to_bytes_from_u16(self.gash_button2_max));
+        buf[71..73].copy_from_slice(&to_bytes_from_u16(self.gash_button3_min));
+        buf[73..75].copy_from_slice(&to_bytes_from_u16(self.gash_button3_max));
         buf[75..76].copy_from_slice(&to_bytes_from_u8(self.spi_error_cnt));
         buf[76..82].copy_from_slice(&to_bytes_from_u64(self.buttons));
         buf[82..84].copy_from_slice(&to_bytes_from_i16(self.x_axis));
@@ -1089,12 +1089,12 @@ fn get_report(
         hatka3_mode: u8::from_le_bytes(buf[60..61].try_into().unwrap()),
         hatka4_mode: u8::from_le_bytes(buf[61..62].try_into().unwrap()),
         control_byte: u8::from_le_bytes(buf[62..63].try_into().unwrap()),
-        gash_button1_min: i16::from_le_bytes(buf[63..65].try_into().unwrap()),
-        gash_button1_max: i16::from_le_bytes(buf[65..67].try_into().unwrap()),
-        gash_button2_min: i16::from_le_bytes(buf[67..69].try_into().unwrap()),
-        gash_button2_max: i16::from_le_bytes(buf[69..71].try_into().unwrap()),
-        gash_button3_min: i16::from_le_bytes(buf[71..73].try_into().unwrap()),
-        gash_button3_max: i16::from_le_bytes(buf[73..75].try_into().unwrap()),
+        gash_button1_min: u16::from_le_bytes(buf[63..65].try_into().unwrap()),
+        gash_button1_max: u16::from_le_bytes(buf[65..67].try_into().unwrap()),
+        gash_button2_min: u16::from_le_bytes(buf[67..69].try_into().unwrap()),
+        gash_button2_max: u16::from_le_bytes(buf[69..71].try_into().unwrap()),
+        gash_button3_min: u16::from_le_bytes(buf[71..73].try_into().unwrap()),
+        gash_button3_max: u16::from_le_bytes(buf[73..75].try_into().unwrap()),
         spi_error_cnt: u8::from_le_bytes(buf[75..76].try_into().unwrap()),
         buttons: to_u64_from_6_bytes(buf[76..82].try_into().unwrap()),
         x_axis: i16::from_le_bytes(buf[82..84].try_into().unwrap()),

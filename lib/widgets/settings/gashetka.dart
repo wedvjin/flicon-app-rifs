@@ -46,9 +46,9 @@ class _GashetkaState extends State<Gashetka> {
 
   late Timer _periodicTimer;
 
-  RangeValues trigger1 = RangeValues(-32768, 32768);
-  RangeValues trigger2 = RangeValues(-32768, 32768);
-  RangeValues trigger3 = RangeValues(-32768, 32768);
+  RangeValues trigger1 = RangeValues(0, 32767);
+  RangeValues trigger2 = RangeValues(0, 32767);
+  RangeValues trigger3 = RangeValues(0, 32767);
 
   bool trigger1Changed = false;
   bool trigger2Changed = false;
@@ -68,9 +68,9 @@ class _GashetkaState extends State<Gashetka> {
   bool maxChanged = false;
 
   var minValue = 10000000000; 
-  var maxValue = -10000000000; 
+  var maxValue = 0; 
 
-  RangeValues globalMinMax = RangeValues(-32768, 32768);
+  RangeValues globalMinMax = RangeValues(0, 32767);
 
   bool _showCalibation = false;
 
@@ -248,12 +248,12 @@ class _GashetkaState extends State<Gashetka> {
                       minChanged = true;
                       maxChanged = true;
                   
-                      var valueInRange = widget.data.rzAxis;
+                      var valueInRange = widget.data.rz;
                       minValue = valueInRange < minValue ? valueInRange : minValue;
                       maxValue = valueInRange > maxValue ? valueInRange : maxValue;
 
                       _periodicTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
-                        var valueInRange = widget.data.rzAxis;
+                        var valueInRange = widget.data.rz;
                         minValue = valueInRange < minValue ? valueInRange : minValue;
                         maxValue = valueInRange > maxValue ? valueInRange : maxValue;
 
