@@ -691,7 +691,7 @@ impl DeviceState {
                 
                 if path.is_file()/*  && path.extension() == Some(std::ffi::OsStr::new("json")) */{
                     file_list.push_str(&entry.file_name().into_string().unwrap());
-                    file_list.push_str(", ");
+                    file_list.push_str(",");
                 }
             }
         }

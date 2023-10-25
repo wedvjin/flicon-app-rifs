@@ -325,28 +325,46 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-
-
+  //start
   Widget buildLoadDialog(BuildContext context) {
-    if(!Platform.isWindows) {
-      return AlertDialog(
-        title: const Text('Oops'),
-        content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
-        actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Close'),
-            ),
-          ],
-      );
-    } else {
-      rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-        List<String> currentProfiles = value.outputString.split(',');
-        return AlertDialog(
-          title: const Text('Select profile'),
-          content: DropdownMenu<String>(
+  if (!Platform.isWindows) {
+    return AlertDialog(
+      title: const Text('Oops'),
+      content:
+          const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Close'),
+        ),
+      ],
+    );
+  } else {
+    return FutureBuilder(
+      future: rust_request('listconf', 0, 0, 0, 0, RustOperation.Update),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('An error occurred while loading profiles.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        } else {
+          List<String> currentProfiles = snapshot.data.outputString.split(',');
+          return AlertDialog(
+            title: const Text('Select profile'),
+            content: DropdownMenu<String>(
               enableFilter: false,
               enableSearch: false,
               width: 230,
@@ -369,40 +387,112 @@ class _SettingPageState extends State<SettingPage> {
                 currentProfiles.map<DropdownMenuEntry<String>>((String value) {
                 return DropdownMenuEntry<String>(value: value, label: value);
               }).toList(),
-            ),
             
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
             ),
-            TextButton(
-              onPressed: () {
-                loadProfile();
-                Navigator.pop(context);
-              },
-              child: Text('Load'),
-            ),
-          ],
-        );
-      });
-
-      return AlertDialog(
-        title: const Text('Oops'),
-        content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
-        actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Close'),
-            ),
-          ],
-      );
-    }
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  loadProfile();
+                  Navigator.pop(context);
+                },
+                child: Text('Load'),
+              ),
+            ],
+          );
+        }
+      },
+    );
   }
+}
+//end
+
+  // Widget buildLoadDialog(BuildContext context) {
+  //   if(!Platform.isWindows) {
+  //     return AlertDialog(
+  //       title: const Text('Oops'),
+  //       content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+  //       actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: Text('Close'),
+  //           ),
+  //         ],
+  //     );
+  //   } else {
+  //     rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
+  //       print(value);
+  //       List<String> currentProfiles = value.outputString.split(',');
+  //       return AlertDialog(
+  //         title: const Text('Select profile'),
+  //         content: DropdownMenu<String>(
+  //             enableFilter: false,
+  //             enableSearch: false,
+  //             width: 230,
+  //             leadingIcon: const Icon(Icons.person),
+  //             inputDecorationTheme: const InputDecorationTheme(
+  //               filled: true,
+  //               fillColor: Color.fromARGB(255, 5, 5, 5),
+  //               outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
+  //               border: InputBorder.none,
+  //               contentPadding:
+  //                   EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+  //             ),
+  //             onSelected: (String? value) {
+  //               // This is called when the user selects an item.
+  //               setState(() {
+  //                 selectedProfile = value.toString();
+  //               });
+  //             },
+  //             dropdownMenuEntries:
+  //               currentProfiles.map<DropdownMenuEntry<String>>((String value) {
+  //               return DropdownMenuEntry<String>(value: value, label: value);
+  //             }).toList(),
+  //           ),
+            
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: const Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               loadProfile();
+  //               Navigator.pop(context);
+  //             },
+  //             child: Text('Load'),
+  //           ),
+  //         ],
+  //       );
+  //     });
+
+  //     if(!Platform.isWindows) {
+  //       return AlertDialog(
+  //         title: const Text('Oops'),
+  //         content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+  //         actions: <Widget>[
+  //             TextButton(
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Text('Close'),
+  //             ),
+  //           ],
+  //       );
+  //     } else {
+  //       return Container();
+  //     }
+  //   }
+  // }
 
     Widget buildSaveDialog(BuildContext context) {
 
