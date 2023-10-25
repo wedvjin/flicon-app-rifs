@@ -49,3 +49,5 @@ target/
 
 # Generated messages
 */**/messages/
+
+native/stm32_bin
