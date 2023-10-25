@@ -100,7 +100,7 @@ class _GashetkaState extends State<Gashetka> {
                 width: 300,
                 height: 30,
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(193, 10, 10, 1),
+                  color: Color.fromRGBO(132, 5, 5, 1),
                   shape: BoxShape.rectangle,
                 ),
               ),
@@ -112,7 +112,7 @@ class _GashetkaState extends State<Gashetka> {
                 width: progress,
                 height: 30,
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(132, 5, 5, 1),
+                  color: Color.fromRGBO(193, 10, 10, 1),
                   shape: BoxShape.rectangle,
                 ),
               ),
@@ -124,8 +124,9 @@ class _GashetkaState extends State<Gashetka> {
                 width: (300 * widget.data.rzDeadZone.toDouble() /100),
                 height: 30,
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(60, 24, 24, 1),
+                  color: Color.fromRGBO(193, 10, 10, 0),
                   shape: BoxShape.rectangle,
+                  border: Border(right: BorderSide(color: Color.fromARGB(255, 41, 41, 41), width: 2.0))
                 ),
               ),
             ),
@@ -181,53 +182,58 @@ class _GashetkaState extends State<Gashetka> {
               color: Color.fromRGBO(41, 41, 41, 1)
             ),
             const Text("Calibration"),
-            Stack(
-              children: <Widget>[
-                Container(
-                  width: 250,
-                  height: 20,
-                ),
-                Positioned(
-                  top: 5,
-                  left: 0,
-                  child: Container(
+
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10), 
+              child:
+              Stack(
+                children: <Widget>[
+                  Container(
                     width: 250,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(169, 193, 10, 1),
-                      shape: BoxShape.rectangle,
-
-                    ),
+                    height: 20,
                   ),
-                  ),
-                  if(sliderCalibration)
-                    Positioned(
-                      top: 5,
-                      left: 0,
-                      child: Container(
-                        width: (((widget.data.rzAxis - minValue) / (maxValue - minValue)) * 250).clamp(0, 250),
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(96, 110, 3, 1),
-                          shape: BoxShape.rectangle,
-
-                        ),
-                      ),
-                    ),
                   Positioned(
                     top: 5,
                     left: 0,
                     child: Container(
-                      width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * widget.data.rzDeadZone.toDouble() /100),
+                      width: 250,
                       height: 10,
                       decoration: const BoxDecoration(
-                        color:Color.fromRGBO(190, 4, 4, 0.8),
+                        color: Color.fromRGBO(132, 5, 5, 1),
                         shape: BoxShape.rectangle,
+
                       ),
                     ),
-                  ),
-                  
-              ],
+                    ),
+                    if(sliderCalibration)
+                      Positioned(
+                        top: 0,
+                        left: (((widget.data.rzAxis - minValue) / (maxValue - minValue)) * 250).clamp(0, 250) - 10,
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            color: Color.fromRGBO(193, 10, 10, 1),
+                            shape: BoxShape.circle,
+
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      top: 5,
+                      left: 0,
+                      child: Container(
+                        width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * widget.data.rzDeadZone.toDouble() /100),
+                        height: 10,
+                        decoration: const BoxDecoration(
+                          color:Color.fromRGBO(190, 4, 4, 0.8),
+                          shape: BoxShape.rectangle,
+                        ),
+                      ),
+                    ),
+                    
+                ],
+              ),
             ),
             if(sliderCalibration)
                 Text('Move slider to get MIN and MAX values'),

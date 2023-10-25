@@ -178,6 +178,7 @@ class _SettingPageState extends State<SettingPage> {
   bool _multiPick = false;
   List<PlatformFile>? _paths;
   String? _extension;
+  String hw_update_file_path = '';
 
   void _updateHW() async {
     try {
@@ -194,7 +195,13 @@ class _SettingPageState extends State<SettingPage> {
         lockParentWindow: _lockParentWindow,
       ).then((value) => {
         if(value?.files != null) {
-          print(value?.files[0].path)
+          setState(() {
+            if(value != null) {
+              hw_update_file_path = value.files[0].path.toString();
+              upgradeFW();
+            }
+          })
+          
         }
       });
     } catch (e) {
@@ -327,6 +334,7 @@ class _SettingPageState extends State<SettingPage> {
 
   void upgradeFW() {
     // do stuff here
+    print(hw_update_file_path);
   }
 
 
@@ -437,6 +445,7 @@ class _SettingPageState extends State<SettingPage> {
       );
 
   }
+
   
 
 
@@ -720,7 +729,7 @@ class _SettingPageState extends State<SettingPage> {
                                               )
                                             ),
                                           onPressed: () {
-                                            upgradeFW();
+                                            _updateHW();
                                           },
                                         ),
                                       ))),
