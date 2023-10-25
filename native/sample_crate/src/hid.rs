@@ -67,8 +67,10 @@ impl DeviceState {
             let feature_report = get_report(&device);
 
             let boxed_device = Box::new(device);
-            let device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
             
+            device_state.set_disable_calibrate_base();
+            device_state.set_disable_calibrate_handle();
             #[cfg(target_os = "windows")]
             device_state.save_current_profile().unwrap();
 
@@ -99,6 +101,8 @@ impl DeviceState {
                     self.device = Some(Box::new(device));
                     self.controller_info = Some(device_info.clone());
                     self.connected = true;
+                    self.set_disable_calibrate_base();
+                    self.set_disable_calibrate_handle();
 
                     #[cfg(target_os = "windows")]
                     self.save_current_profile().unwrap();
