@@ -1,12 +1,44 @@
 syntax = "proto3";
 package device_info;
 
-message ReadRequest {
-  repeated int32 input_numbers = 1;
-  string input_string = 2;
+//message ReadRequest {
+//  repeated int32 input_numbers = 1;
+//  string input_string = 2;
+//}
+
+message ReadValues {
+    string target = 1;
+    uint32 value1 = 2;
+    uint32 value2 = 3;
+    uint32 value3 = 4;
+    uint32 value4 = 5;
 }
 
 message ReadResponse {
-  repeated int32 output_numbers = 1;
+  int32 output_numbers = 1;
   string output_string = 2;
 }
+
+//and slider and everything, depending on string pass the value
+message SetValues {
+    string target = 1;
+    int32 value1 = 2;
+    int32 value2 = 3;
+    int32 value3 = 4;
+    int32 value4 = 5;
+}
+
+//message SetEncoder {
+//    uint32 value = 1;
+//}
+//
+//message SetRgbLed {
+//    uint32 r = 1;
+//    uint32 g = 2;
+//    uint32 b = 3;
+//}
+//
+//message SetHatka {
+//    uint32 target = 1;
+//    uint32 value = 2;
+//}

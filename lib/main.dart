@@ -1,32 +1,78 @@
 import 'dart:ui';
+import 'package:Axium/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:flicon/messages/device_info.pb.dart' as deviceInfo;
-import 'package:flicon/messages/report_in_message.pb.dart' as reportInMessage;
-import 'package:flicon/messages/increasing_number.pb.dart'
-    as increasingNumbers;
+import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
+import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
+import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
+
+import 'package:Axium/pages/search_page.dart';
+import 'package:Axium/pages/settings_page.dart';
+import 'package:window_manager/window_manager.dart';
+
+GoRouter router() {
+  return GoRouter(
+    initialLocation: '/settings',
+    routes: [
+      GoRoute(
+        path: '/loading',
+        builder: (context, state) => const LoadingPage(),
+      ),
+      GoRoute(
+        path: '/main',
+        builder: (context, state) => const MyHomePage(),
+      ),
+      GoRoute(
+        path: '/search',
+        builder: (context, state) => const Search(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingPage(),
+      ),
+    ],
+  );
+}
 
 void main() async {
   // Wait for Rust initialization to be completed first.
   await RustInFlutter.ensureInitialized();  
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1000, 650),
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
+    windowButtonVisibility: true,
+  );
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setTitle('Axium');
+    await windowManager.setResizable(false);
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
+  runApp(const FliconApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class FliconApp extends StatefulWidget {
+  const FliconApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<FliconApp> createState() => _FliconAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FliconAppState extends State<FliconApp> {
   final _appLifecycleListener = AppLifecycleListener(
     onExitRequested: () async {
       await RustInFlutter.ensureFinalized();
       return AppExitResponse.exit;
     },
   );
-
 
   @override
   void dispose() {
@@ -36,13 +82,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RIF Example',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: MediaQuery.platformBrightnessOf(context),
-      ),
-      home: MyHomePage(),
+    return MaterialApp.router(
+        title: 'EVO Flight Controller',
+        theme: AppTheme().main,
+        routerConfig: router(),
+      );
+  }
+}
+
+class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
+
+  @override
+  State<LoadingPage> createState() => _LoadingPageState();
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+    @override
+  Widget build(BuildContext context) {  
+
+    Future.delayed(Duration(seconds: 3)).then((value) => {
+      context.go('/settings')
+    });
+    
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/logo.gif', width: 100,)
+          ]
+        )
+      )
     );
   }
 }
@@ -58,14 +129,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _contoller = 'unknown';
 
-  Future<void> btn() async {
-    var requestMessage = deviceInfo.ReadRequest(
-      inputNumbers: [1],
-      inputString: 'n',
+  Future<void> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
     );
     var rustResponse = await requestToRust(RustRequest(
       resource: deviceInfo.ID,
-      operation: RustOperation.Read,
+      operation: operation,
       message: requestMessage.writeToBuffer(),
     ));
     var responseMessage =
@@ -77,9 +151,31 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  void apply() {
+    final c = color.toColor();
+    rust_request('discalibratehandle', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('discalibratebase', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('setled', c.red, c.green, c.blue, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+  }
 
+  void toggleLR() {
+    rust_request('discalibratehandle', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('discalibratebase', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('togglelr', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+  }
+
+  HSVColor color = HSVColor.fromColor(Colors.blue);
+
+
+  @override
+  Widget build(BuildContext context) {  
     return Scaffold(
       body: Center(
         child: Column(
@@ -87,22 +183,56 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             StreamBuilder<RustSignal>(
               stream: rustBroadcaster.stream.where((rustSignal) {
-                return rustSignal.resource == reportInMessage.ID;
+                return rustSignal.resource == reportMessage.ID;
               }),
               builder: (context, snapshot) {
                 final rustSignal = snapshot.data;
                 if (rustSignal == null) {
-                  return Text("No stream");
+                  return const Text("No reportMessage stream");
                 } else {
-                  return Text(rustSignal.message.toString());
+                  var dd = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
+                  //var buff = reportInMessage.ReportInMessage(data: rustSignal.message);
+                  //final ByteData byteData = ByteData.sublistView(buff.writeToBuffer());
+               
+                  return Column(
+                    children: [
+                      //Text("${dd.rx} ${dd.x} ${dd.y}"),
+                      Text("${dd.ledR} ${dd.ledG} ${dd.ledB}"),
+                      Text("${dd.controlByte}"),
+                      // Text("1: ${byteData.getUint8(1)}"),
+                      // Text("2: ${byteData.getUint16(2)}"),
+                      // Text("3: ${byteData.getUint16(3)}"),
+                      // Text("4: ${byteData.getUint16(4)}"),
+                    ]
+                  );
                 }
               },
             ),
-            ElevatedButton(
-              onPressed: btn, 
-              child: Text('Controller')
+          
+            Text(_contoller),
+            WheelPicker(
+              color: color,
+              onChanged: (value) {         
+                setState(() {
+                  color = value;
+                });
+              },
             ),
-            Text(_contoller)
+            Text("${color.toColor().red} ${color.toColor().green} ${color.toColor().blue}"),
+            ElevatedButton(
+              onPressed: apply, 
+              child: const Text("Apply")
+            ),
+            ElevatedButton(
+              onPressed: toggleLR, 
+              child: const Text("Toggle L/R")
+            ),
+            ElevatedButton(
+              onPressed: () => {
+                context.go('/settings')
+              },
+              child: const Text("Go to settings")
+            )
           ],
         ),
       ),

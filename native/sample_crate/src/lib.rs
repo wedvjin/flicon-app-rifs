@@ -2,12 +2,13 @@
 //! You might want to remove this crate in production.
 
 pub use hid::{DeviceState, ReportIn, ReportFeature};
+pub use buttons::Buttons;
 
+mod utils;
+mod buttons;
 mod hid;
+mod firmware;
 
-pub use mandelbrot::{mandelbrot, Point, Size};
-
-mod mandelbrot;
 
 // This is just a simple Rust function.
 
