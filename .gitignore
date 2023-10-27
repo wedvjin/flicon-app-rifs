@@ -51,3 +51,4 @@ target/
 */**/messages/
 
 native/stm32_bin
+stm32
