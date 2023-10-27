@@ -510,7 +510,7 @@ impl DeviceState {
     pub fn set_enable_dfu(&mut self) {
         self.feature.as_mut().unwrap().control_byte |= 1 << 7;
         self.write_feature();
-        upgrade_firmware();
+        // upgrade_firmware();
     }
 
     pub fn set_enable_calibrate_base(&mut self) {

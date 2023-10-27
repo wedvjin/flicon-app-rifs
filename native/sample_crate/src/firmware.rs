@@ -5,7 +5,7 @@ use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, o
 
 use crate::utils::{get_current_dir, get_username};
 
-pub fn upgrade_firmware() {
+pub fn upgrade_firmware(path: String) {
     let current_dir = get_current_dir().unwrap();
     let username = get_username().unwrap();
 
@@ -13,14 +13,18 @@ pub fn upgrade_firmware() {
     let complete_path = current_dir.join("stm32\\CubeProgrammer_API.dll");
 
     #[cfg(debug_assertions)]
-    let complete_path = PathBuf::from(format!("C:\\Users{}\\Downloads\\stm32\\CubeProgrammer_API.dll", username));
+    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\stm32\\CubeProgrammer_API.dll", username));
 
     println!("path to dll: {:?}", complete_path);
 
     // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
     
     // TODO: take the same name of the latest version
+
+    #[cfg(debug_assertions)]
     let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
+
+    let mut file_path = PathBuf::from(path);
 
     let os_str: &OsStr = OsStr::new(&file_path);
     let mut wide_string: Vec<u16> = os_str.encode_wide().collect();

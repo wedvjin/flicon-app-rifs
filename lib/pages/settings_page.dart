@@ -336,7 +336,9 @@ class _SettingPageState extends State<SettingPage> {
 
   void upgradeFW() {
     // do stuff here
-    print(hw_update_file_path);
+    rust_request('enabledfu', 0, 0, 0, 0, RustOperation.Update);
+    rust_request('upgradef ' + hw_update_file_path, 0, 0, 0, 0, RustOperation.Update);
+    // print(hw_update_file_path);
   }
 
 
