@@ -13,7 +13,7 @@ pub fn upgrade_firmware() {
     let complete_path = current_dir.join("stm32\\CubeProgrammer_API.dll");
 
     #[cfg(debug_assertions)]
-    let complete_path = PathBuf::from(format!("C:\\Users{}\\Downloads\\stm32\\CubeProgrammer_API.dll", username));
+    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\stm32\\CubeProgrammer_API.dll", username));
 
     println!("path to dll: {:?}", complete_path);
 
