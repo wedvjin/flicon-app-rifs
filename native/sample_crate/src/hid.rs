@@ -719,6 +719,25 @@ impl DeviceState {
         Ok(())
     }
 
+    pub fn correct_min_man_gash(&mut self) -> Result<()> {
+        if self.feature.as_ref().as_mut().unwrap().gash_button1_max < self.feature.as_ref().as_mut().unwrap().gash_button1_min {
+            let temp = self.feature.as_ref().unwrap().gash_button1_max;
+            (self.feature).as_mut().unwrap().gash_button1_max = self.feature.as_ref().unwrap().gash_button1_min;
+            self.feature.as_mut().unwrap().gash_button1_min = temp;
+        }
+        if self.feature.as_ref().as_mut().unwrap().gash_button2_max < self.feature.as_ref().as_mut().unwrap().gash_button2_min {
+            let temp = self.feature.as_ref().unwrap().gash_button2_max;
+            (self.feature).as_mut().unwrap().gash_button2_max = self.feature.as_ref().unwrap().gash_button2_min;
+            self.feature.as_mut().unwrap().gash_button2_min = temp;
+        }
+        if self.feature.as_ref().as_mut().unwrap().gash_button3_max < self.feature.as_ref().as_mut().unwrap().gash_button3_min {
+            let temp = self.feature.as_ref().unwrap().gash_button3_max;
+            (self.feature).as_mut().unwrap().gash_button3_max = self.feature.as_ref().unwrap().gash_button3_min;
+            self.feature.as_mut().unwrap().gash_button3_min = temp;
+        }
+
+        Ok(())
+    }
 
     
 }
