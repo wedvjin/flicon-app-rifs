@@ -7,7 +7,8 @@ pub use buttons::Buttons;
 mod utils;
 mod buttons;
 mod hid;
-mod firmware;
+pub mod firmware;
+
 
 
 // This is just a simple Rust function.
