@@ -7,7 +7,7 @@ version:
   revision: "2f708eb8396e362e280fac22cf171c2cb467343c"
   channel: "stable"
 
-project_type: axium
+project_type: FC_Technologies
 
 # Tracks metadata for the flutter migrate command
 migration:

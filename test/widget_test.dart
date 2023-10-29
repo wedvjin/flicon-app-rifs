@@ -7,12 +7,12 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:Axium/main.dart';
+import 'package:FC_Technologies/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const AxiumApp());
+    await tester.pumpWidget(const FCTechnologiesApp());
 
     // Verify that our counter starts at 0.
     // expect(find.text('0'), findsOneWidget);

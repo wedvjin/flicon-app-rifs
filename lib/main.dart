@@ -1,20 +1,20 @@
 import 'dart:ui';
-import 'package:Axium/theme.dart';
+import 'package:FC_Technologies/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
-import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
+import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
+import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 
-import 'package:Axium/pages/search_page.dart';
-import 'package:Axium/pages/settings_page.dart';
+import 'package:FC_Technologies/pages/search_page.dart';
+import 'package:FC_Technologies/pages/settings_page.dart';
 import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/loading',
     routes: [
       GoRoute(
         path: '/loading',
@@ -50,23 +50,23 @@ void main() async {
     windowButtonVisibility: true,
   );
   windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.setTitle('Axium');
+    await windowManager.setTitle('FC Technologies');
     await windowManager.setResizable(false);
     await windowManager.show();
     await windowManager.focus();
   });
 
-  runApp(const AxiumApp());
+  runApp(const FCTechnologiesApp());
 }
 
-class AxiumApp extends StatefulWidget {
-  const AxiumApp({super.key});
+class FCTechnologiesApp extends StatefulWidget {
+  const FCTechnologiesApp({super.key});
 
   @override
-  State<AxiumApp> createState() => _AxiumAppState();
+  State<FCTechnologiesApp> createState() => _FCTechnologiesAppState();
 }
 
-class _AxiumAppState extends State<AxiumApp> {
+class _FCTechnologiesAppState extends State<FCTechnologiesApp> {
   final _appLifecycleListener = AppLifecycleListener(
     onExitRequested: () async {
       await RustInFlutter.ensureFinalized();

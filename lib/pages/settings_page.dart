@@ -8,28 +8,28 @@ import 'package:drop_down_selector/drop_down_selector.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:blur/blur.dart';
-import 'package:Axium/pages/search_page.dart';
-import 'package:Axium/widgets/settings/base_calibration.dart';
-import 'package:Axium/widgets/settings/base_rotation.dart';
-import 'package:Axium/widgets/settings/button_1.dart';
-import 'package:Axium/widgets/settings/button_10.dart';
-import 'package:Axium/widgets/settings/button_2.dart';
-import 'package:Axium/widgets/settings/button_3.dart';
-import 'package:Axium/widgets/settings/button_5.dart';
-import 'package:Axium/widgets/settings/button_7.dart';
-import 'package:Axium/widgets/settings/brakes.dart';
-import 'package:Axium/widgets/settings/gashetka.dart';
-import 'package:Axium/widgets/settings/led_color_picker.dart';
+import 'package:FC_Technologies/pages/search_page.dart';
+import 'package:FC_Technologies/widgets/settings/base_calibration.dart';
+import 'package:FC_Technologies/widgets/settings/base_rotation.dart';
+import 'package:FC_Technologies/widgets/settings/button_1.dart';
+import 'package:FC_Technologies/widgets/settings/button_10.dart';
+import 'package:FC_Technologies/widgets/settings/button_2.dart';
+import 'package:FC_Technologies/widgets/settings/button_3.dart';
+import 'package:FC_Technologies/widgets/settings/button_5.dart';
+import 'package:FC_Technologies/widgets/settings/button_7.dart';
+import 'package:FC_Technologies/widgets/settings/brakes.dart';
+import 'package:FC_Technologies/widgets/settings/gashetka.dart';
+import 'package:FC_Technologies/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
+import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:keyboard_mouse_indicator/keyboard_mouse_indicator.dart';
-import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
+import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});

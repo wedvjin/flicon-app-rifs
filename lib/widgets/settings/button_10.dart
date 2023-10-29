@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_multi_slider/flutter_multi_slider.dart';
-import 'package:Axium/messages/report_message.pb.dart' as reportMessage;
+import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
-import 'package:Axium/messages/device_info.pb.dart' as deviceInfo;
+import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 
 class Button10 extends StatefulWidget {
   final reportMessage.ReportMessage data;
