@@ -5,6 +5,7 @@ use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, o
 
 use crate::utils::{get_current_dir, get_username};
 
+#[cfg(target_os = "windows")]
 pub fn upgrade_firmware(path: String) -> String {
     #[cfg(not(debug_assertions))]
     let current_dir = get_current_dir().unwrap();
@@ -17,6 +18,8 @@ pub fn upgrade_firmware(path: String) -> String {
     // let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
 
     #[cfg(debug_assertions)]
+    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Desktop\\stm32_bin\\CubeProgrammer_API.dll", username));
+    //Desktop\stm32_bin
     let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
     //C:\Users\Viktor\source\repos\flicon-app-rif\flicon\stm32
 
@@ -42,13 +45,14 @@ pub fn upgrade_firmware(path: String) -> String {
     // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
     // libloading::os::windows::Library::new(complete_path.clone()) {
     unsafe {
-        let lib = match Library::new(complete_path.clone()) {
+        let lib = match libloading::os::windows::Library::new(complete_path.clone()) {
             Ok(ok) => ok,
             Err(err) => return err.to_string(),
         };
 
+        
 
-        let upgrade_fw: Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
+        let upgrade_fw: libloading::os::windows::Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
             .expect("Could not find the function in the DLL");
         type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> u32;
 
@@ -64,7 +68,7 @@ pub fn upgrade_firmware(path: String) -> String {
         println!("FW upgrade result: {}", result);
         std::thread::sleep(std::time::Duration::from_millis(2000));
 
-        let func_execute: Symbol<ExecuteFunction> = lib.get(b"execute")
+        let func_execute: libloading::os::windows::Symbol<ExecuteFunction> = lib.get(b"execute")
             .expect("Could not find the function in the DLL");
 
         type ExecuteFunction = unsafe fn(address: u32) -> u32;

@@ -5,6 +5,7 @@ use std::env;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, PoisonError};
 use anyhow::{Result as AResult, anyhow, Error};
+#[cfg(target_os = "windows")]
 use sample_crate::firmware::upgrade_firmware;
 
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
