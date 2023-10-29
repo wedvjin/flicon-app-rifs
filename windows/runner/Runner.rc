@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "Axium" "\0"
+            VALUE "FileDescription", "FCTechnologies" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Axium" "\0"
+            VALUE "InternalName", "FCTechnologies" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "axium.exe" "\0"
-            VALUE "ProductName", "Axium" "\0"
+            VALUE "OriginalFilename", "FCTechnologies.exe" "\0"
+            VALUE "ProductName", "FCTechnologies" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
