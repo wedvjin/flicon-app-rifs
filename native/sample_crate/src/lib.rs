@@ -7,6 +7,8 @@ pub use buttons::Buttons;
 mod utils;
 mod buttons;
 mod hid;
+
+#[cfg(target_os = "windows")]
 pub mod firmware;
 
 
