@@ -14,7 +14,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/settings',
+    initialLocation: '/main',
     routes: [
       GoRoute(
         path: '/loading',
@@ -128,6 +128,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String _contoller = 'unknown';
+  String path = '...';
 
   Future<void> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
     final requestMessage = deviceInfo.SetValues(
@@ -169,6 +170,10 @@ class _MyHomePageState extends State<MyHomePage> {
     rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
     rust_request('save', 0, 0, 0, 0, RustOperation.Update);
     rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+  }
+
+  void showPath() {
+    rust_request('upgradef', 0, 0, 0, 0, RustOperation.Update);
   }
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
@@ -232,7 +237,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 context.go('/settings')
               },
               child: const Text("Go to settings")
-            )
+            ),
+            ElevatedButton(
+              onPressed: showPath, 
+              child: const Text("Show path")
+            ),
           ],
         ),
       ),

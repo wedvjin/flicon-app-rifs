@@ -836,7 +836,6 @@ class _SettingPageState extends State<SettingPage> {
                                   endIndent: 0,
                                   color: Colors.black12,
                                 ),
-                                Text("${realX} ${realY}"),
                                 if(_controlButton == 1)
                                   Button1(data: data),
                                 if(_controlButton == 2)
