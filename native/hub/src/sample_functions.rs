@@ -1,6 +1,8 @@
 //! This module is only for demonstration purposes.
 //! You might want to remove this module in production.
 
+use std::env;
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex, PoisonError};
 use anyhow::{Result as AResult, anyhow, Error};
 use sample_crate::firmware::upgrade_firmware;
@@ -397,9 +399,12 @@ pub async fn handle_device(
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
                     output_string = DeviceState::list_json_files().unwrap()
                 } else if set_message.target.as_str().starts_with("upgradef") {
-                    let path = &set_message.target.as_str()[9..];
+                    // let path = &set_message.target.as_str()[9..];
+                    let username = env::var("USERNAME").unwrap();
+                    let mut path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
+                    // let path = "none";
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
-                    upgrade_firmware(path.to_string());
+                    output_string = upgrade_firmware(path.to_str().unwrap().to_string());
                 } else {
                     mm_res = match_message(adevice, set_message);
                 };

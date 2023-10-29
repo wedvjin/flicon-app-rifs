@@ -6,18 +6,21 @@ use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, o
 use crate::utils::{get_current_dir, get_username};
 
 pub fn upgrade_firmware(path: String) -> String {
-    // let current_dir = get_current_dir().unwrap();
+    #[cfg(not(debug_assertions))]
+    let current_dir = get_current_dir().unwrap();
     // println!("current_dir: {:?}", current_dir);
     let username = get_username().unwrap();
 
-    // #[cfg(not(debug_assertions))]
-    // let complete_path = current_dir.join("CubeProgrammer_API.dll");
+    #[cfg(not(debug_assertions))]
+    let complete_path = current_dir.join("CubeProgrammer_API.dll");
 
-    let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
+    // let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
 
-    // #[cfg(debug_assertions)]
-    // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
+    #[cfg(debug_assertions)]
+    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
     //C:\Users\Viktor\source\repos\flicon-app-rif\flicon\stm32
+
+    
 
     println!("path to dll: {:?}", complete_path);
 
@@ -27,6 +30,7 @@ pub fn upgrade_firmware(path: String) -> String {
 
     #[cfg(debug_assertions)]
     let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
+    
     let mut file_path = PathBuf::from(path);
 
     let os_str: &OsStr = OsStr::new(&file_path);
@@ -35,8 +39,14 @@ pub fn upgrade_firmware(path: String) -> String {
     
     let wide_string_ptr: *const u16 = wide_string.as_ptr();
 
+    // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
+    // libloading::os::windows::Library::new(complete_path.clone()) {
     unsafe {
-        let lib = Library::new(complete_path).expect("Could not load the DLL");
+        let lib = match Library::new(complete_path.clone()) {
+            Ok(ok) => ok,
+            Err(err) => return err.to_string(),
+        };
+
 
         let upgrade_fw: Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
             .expect("Could not find the function in the DLL");
@@ -64,7 +74,7 @@ pub fn upgrade_firmware(path: String) -> String {
         println!("Execute result: {}", result);
 
     }
-
+    return complete_path.to_str().unwrap().to_string()
 }
 
 // fn get_firmware_hex(file_path: PathBuf) -> 
