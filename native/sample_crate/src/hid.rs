@@ -7,7 +7,10 @@ use hidapi::{DeviceInfo, HidDevice};
 use byteorder::{LittleEndian, WriteBytesExt};
 use serde::{de::value, Serialize, Deserialize};
 
-use crate::{firmware::upgrade_firmware, utils::get_profiles_path};
+use crate::utils::get_profiles_path;
+
+#[cfg(target_os = "windows")]
+use crate::firmware::upgrade_firmware;
 
 const VENDOR_ID_CONST: u16 = 13911;
 // #[cfg(target_os = "windows")]
