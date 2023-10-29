@@ -5,13 +5,15 @@ use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, o
 
 use crate::utils::{get_current_dir, get_username};
 
-pub fn upgrade_firmware(path: String) {
-    let current_dir = get_current_dir().unwrap();
-    println!("current_dir: {:?}", current_dir);
+pub fn upgrade_firmware(path: String) -> String {
+    // let current_dir = get_current_dir().unwrap();
+    // println!("current_dir: {:?}", current_dir);
     let username = get_username().unwrap();
 
     // #[cfg(not(debug_assertions))]
-    let complete_path = current_dir.join("stm32\\CubeProgrammer_API.dll");
+    // let complete_path = current_dir.join("CubeProgrammer_API.dll");
+
+    let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
 
     // #[cfg(debug_assertions)]
     // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
