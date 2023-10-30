@@ -75,7 +75,8 @@ pub fn upgrade_firmware(path: String) -> String {
 
         type ExecuteFunction = unsafe fn(address: u32) -> i32;
 
-        let result = func_execute(address);
+        let program_start_address = 0x08008004;
+        let result = func_execute(program_start_address);
 
         println!("Execute result: {}", result);
 
