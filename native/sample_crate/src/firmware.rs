@@ -5,7 +5,7 @@ use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, o
 
 use crate::utils::{get_current_dir, get_username};
 
-#[cfg(target_os = "windows")]
+// #[cfg(target_os = "windows")]
 pub fn upgrade_firmware(path: String) -> String {
     #[cfg(not(debug_assertions))]
     let current_dir = get_current_dir().unwrap();
@@ -46,6 +46,7 @@ pub fn upgrade_firmware(path: String) -> String {
 
     // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
     // libloading::os::windows::Library::new(complete_path.clone()) {
+    #[cfg(target_os = "windows")]
     unsafe {
         let lib = match libloading::os::windows::Library::new(complete_path.clone()) {
             Ok(ok) => ok,
