@@ -14,7 +14,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/main',
+    initialLocation: '/loading',
     routes: [
       GoRoute(
         path: '/loading',

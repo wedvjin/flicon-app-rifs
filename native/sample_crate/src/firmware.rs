@@ -11,16 +11,18 @@ pub fn upgrade_firmware(path: String) -> String {
     let current_dir = get_current_dir().unwrap();
     // println!("current_dir: {:?}", current_dir);
     let username = get_username().unwrap();
+    let current_dir = get_current_dir().unwrap();
 
-    #[cfg(not(debug_assertions))]
+    // return  current_dir.to_str().unwrap().to_string();
+    // #[cfg(not(debug_assertions))]
     let complete_path = current_dir.join("CubeProgrammer_API.dll");
 
     // let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
 
-    #[cfg(debug_assertions)]
-    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Desktop\\stm32_bin\\CubeProgrammer_API.dll", username));
+    // #[cfg(debug_assertions)]
+    // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Desktop\\stm32_bin\\CubeProgrammer_API.dll", username));
     //Desktop\stm32_bin
-    let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
+    // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
     //C:\Users\Viktor\source\repos\flicon-app-rif\flicon\stm32
 
     
@@ -54,7 +56,7 @@ pub fn upgrade_firmware(path: String) -> String {
 
         let upgrade_fw: libloading::os::windows::Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
             .expect("Could not find the function in the DLL");
-        type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> u32;
+        type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
 
         let address = 0x08008000;
         let skip_erase = 0; // to not skip erasing
@@ -71,7 +73,7 @@ pub fn upgrade_firmware(path: String) -> String {
         let func_execute: libloading::os::windows::Symbol<ExecuteFunction> = lib.get(b"execute")
             .expect("Could not find the function in the DLL");
 
-        type ExecuteFunction = unsafe fn(address: u32) -> u32;
+        type ExecuteFunction = unsafe fn(address: u32) -> i32;
 
         let result = func_execute(address);
 

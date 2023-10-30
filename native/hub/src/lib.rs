@@ -30,7 +30,7 @@ async fn main() {
     // crate::spawn();
     while let Some(request_unique) = request_receiver.recv().await {
         let adevice_cp = adevice.clone();
-        crate::spawn(async {
+        crate::spawn(async move {
             let response_unique = handle_request(request_unique, adevice_cp).await;
             respond_to_dart(response_unique);
         });

@@ -21,10 +21,10 @@ pub fn get_profiles_path() -> Result<PathBuf> {
     let base_path = "/Users/";
 
     #[cfg(target_os = "windows")]
-    let dir_path = PathBuf::from(format!("{}\\{}\\Documents\\Axium", base_path, username));
+    let dir_path = PathBuf::from(format!("{}\\{}\\Documents\\FCTechnologies", base_path, username));
 
     #[cfg(target_os = "macos")]
-    let dir_path = PathBuf::from(format!("{}/{}/Axium/", base_path, username));
+    let dir_path = PathBuf::from(format!("{}/{}/FCTechnologies/", base_path, username));
 
     #[cfg(debug_assertions)]
     println!("dir_path: {:?}", dir_path);

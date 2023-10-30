@@ -8,11 +8,12 @@ use anyhow::{Result as AResult, anyhow, Error};
 #[cfg(target_os = "windows")]
 use sample_crate::firmware::upgrade_firmware;
 
+
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
 use crate::bridge::send_rust_signal;
 use crate::messages::device_info::SetValues;
 use prost::Message;
-use sample_crate::{DeviceState, ReportIn, ReportFeature, firmware};
+use sample_crate::{DeviceState, ReportIn, ReportFeature};
 
 pub async fn handle_sample_resource(rust_request: RustRequest) -> RustResponse {
     match rust_request.operation {
@@ -405,6 +406,7 @@ pub async fn handle_device(
                     let mut path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
                     // let path = "none";
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
+                    
                     output_string = upgrade_firmware(path.to_str().unwrap().to_string());
                 } else {
                     mm_res = match_message(adevice, set_message);

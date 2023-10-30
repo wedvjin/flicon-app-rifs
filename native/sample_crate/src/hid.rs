@@ -13,11 +13,6 @@ use crate::utils::get_profiles_path;
 use crate::firmware::upgrade_firmware;
 
 const VENDOR_ID_CONST: u16 = 13911;
-// #[cfg(target_os = "windows")]
-// const BASE_PATH: &str = "C:\\Users\\{}\\Documents\\Axium\\";
-// #[cfg(target_os = "macos")]
-// const BASE_PATH: &str = "/Users/{}/Library/Preferences/Axium/";
-// // /Users/username/Library/Preferences
 
 pub struct DeviceState {
     pub connected: bool,
@@ -604,21 +599,6 @@ impl DeviceState {
     }
     
     pub fn write_to_file(&self, file_name: &str) -> Result<()> {
-        // let username = match env::var("USER") { // On Unix-like OSes
-        //     Ok(val) => val,
-        //     Err(_) => env::var("USERNAME").unwrap(), // On Windows
-        // };
-        // #[cfg(target_os = "windows")]
-        // let username = env::var("USERNAME").unwrap();
-
-        // #[cfg(target_os = "windows")]
-        // let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
-
-        // #[cfg(target_os = "macos")]
-        // let username = env::var("USER").unwrap();
-        
-        // #[cfg(target_os = "macos")]
-        // let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
 
         let mut file_path = get_profiles_path().unwrap();
 
@@ -667,17 +647,6 @@ impl DeviceState {
     }
 
     pub fn list_json_files() -> Result<String> {
-        // #[cfg(target_os = "windows")]
-        // let username = env::var("USERNAME").unwrap();
-
-        // #[cfg(target_os = "windows")]
-        // let mut file_path = PathBuf::from(format!("/Users/{}/Documents/Axium/", username));
-
-        // #[cfg(target_os = "macos")]
-        // let username = env::var("USER").unwrap();
-        
-        // #[cfg(target_os = "macos")]
-        // let mut file_path = PathBuf::from(format!("/Volumes/Macintosh HD/Users/{}/Downloads/Axium/", username));
 
         let mut file_path = get_profiles_path().unwrap();
 

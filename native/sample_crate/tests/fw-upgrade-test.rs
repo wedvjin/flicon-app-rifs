@@ -8,5 +8,7 @@ fn fw_upgrade() {
     let mut device = sample_crate::DeviceState::new();
     println!("{:?}", device.feature);
     device.set_enable_dfu();
-    upgrade_firmware("none in debug".to_string());
+    let res = upgrade_firmware("none in debug".to_string());
+    println!("res: {:?}", res);
+    
 }
