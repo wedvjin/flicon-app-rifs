@@ -7,7 +7,10 @@ pub fn get_current_dir() -> io::Result<PathBuf> {
 }
 
 pub fn get_username() -> Result<String> {
+    #[cfg(target_os = "windows")]
     let username = env::var("USERNAME").unwrap();
+    #[cfg(target_os = "macos")]
+    let username = env::var("USER").unwrap();
     Ok(username)
 }
 
