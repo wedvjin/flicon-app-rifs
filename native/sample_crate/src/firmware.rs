@@ -1,6 +1,7 @@
 extern crate libloading;
 
 use libloading::{Library, Symbol};
+#[cfg(target_os = "windows")] 
 use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, os::windows::prelude::OsStrExt, fs::File};
 
 use crate::utils::{get_current_dir, get_username};
@@ -32,55 +33,59 @@ pub fn upgrade_firmware(path: String) -> String {
     // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
     
     // TODO: take the same name of the latest version
+    #[cfg(target_os = "windows")] 
+    {
 
-    #[cfg(debug_assertions)]
-    let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
     
-    let mut file_path = PathBuf::from(path);
-
-    let os_str: &OsStr = OsStr::new(&file_path);
-    let mut wide_string: Vec<u16> = os_str.encode_wide().collect();
-    wide_string.push(0); // Null-terminate the wide string
-    
-    let wide_string_ptr: *const u16 = wide_string.as_ptr();
-
-    // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
-    // libloading::os::windows::Library::new(complete_path.clone()) {
-    #[cfg(target_os = "windows")]
-    unsafe {
-        let lib = match libloading::os::windows::Library::new(complete_path.clone()) {
-            Ok(ok) => ok,
-            Err(err) => return err.to_string(),
-        };
-
+        #[cfg(debug_assertions)]
+        let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
         
+        let mut file_path = PathBuf::from(path);
 
-        let upgrade_fw: libloading::os::windows::Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
-            .expect("Could not find the function in the DLL");
-        type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
+        let os_str: &OsStr = OsStr::new(&file_path);
+        let mut wide_string: Vec<u16> = os_str.encode_wide().collect();
+        wide_string.push(0); // Null-terminate the wide string
+        
+        let wide_string_ptr: *const u16 = wide_string.as_ptr();
 
-        let address = 0x08008000;
-        let skip_erase = 0; // to not skip erasing
-        let verify = 1;
-        let bin_path: *const u16 = std::ptr::null();
-        println!("FW upgrade started");
-        std::thread::sleep(std::time::Duration::from_millis(5000));
+        // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
+        // libloading::os::windows::Library::new(complete_path.clone()) {
+        
+        unsafe {
+            let lib = match libloading::os::windows::Library::new(complete_path.clone()) {
+                Ok(ok) => ok,
+                Err(err) => return err.to_string(),
+            };
 
-        let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
+            
 
-        println!("FW upgrade result: {}", result);
-        std::thread::sleep(std::time::Duration::from_millis(2000));
+            let upgrade_fw: libloading::os::windows::Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
+                .expect("Could not find the function in the DLL");
+            type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
 
-        let func_execute: libloading::os::windows::Symbol<ExecuteFunction> = lib.get(b"execute")
-            .expect("Could not find the function in the DLL");
+            let address = 0x08008000;
+            let skip_erase = 0; // to not skip erasing
+            let verify = 1;
+            let bin_path: *const u16 = std::ptr::null();
+            println!("FW upgrade started");
+            std::thread::sleep(std::time::Duration::from_millis(5000));
 
-        type ExecuteFunction = unsafe fn(address: u32) -> i32;
+            let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
 
-        let program_start_address = 0x08008004;
-        let result = func_execute(program_start_address);
+            println!("FW upgrade result: {}", result);
+            std::thread::sleep(std::time::Duration::from_millis(2000));
 
-        println!("Execute result: {}", result);
+            let func_execute: libloading::os::windows::Symbol<ExecuteFunction> = lib.get(b"execute")
+                .expect("Could not find the function in the DLL");
 
+            type ExecuteFunction = unsafe fn(address: u32) -> i32;
+
+            let program_start_address = 0x08008004;
+            let result = func_execute(program_start_address);
+
+            println!("Execute result: {}", result);
+
+        }
     }
     return complete_path.to_str().unwrap().to_string()
 }
