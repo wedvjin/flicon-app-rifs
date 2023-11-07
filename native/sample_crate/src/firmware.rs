@@ -1,8 +1,23 @@
+extern crate libc;
 extern crate libloading;
 
+use libc::{c_char, c_int};
 use libloading::{Library, Symbol};
+use std::{ffi::CStr, ptr, slice};
+
+#[derive(Debug)]
+#[repr(C)]
+struct DfuDeviceInfo {
+    usbIndex: [c_char; 10],
+    busNumber: c_int,
+    addressNumber: c_int,
+    productId: [c_char; 100],
+    serialNumber: [c_char; 100],
+    dfuVersion: libc::c_uint,
+}
+
 #[cfg(target_os = "windows")] 
-use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, c_char, CString}, os::windows::prelude::OsStrExt, fs::File};
+use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, CString}, os::windows::prelude::OsStrExt, fs::File};
 
 use crate::utils::{get_current_dir, get_username};
 
@@ -35,7 +50,7 @@ pub fn upgrade_firmware(path: String) -> String {
     // TODO: take the same name of the latest version
     #[cfg(target_os = "windows")] 
     {
-
+        std::thread::sleep(std::time::Duration::from_millis(7000));
     
         #[cfg(debug_assertions)]
         let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
@@ -52,38 +67,75 @@ pub fn upgrade_firmware(path: String) -> String {
         // libloading::os::windows::Library::new(complete_path.clone()) {
         
         unsafe {
-            let lib = match libloading::os::windows::Library::new(complete_path.clone()) {
-                Ok(ok) => ok,
-                Err(err) => return err.to_string(),
-            };
 
-            
+            let lib = Library::new("CubeProgrammer_API.dll").expect("Failed to load DLL");
 
-            let upgrade_fw: libloading::os::windows::Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
-                .expect("Could not find the function in the DLL");
-            type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
+        // Get a reference to the `getDfuDeviceList` function.
+        let get_dfu_device_list: Symbol<unsafe extern "C" fn(
+            *mut *mut DfuDeviceInfo,
+            c_int,
+            c_int,
+        ) -> c_int> = lib.get(b"getDfuDeviceList").expect("Failed to find 'getDfuDeviceList'");
 
-            let address = 0x08008000;
-            let skip_erase = 0; // to not skip erasing
-            let verify = 1;
-            let bin_path: *const u16 = std::ptr::null();
-            println!("FW upgrade started");
-            
+        // Prepare the variables for the call
+        let mut dfu_list: *mut DfuDeviceInfo = ptr::null_mut();
+        let i_pid: c_int = 57105; // Replace with actual PID
+        let i_vid: c_int = 1155; // Replace with actual VID
 
-            let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
+        // Call the function
+        let result = get_dfu_device_list(&mut dfu_list, i_pid, i_vid);
 
-            println!("FW upgrade result: {}", result);
-            std::thread::sleep(std::time::Duration::from_millis(2000));
+        if result >= 0 {
+            // Handle the list
+            let devices = slice::from_raw_parts(dfu_list, result as usize);
+            for device in devices {
+                // Process devices
+                // println!("{:?}", device);
+                let connect_dfu_bootloader: Symbol<unsafe extern "C" fn(*const c_char) -> c_int> = 
+                    lib.get(b"connectDfuBootloader").expect("Failed to find 'connectDfuBootloader'");
 
-            let func_execute: libloading::os::windows::Symbol<ExecuteFunction> = lib.get(b"execute")
-                .expect("Could not find the function in the DLL");
+                let usb_index: Vec<u8> = device.usbIndex.iter().map(|&x| x as u8).collect();
+                let usb_index_cstring = CStr::from_bytes_with_nul(&usb_index[..5])
+                    .expect("CStr::from_bytes_with_nul failed");
 
-            type ExecuteFunction = unsafe fn(address: u32) -> i32;
+                let result = connect_dfu_bootloader(usb_index_cstring.as_ptr());
+                if result == 0 {
+                    println!("Connection successful!");
+                    let func_execute: Symbol<ExecuteFunction> = lib.get(b"execute")
+                        .expect("Could not find the function in the DLL");
 
-            let program_start_address = 0x08008004;
-            let result = func_execute(program_start_address);
+                    let upgrade_fw: Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
+                        .expect("Could not find the function in the DLL");
+                    type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
+        
+                    let address = 0x08008000;
+                    let skip_erase = 0; // to not skip erasing
+                    let verify = 1;
+                    let bin_path: *const u16 = std::ptr::null();
+                    println!("FW upgrade started");
+                    
+        
+                    let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
+        
+                    println!("FW upgrade result: {}", result);
+                    std::thread::sleep(std::time::Duration::from_millis(2000));
+        
+                    type ExecuteFunction = unsafe fn(address: u32) -> i32;
+        
+                    let program_start_address = 0x08008004;
+                    let result = func_execute(program_start_address);
+        
+                    println!("Execute result: {}", result);
+                } else {
+                    println!("Connection failed with error code: {}", result);
+                }
+            }
 
-            println!("Execute result: {}", result);
+            // Free the dfuList if necessary (use another function from the DLL)
+        } else {
+            // Handle error
+        }
+
 
         }
     }
