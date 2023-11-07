@@ -124,4 +124,5 @@ message ReportMessage {
     uint32 fw_version = 119;
 
     bool connected = 120;
+    string base_name = 121;
 }
