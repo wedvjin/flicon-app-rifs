@@ -68,7 +68,7 @@ pub fn upgrade_firmware(path: String) -> String {
             let verify = 1;
             let bin_path: *const u16 = std::ptr::null();
             println!("FW upgrade started");
-            std::thread::sleep(std::time::Duration::from_millis(5000));
+            
 
             let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
 
