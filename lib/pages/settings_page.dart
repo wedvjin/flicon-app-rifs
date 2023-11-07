@@ -48,6 +48,7 @@ class _SettingPageState extends State<SettingPage> {
   HSVColor color = HSVColor.fromColor(Colors.blue);
   int _showButton = 0;
   List<int> _showButtons = [0];
+  List<int> _subButtons = [];
   int _controlButton = 0;
   var cursor = SystemMouseCursors.basic;
   int initialController = 1; // right
@@ -560,6 +561,18 @@ class _SettingPageState extends State<SettingPage> {
       }
     }
 
+    void addSubButton(btn) {
+      if(!_subButtons.contains(btn)) {
+        _subButtons.add(btn); 
+      }
+    }
+
+    void removeSubButton(btn) {
+      if(_subButtons.contains(btn)) {
+        _subButtons.removeAt(_subButtons.indexOf(btn));
+      }
+    }
+
     void updateShowButton(data) {
 
       if(_controlButton == 0 ) {
@@ -572,32 +585,112 @@ class _SettingPageState extends State<SettingPage> {
 
         if(data.b10 || data.b11 || data.b13 || data.b14) {
           addPressedButton(3);
+          addSubButton(3000000000000000);
+          data.b10 ? addSubButton(10) : removeSubButton(10);
+          data.b11 ? addSubButton(11) : removeSubButton(11);
+          data.b13 ? addSubButton(13) : removeSubButton(13);
+          data.b14 ? addSubButton(14) : removeSubButton(14);
         } else {
           removePressedButton(3);
+          removeSubButton(3000000000000000);
+          removeSubButton(10);
+          removeSubButton(11);
+          removeSubButton(13);
+          removeSubButton(14);
         }
 
         if(data.b16 || data.b17 || data.b18) {
           addPressedButton(7);
+          addSubButton(7000000000000000);
+          data.b16 ? addSubButton(16) : removeSubButton(16);
+          data.b17 ? addSubButton(17) : removeSubButton(17);
+          data.b18 ? addSubButton(18) : removeSubButton(18);
         } else {
           removePressedButton(7);
+          removeSubButton(7000000000000000);
+          removeSubButton(16);
+          removeSubButton(17);
+          removeSubButton(18);
         }
 
         if(data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26 || data.b27) {
           addPressedButton(10);
+          addSubButton(1000000000000000);
+
+          data.b19 ? addSubButton(19) : removeSubButton(19);
+          data.b20 ? addSubButton(20) : removeSubButton(20);
+          data.b21 ? addSubButton(21) : removeSubButton(21);
+          data.b22 ? addSubButton(22) : removeSubButton(22);
+          data.b23 ? addSubButton(23) : removeSubButton(23);
+          data.b24 ? addSubButton(24) : removeSubButton(24);
+          data.b25 ? addSubButton(25) : removeSubButton(25);
+          data.b26 ? addSubButton(26) : removeSubButton(26);
+          data.b27 ? addSubButton(27) : removeSubButton(27);
         } else {
           removePressedButton(10);
+          removeSubButton(1000000000000000);
+          removeSubButton(19);
+          removeSubButton(20);
+          removeSubButton(21);
+          removeSubButton(22);
+          removeSubButton(23);
+          removeSubButton(24);
+          removeSubButton(25);
+          removeSubButton(26);
+          removeSubButton(27);
         }
 
         if(data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b35 || data.b36) {
           addPressedButton(5);
+          addSubButton(5000000000000000);
+          data.b28 ? addSubButton(28) : removeSubButton(28);
+          data.b29 ? addSubButton(29) : removeSubButton(29);
+          data.b30 ? addSubButton(30) : removeSubButton(30);
+          data.b31 ? addSubButton(31) : removeSubButton(31);
+          data.b32 ? addSubButton(32) : removeSubButton(32);
+          data.b33 ? addSubButton(33) : removeSubButton(33);
+          data.b34 ? addSubButton(34) : removeSubButton(34);
+          data.b35 ? addSubButton(35) : removeSubButton(35);
+          data.b36 ? addSubButton(36) : removeSubButton(36);
+          
         } else {
           removePressedButton(5);
+          removeSubButton(5000000000000000);
+          removeSubButton(28);
+          removeSubButton(29);
+          removeSubButton(30);
+          removeSubButton(31);
+          removeSubButton(32);
+          removeSubButton(33);
+          removeSubButton(34);
+          removeSubButton(35);
+          removeSubButton(36);
         }
 
         if(data.b37 || data.b38 || data.b39 || data.b40 || data.b41 || data.b42 || data.b43 || data.b44 || data.b45) {
           addPressedButton(2);
+          addSubButton(2000000000000000);
+          data.b37 ? addSubButton(37) : removeSubButton(37);
+          data.b38 ? addSubButton(38) : removeSubButton(38);
+          data.b39 ? addSubButton(39) : removeSubButton(39);
+          data.b40 ? addSubButton(40) : removeSubButton(40);
+          data.b41 ? addSubButton(41) : removeSubButton(41);
+          data.b42 ? addSubButton(42) : removeSubButton(42);
+          data.b43 ? addSubButton(43) : removeSubButton(43);
+          data.b44 ? addSubButton(44) : removeSubButton(44);
+          data.b45 ? addSubButton(45) : removeSubButton(45);
         } else {
           removePressedButton(2);
+          removeSubButton(2000000000000000);
+          removeSubButton(37);
+          removeSubButton(38);
+          removeSubButton(39);
+          removeSubButton(40);
+          removeSubButton(41);
+          removeSubButton(42);
+          removeSubButton(43);
+          removeSubButton(44);
+          removeSubButton(45);
         }
       }
     }
@@ -658,7 +751,7 @@ class _SettingPageState extends State<SettingPage> {
                                         Positioned(
                                           child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 595, height: 464)),
                                         ),
-
+                                        for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 595, height: 464),),
                                         // leds
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
                                           Positioned(

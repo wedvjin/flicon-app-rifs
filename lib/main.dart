@@ -128,7 +128,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String _contoller = 'unknown';
-  String path = '...';
+String path = '...';
 
   Future<void> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
     final requestMessage = deviceInfo.SetValues(
@@ -237,11 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 context.go('/settings')
               },
               child: const Text("Go to settings")
-            ),
-            ElevatedButton(
-              onPressed: showPath, 
-              child: const Text("Show path")
-            ),
+            )
           ],
         ),
       ),
