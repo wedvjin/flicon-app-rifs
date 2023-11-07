@@ -181,40 +181,43 @@ class _BrakeState extends State<Brake> {
                     children: <Widget>[
                       Container(
                         width: 250,
-                        height: 10,
+                        height: 20,
                       ),
                       Positioned(
-                        top: 0,
+                        top: 5,
                         left: 0,
                         child: Container(
                           width: 250,
                           height: 10,
                           decoration: const BoxDecoration(
-                            color: Color.fromRGBO(169, 193, 10, 1),
+                            color: Color.fromRGBO(132, 5, 5, 1),
                             shape: BoxShape.rectangle,
 
                           ),
                         ),
                         ),
-                      if(sliderCalibration)
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          child: Container(
-                            width: (((widget.data.sliderAxis - minValue) / (maxValue - minValue)) * 250).clamp(0, 250),
-                            height: 10,
-                            decoration: const BoxDecoration(
-                              color: Color.fromRGBO(96, 110, 3, 1),
-                              shape: BoxShape.rectangle,
+                        if(sliderCalibration)
+                          Positioned(
+                            top: 0,
+                            left: (((widget.data.sliderAxis - minValue) / (maxValue - minValue)) * 250).clamp(0, 250) - 10,
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(193, 10, 10, 1),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
 
+                              ),
                             ),
                           ),
-                        ),
                         Positioned(
-                          top: 0,
+                          top: 5,
                           left: 0,
                           child: Container(
-                            width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * _currentDeadZoneValue.toDouble() /100),
+                            width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * widget.data.rzDeadZone.toDouble() /100),
+
+                            //width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * widget.data.rzDeadZone.toDouble() /100),
                             height: 10,
                             decoration: const BoxDecoration(
                               color:Color.fromRGBO(190, 4, 4, 0.8),
@@ -225,7 +228,56 @@ class _BrakeState extends State<Brake> {
                         
                     ],
                   ),
-              ),
+                ),
+                  // Stack(
+                  //   children: <Widget>[
+                  //     Container(
+                  //       width: 250,
+                  //       height: 10,
+                  //     ),
+                  //     Positioned(
+                  //       top: 0,
+                  //       left: 0,
+                  //       child: Container(
+                  //         width: 250,
+                  //         height: 10,
+                  //         decoration: const BoxDecoration(
+                  //           color: Color.fromRGBO(169, 193, 10, 1),
+                  //           shape: BoxShape.rectangle,
+
+                  //         ),
+                  //       ),
+                  //       ),
+                  //     if(sliderCalibration)
+                  //       Positioned(
+                  //         top: 0,
+                  //         left: 0,
+                  //         child: Container(
+                  //           width: (((widget.data.sliderAxis - minValue) / (maxValue - minValue)) * 250).clamp(0, 250),
+                  //           height: 10,
+                  //           decoration: const BoxDecoration(
+                  //             color: Color.fromRGBO(96, 110, 3, 1),
+                  //             shape: BoxShape.rectangle,
+
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Positioned(
+                  //         top: 0,
+                  //         left: 0,
+                  //         child: Container(
+                  //           width: deadZoneChanged ? (250 * _editableDeadZoneValue.toDouble() / 100) : (250 * _currentDeadZoneValue.toDouble() /100),
+                  //           height: 10,
+                  //           decoration: const BoxDecoration(
+                  //             color:Color.fromRGBO(190, 4, 4, 0.8),
+                  //             shape: BoxShape.rectangle,
+                  //           ),
+                  //         ),
+                  //       ),
+                        
+              //       ],
+              //     ),
+              // ),
               if(sliderCalibration)
                 Text('Move slider to get MIN and MAX values'),
               Padding(

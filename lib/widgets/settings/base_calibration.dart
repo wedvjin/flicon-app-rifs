@@ -203,19 +203,19 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 child: Text("X Axis"),
               ),
               Stack(
-                children: <Widget>[
-                  Container(
-                    width: 250,
-                    height: 10,
+                    children: <Widget>[
+                      Container(
+                        width: 250,
+                    height: 20,
                   ),
                   Positioned(
-                    top: 0,
+                    top: 5,
                     left: 0,
                     child: Container(
                       width: 250,
                       height: 10,
                       decoration: const BoxDecoration(
-                        color: Color.fromRGBO(169, 193, 10, 1),
+                        color: Color.fromRGBO(132, 5, 5, 1),
                         shape: BoxShape.rectangle,
 
                       ),
@@ -223,21 +223,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                   ),
                   if(rXAxisCalibration)
                     Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        width: (((widget.data.xAxis - minXValue) / (maxXValue - minXValue)) * 250).clamp(0, 250),
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(96, 110, 3, 1),
-                          shape: BoxShape.rectangle,
-
-                          ),
-                        ),
-                      ),
-                  if(rXAxisCalibration)
-                    Positioned(
-                      top: 0,
+                      top: 5,
                       left: (((widget.data.xAxis - minXValue) / (maxXValue - minXValue)) * 250).clamp(0, 250) - (250 * (deadZoneXChanged ? _editableDeadZoneXValue.toDouble() : widget.data.xDeadZone.toDouble()) / 100 / 2),
                       child: Container(
                         width: 250 * (deadZoneXChanged ? _editableDeadZoneXValue.toDouble() : widget.data.xDeadZone.toDouble()) / 100,
@@ -250,7 +236,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                     ),
                   if(!rXAxisCalibration)
                     Positioned(
-                      top: 0,
+                      top: 5,
                       left: 125 - (250 * (deadZoneXChanged ? _editableDeadZoneXValue.toDouble() : widget.data.xDeadZone.toDouble()) / 100 / 2),
                       child: Container(
                         width: 250 * (deadZoneXChanged ? _editableDeadZoneXValue.toDouble() : widget.data.xDeadZone.toDouble()) / 100,
@@ -261,6 +247,20 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         ),
                       ),
                     ),
+                  if(rXAxisCalibration)
+                    Positioned(
+                      top: 0,
+                      left: (((widget.data.xAxis - minXValue) / (maxXValue - minXValue)) * 250).clamp(0, 250) - 10,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(193, 10, 10, 1),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                          ),
+                        ),
+                      ),
                     
                 ],
               ),
@@ -369,16 +369,16 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 children: <Widget>[
                   Container(
                     width: 250,
-                    height: 10,
+                    height: 20,
                   ),
                   Positioned(
-                    top: 0,
+                    top: 5,
                     left: 0,
                     child: Container(
                       width: 250,
                       height: 10,
                       decoration: const BoxDecoration(
-                        color: Color.fromRGBO(169, 193, 10, 1),
+                        color: Color.fromRGBO(132, 5, 5, 1),
                         shape: BoxShape.rectangle,
 
                       ),
@@ -386,21 +386,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                   ),
                   if(rYAxisCalibration)
                     Positioned(
-                      top: 0,
-                      left: 0,
-                      child:
-                        Container(
-                        width: (((widget.data.yAxis - minYValue) / (maxYValue - minYValue)) * 250).clamp(0, 250),
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(96, 110, 3, 1),
-                          shape: BoxShape.rectangle,
-                          ),
-                        ),
-                      ),
-                  if(rYAxisCalibration)
-                    Positioned(
-                      top: 0,
+                      top: 5,
                       left: (((widget.data.yAxis - minYValue) / (maxYValue - minYValue)) * 250).clamp(0, 250) - (250 * (deadZoneYChanged ? _editableDeadZoneYValue.toDouble() : widget.data.yDeadZone.toDouble()) / 100 / 2),
                       child: Container(
                         width: 250 * (deadZoneYChanged ? _editableDeadZoneYValue.toDouble() : widget.data.yDeadZone.toDouble()) / 100,
@@ -413,7 +399,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                     ),
                   if(!rYAxisCalibration)
                     Positioned(
-                      top: 0,
+                      top: 5,
                       left: 125- (250 * (deadZoneYChanged ? _editableDeadZoneYValue.toDouble() : widget.data.yDeadZone.toDouble()) / 100 / 2),
                       child: Container(
                         width: 250 * (deadZoneYChanged ? _editableDeadZoneYValue.toDouble() : widget.data.yDeadZone.toDouble()) / 100,
@@ -424,6 +410,21 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         ),
                       ),
                     ),
+                  if(rYAxisCalibration)
+                    Positioned(
+                      top: 0,
+                      left: (((widget.data.yAxis - minYValue) / (maxYValue - minYValue)) * 250).clamp(0, 250) - 10,
+                      child:
+                        Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(193, 10, 10, 1),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                          ),
+                        ),
+                      ),
                     
                 ],
               ),
