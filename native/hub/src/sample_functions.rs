@@ -358,7 +358,8 @@ pub async fn stream_report(
             rz_axis: report_feature_data.rz_axis as i32,
             slider_axis: report_feature_data.slider_axis as i32,
             fw_version: report_feature_data.fw_version as u32,
-            base_name: base_name,        };
+            base_name: base_name,        
+        };
         
         let rust_signal = RustSignal {
             resource: ID,
