@@ -56,7 +56,7 @@ class _SettingPageState extends State<SettingPage> {
   final int min = 0;
   final int max = 10;
   final bool _flip = false;
-  int topBarOffest = -18;
+  int topBarOffest = 0;
 
   String? _directoryPath;
 
@@ -99,35 +99,35 @@ class _SettingPageState extends State<SettingPage> {
       double y = details.globalPosition.dy;
 
       if(controller == 'right') {
-        if(((x > 97 && y > 161 + topBarOffest) && (x<129 && y<193 + topBarOffest)) || ((x>547 && y>166 + topBarOffest) && (x<574 && y<198 + topBarOffest))) {
+        if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           setControlButton(1);
-        } else if(((x >136 && y > 176 + topBarOffest) && (x<162 && y<207 + topBarOffest))) {
+        } else if(((x >134 && y > 173) && (x<159 && y<199))) {
           setControlButton(2);
-        } else if(((x >152 && y > 222 + topBarOffest) && (x<163 && y<238 + topBarOffest))) {
+        } else if(((x >150 && y > 215) && (x<165 && y<233))) {
           setControlButton(3);
-        } else if(((x >175 && y > 186 + topBarOffest) && (x<197 && y<206 + topBarOffest))) {
+        } else if(((x >172 && y > 178) && (x<192 && y<202))) {
           //setControlButton(4);
-        } else if(((x >183 && y > 139 + topBarOffest) && (x<208 && y<170 + topBarOffest))) {
+        } else if(((x >183 && y > 133) && (x<206 && y<163))) {
           setControlButton(5);
-        } else if(((x >153 && y > 143 + topBarOffest) && (x<171 && y<166 + topBarOffest))) {
+        } else if(((x >151 && y > 138) && (x<171 && y<159))) {
           //setControlButton(6);
-        } else if(((x >243 && y > 168 + topBarOffest) && (x<268 && y<240 + topBarOffest))) {
+        } else if(((x >239 && y > 159) && (x<265 && y<235))) {
           setControlButton(7);
-        } else if(((x >535 && y > 389 + topBarOffest) && (x<556 && y<413 + topBarOffest))) {
+        } else if(((x >532 && y > 381) && (x<555 && y<404))) {
           //setControlButton(8);
-        } else if(((x > 188 && y > 348 + topBarOffest) && (x<222 && y<435 + topBarOffest)) || ((x>429 && y>370 + topBarOffest) && (x<484 && y<454 + topBarOffest))) {
+        } else if(((x > 185 && y > 338) && (x<222 && y<430)) || ((x>428 && y>360) && (x<495 && y<459))) {
           setControlButton(9);
-        } else if(((x > 78 && y > 273 + topBarOffest) && (x<105 && y<285 + topBarOffest)) || ((x>563 && y>276 + topBarOffest) && (x<593 && y<300 + topBarOffest))) {
+        } else if(((x > 75 && y > 263) && (x<106 && y<281)) || ((x>560 && y>268) && (x<593 && y<292))) {
           setControlButton(10);
-        } else if(((x > 191 && y > 269 + topBarOffest) && (x<209 && y<307 + topBarOffest)) || ((x>460 && y>286 + topBarOffest) && (x<502 && y<316 + topBarOffest))) {
+        } else if(((x > 195 && y > 260) && (x<207 && y<302)) || ((x>459 && y>275) && (x<507 && y<306))) {
           //setControlButton(11);
-        } else if(((x > 215 && y > 271 + topBarOffest) && (x<252 && y<317 + topBarOffest)) || ((x>402 && y>309 + topBarOffest) && (x<434 && y<345 + topBarOffest))) {
+        } else if(((x > 210 && y > 262) && (x<252 && y<308)) || ((x>394 && y>297) && (x<433 && y<339))) {
           setControlButton(12);
-        } else if(((x >291 && y > 404 + topBarOffest) && (x<372 && y<472 + topBarOffest))) {
+        } else if(((x >301 && y > 378) && (x<347 && y<418))) {
           setControlButton(13);
-        } else if(((x > 100 && y > 499 + topBarOffest) && (x<169 && y<539 + topBarOffest)) || ((x>518 && y>469 + topBarOffest) && (x<579 && y<505 + topBarOffest))) {
+        } else if(((x > 98 && y > 488) && (x<167 && y<527)) || ((x>516 && y>458) && (x<579 && y<495))) {
           setControlButton(14);
-        } else if(((x >385 && y > 270 + topBarOffest) && (x<455 && y<297 + topBarOffest))) {
+        } else if(((x >385 && y > 254) && (x<458 && y<293))) {
           setControlButton(898);
         } else {
           setControlButton(0);
@@ -135,35 +135,35 @@ class _SettingPageState extends State<SettingPage> {
       }
 
       if(controller == 'left') {
-        if(((x > 199 && y > 173 + topBarOffest) && (x<229 && y<205 + topBarOffest)) || ((x>448 && y>175 + topBarOffest) && (x<476 && y<202 + topBarOffest))) {
+        if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           setControlButton(1);
-        } else if(((x >484 && y > 190 + topBarOffest) && (x<509 && y<215 + topBarOffest))) {
+        } else if(((x >504 && y > 169) && (x<534 && y<201))) {
           setControlButton(2);
-        } else if(((x >499 && y > 230 + topBarOffest) && (x<510 && y<247 + topBarOffest))) {
+        } else if(((x >497 && y > 212) && (x<520 && y<235))) {
           setControlButton(3);
-        } else if(((x >520 && y > 196 + topBarOffest) && (x<528 && y<218 + topBarOffest))) {
-          //setControlButton(4);
-        } else if(((x >527 && y > 156 + topBarOffest) && (x<549 && y<183 + topBarOffest))) {
+        } else if(((x >471 && y > 179) && (x<494 && y<203))) {
+          setControlButton(4);
+        } else if(((x >458 && y > 132) && (x<486 && y<166))) {
           setControlButton(5);
-        } else if(((x >498 && y > 159 + topBarOffest) && (x<515 && y<179 + topBarOffest))) {
-          //setControlButton(6);
-        } else if(((x >581 && y > 179 + topBarOffest) && (x<603 && y<249 + topBarOffest))) {
+        } else if(((x >493 && y > 136) && (x<516 && y<161))) {
+          setControlButton(6);
+        } else if(((x >399 && y > 168) && (x<428 && y<232))) {
           setControlButton(7);
-        } else if(((x >184 && y > 413 + topBarOffest) && (x<210 && y<441 + topBarOffest))) {
-          //setControlButton(8);
-        } else if(((x > 70 && y > 391 + topBarOffest) && (x<143 && y<494 + topBarOffest)) || ((x>526 && y>341 + topBarOffest) && (x<562 && y<426 + topBarOffest))) {
+        } else if(((x >114 && y > 378) && (x<132 && y<402))) {
+          setControlButton(8);
+        } else if(((x > 169 && y > 356) && (x<220 && y<446)) || ((x>435 && y>336) && (x<488 && y<430))) {
           setControlButton(9);
-        } else if(((x > 215 && y > 290 + topBarOffest) && (x<251 && y<317 + topBarOffest)) || ((x>433 && y>275 + topBarOffest) && (x<455 && y<286 + topBarOffest))) {
+        } else if(((x > 73 && y > 268) && (x<110 && y<293)) || ((x>557 && y>263) && (x<591 && y<284))) {
           setControlButton(10);
-        } else if(((x > 101 && y > 296 + topBarOffest) && (x<156 && y<330 + topBarOffest)) || ((x>536 && y>271 + topBarOffest) && (x<546 && y<306 + topBarOffest))) {
-          //setControlButton(11);
-        } else if(((x > 37 && y > 326 + topBarOffest) && (x<78 && y<366 + topBarOffest)) || ((x>554 && y>274 + topBarOffest) && (x<590 && y<317 + topBarOffest))) {
+        } else if(((x > 160 && y > 264) && (x<205 && y<304)) || ((x>454 && y>261) && (x<484 && y<299))) {
+          setControlButton(11);
+        } else if(((x > 229 && y > 295) && (x<269 && y<339)) || ((x>416 && y>269) && (x<449 && y<311))) {
           setControlButton(12);
-        } else if(((x >291 && y > 404 + topBarOffest) && (x<372 && y<472 + topBarOffest))) {
+        } else if(((x >321 && y > 377) && (x<364 && y<417))) {
           setControlButton(13);
-        } else if(((x >165 && y > 499 + topBarOffest) && (x<234 && y<536 + topBarOffest)) || ((x>454 && y>481 + topBarOffest) && (x<514 && y< 517 + topBarOffest))) {
+        } else if(((x >90 && y > 459) && (x<150 && y<494)) || ((x>499 && y>494) && (x<568 && y< 527))) {
           setControlButton(14);
-        } else if(((x >26 && y > 292 + topBarOffest) && (x<97 && y<313 + topBarOffest))) {
+        } else if(((x >204 && y > 252) && (x<269 && y<297))) {
           setControlButton(898);
         } else {
           setControlButton(0);
@@ -222,35 +222,35 @@ class _SettingPageState extends State<SettingPage> {
       realY = details.position.dy;
 
       if(controller == 'right') {
-        if(((x > 97 && y > 161 + topBarOffest) && (x<129 && y<193 + topBarOffest)) || ((x>547 && y>166 + topBarOffest) && (x<574 && y<198 + topBarOffest))) {
+        if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           _showButton = 1;
-        } else if(((x >484 && y > 190 + topBarOffest) && (x<509 && y<215 + topBarOffest))) {
+        } else if(((x >134 && y > 173) && (x<159 && y<199))) {
           _showButton = 2;
-        } else if(((x >152 && y > 222 + topBarOffest) && (x<163 && y<238 + topBarOffest))) {
+        } else if(((x >150 && y > 215) && (x<165 && y<233))) {
           _showButton = 3;
-        } else if(((x >175 && y > 186 + topBarOffest) && (x<197 && y<206 + topBarOffest))) {
+        } else if(((x >172 && y > 178) && (x<192 && y<202))) {
           _showButton = 4;
-        } else if(((x >183 && y > 139 + topBarOffest) && (x<208 && y<170 + topBarOffest))) {
+        } else if(((x >183 && y > 133) && (x<206 && y<163))) {
           _showButton = 5;
-        } else if(((x >153 && y > 143 + topBarOffest) && (x<171 && y<166 + topBarOffest))) {
+        } else if(((x >151 && y > 138) && (x<171 && y<159))) {
           _showButton = 6;
-        } else if(((x >243 && y > 168 + topBarOffest) && (x<268 && y<240 + topBarOffest))) {
+        } else if(((x >239 && y > 159) && (x<265 && y<235))) {
           _showButton = 7;
-        } else if(((x >535 && y > 389 + topBarOffest) && (x<556 && y<413 + topBarOffest))) {
+        } else if(((x >532 && y > 381) && (x<555 && y<404))) {
           _showButton = 8;
-        } else if(((x > 188 && y > 348 + topBarOffest) && (x<222 && y<435 + topBarOffest)) || ((x>429 && y>370 + topBarOffest) && (x<484 && y<454 + topBarOffest))) {
+        } else if(((x > 185 && y > 338) && (x<222 && y<430)) || ((x>428 && y>360) && (x<495 && y<459))) {
           _showButton = 9;
-        } else if(((x > 78 && y > 273 + topBarOffest) && (x<105 && y<285 + topBarOffest)) || ((x>563 && y>276 + topBarOffest) && (x<593 && y<300 + topBarOffest))) {
+        } else if(((x > 75 && y > 263) && (x<106 && y<281)) || ((x>560 && y>268) && (x<593 && y<292))) {
           _showButton = 10;
-        } else if(((x > 191 && y > 269 + topBarOffest) && (x<209 && y<307 + topBarOffest)) || ((x>460 && y>286 + topBarOffest) && (x<502 && y<316 + topBarOffest))) {
+        } else if(((x > 195 && y > 260) && (x<207 && y<302)) || ((x>459 && y>275) && (x<507 && y<306))) {
           _showButton = 11;
-        } else if(((x > 215 && y > 271 + topBarOffest) && (x<252 && y<317 + topBarOffest)) || ((x>402 && y>309 + topBarOffest) && (x<434 && y<345 + topBarOffest))) {
+        } else if(((x > 210 && y > 262) && (x<252 && y<308)) || ((x>394 && y>297) && (x<433 && y<339))) {
           _showButton = 12;
-        } else if(((x >291 && y > 404 + topBarOffest) && (x<372 && y<472 + topBarOffest))) {
+        } else if(((x >301 && y > 378) && (x<347 && y<418))) {
           _showButton = 13;
-        } else if(((x > 100 && y > 499 + topBarOffest) && (x<169 && y<539 + topBarOffest)) || ((x>518 && y>469 + topBarOffest) && (x<579 && y<505 + topBarOffest))) {
+        } else if(((x > 98 && y > 488) && (x<167 && y<527)) || ((x>516 && y>458) && (x<579 && y<495))) {
           _showButton = 14;
-        } else if(((x >385 && y > 270 + topBarOffest) && (x<455 && y<297 + topBarOffest))) {
+        } else if(((x >385 && y > 254) && (x<458 && y<293))) {
           _showButton = 898;
         } else {
           _showButton = 0;
@@ -266,35 +266,35 @@ class _SettingPageState extends State<SettingPage> {
       }
 
       if(controller == 'left') {
-        if(((x > 199 && y > 173 + topBarOffest) && (x<229 && y<205 + topBarOffest)) || ((x>448 && y>175 + topBarOffest) && (x<476 && y<202 + topBarOffest))) {
+        if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           _showButton = 1;
-        } else if(((x >484 && y > 190 + topBarOffest) && (x<509 && y<215 + topBarOffest))) {
+        } else if(((x >504 && y > 169) && (x<534 && y<201))) {
           _showButton = 2;
-        } else if(((x >499 && y > 230 + topBarOffest) && (x<510 && y<247 + topBarOffest))) {
+        } else if(((x >497 && y > 212) && (x<520 && y<235))) {
           _showButton = 3;
-        } else if(((x >520 && y > 196 + topBarOffest) && (x<528 && y<218 + topBarOffest))) {
+        } else if(((x >471 && y > 179) && (x<494 && y<203))) {
           _showButton = 4;
-        } else if(((x >527 && y > 156 + topBarOffest) && (x<549 && y<183 + topBarOffest))) {
+        } else if(((x >458 && y > 132) && (x<486 && y<166))) {
           _showButton = 5;
-        } else if(((x >498 && y > 159 + topBarOffest) && (x<515 && y<179 + topBarOffest))) {
+        } else if(((x >493 && y > 136) && (x<516 && y<161))) {
           _showButton = 6;
-        } else if(((x >581 && y > 179 + topBarOffest) && (x<603 && y<249 + topBarOffest))) {
+        } else if(((x >399 && y > 168) && (x<428 && y<232))) {
           _showButton = 7;
-        } else if(((x >184 && y > 413 + topBarOffest) && (x<210 && y<441 + topBarOffest))) {
+        } else if(((x >114 && y > 378) && (x<132 && y<402))) {
           _showButton = 8;
-        } else if(((x > 70 && y > 391 + topBarOffest) && (x<143 && y<494 + topBarOffest)) || ((x>526 && y>341 + topBarOffest) && (x<562 && y<426 + topBarOffest))) {
+        } else if(((x > 169 && y > 356) && (x<220 && y<446)) || ((x>435 && y>336) && (x<488 && y<430))) {
           _showButton = 9;
-        } else if(((x > 215 && y > 290 + topBarOffest) && (x<251 && y<317 + topBarOffest)) || ((x>433 && y>275 + topBarOffest) && (x<455 && y<286 + topBarOffest))) {
+        } else if(((x > 73 && y > 268) && (x<110 && y<293)) || ((x>557 && y>263) && (x<591 && y<284))) {
           _showButton = 10;
-        } else if(((x > 101 && y > 296 + topBarOffest) && (x<156 && y<330 + topBarOffest)) || ((x>536 && y>271 + topBarOffest) && (x<546 && y<306 + topBarOffest))) {
+        } else if(((x > 160 && y > 264) && (x<205 && y<304)) || ((x>454 && y>261) && (x<484 && y<299))) {
           _showButton = 11;
-        } else if(((x > 37 && y > 326 + topBarOffest) && (x<78 && y<366 + topBarOffest)) || ((x>554 && y>274 + topBarOffest) && (x<590 && y<317 + topBarOffest))) {
+        } else if(((x > 229 && y > 295) && (x<269 && y<339)) || ((x>416 && y>269) && (x<449 && y<311))) {
           _showButton = 12;
-        } else if(((x >291 && y > 404 + topBarOffest) && (x<372 && y<472 + topBarOffest))) {
+        } else if(((x >321 && y > 377) && (x<364 && y<417))) {
           _showButton = 13;
-        } else if(((x >165 && y > 499 + topBarOffest) && (x<234 && y<536 + topBarOffest)) || ((x>454 && y>481 + topBarOffest) && (x<514 && y< 517 + topBarOffest))) {
+        } else if(((x >90 && y > 459) && (x<150 && y<494)) || ((x>499 && y>494) && (x<568 && y< 527))) {
           _showButton = 14;
-        } else if(((x >26 && y > 292 + topBarOffest) && (x<97 && y<313 + topBarOffest))) {
+        } else if(((x >204 && y > 252) && (x<269 && y<297))) {
           _showButton = 898;
         } else {
           _showButton = 0;
@@ -695,9 +695,11 @@ class _SettingPageState extends State<SettingPage> {
       }
     }
 
+    Color mainColor = Color.fromARGB(255, 82, 82, 82);
+    Color secondaryColor = Color.fromRGBO(221, 221, 221, 1);
 
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 24, 24, 24),
         body: Center(
           child: StreamBuilder<RustSignal>(
             stream: rustBroadcaster.stream.where((rustSignal) {
@@ -723,8 +725,8 @@ class _SettingPageState extends State<SettingPage> {
                         decoration: const BoxDecoration(
                           gradient: RadialGradient(
                             colors: [
-                              Color.fromRGBO(30, 30, 30, 1),
-                              Colors.black,
+                              Color.fromARGB(255, 55, 55, 55),
+                              Color.fromARGB(255, 24, 24, 24),
                             ],
                           )
                         ),
@@ -738,49 +740,50 @@ class _SettingPageState extends State<SettingPage> {
                                   cursor: cursor,
                                   child: Stack(
                                       fit: StackFit.expand,
-                                      alignment: Alignment.center, 
+                                      alignment: Alignment.center,
                                       children: [
                                         Positioned(
-                                          child: Image.asset('assets/$controller/controllers_and_base.png', width: 595, height: 464),
+                                          child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457),
                                         ),
 
-                                        Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 595, height: 464),),
-                                        for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 595, height: 464),),
+                                        Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457),),
+                                        for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457),),
 
                                         // active
-                                        Positioned(
-                                          child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 595, height: 464)),
-                                        ),
-                                        for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 595, height: 464),),
+                                        // Positioned(
+                                        //   child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 586, height: 457)),
+                                        // ),
+                                        for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457),),
                                         // leds
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
                                           Positioned(
                                             child: Opacity(
                                               opacity: 1, 
-                                              child: Image.asset('assets/$controller/led-w.png', width: 595, height: 464)
+                                              child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457)
                                             ),
                                           ),
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledR * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-r.png', width: 595, height: 464)
+                                              child: Image.asset('assets/$controller/led-r.png', width: 586, height: 457)
+
                                             ),
                                           ),
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledG * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-g.png', width: 595, height: 464)
+                                              child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457)
                                             ),
                                           ),
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledB * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-b.png', width: 595, height: 464)
+                                              child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457)
                                             ),
                                           ),
                                         if(_controlButton != 0) 
                                           Positioned(
-                                            child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 595, height: 464)),
+                                            child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457)),
                                           ),
 
                                  
@@ -830,7 +833,7 @@ class _SettingPageState extends State<SettingPage> {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        color: Colors.black,
+                        color: Color.fromARGB(255, 24, 24, 24),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                           child: ListView(
@@ -929,7 +932,7 @@ class _SettingPageState extends State<SettingPage> {
                                   thickness: 5,
                                   indent: 20,
                                   endIndent: 0,
-                                  color: Colors.black12,
+                                  color: Colors.transparent,
                                 ),
                                 if(_controlButton == 1)
                                   Button1(data: data),

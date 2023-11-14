@@ -14,7 +14,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/loading',
+    initialLocation: '/settings',
     routes: [
       GoRoute(
         path: '/loading',
@@ -128,7 +128,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String _contoller = 'unknown';
-String path = '...';
+  String path = '...';
 
   Future<void> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
     final requestMessage = deviceInfo.SetValues(
