@@ -411,7 +411,30 @@ pub async fn handle_device(
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
                     
                     output_string = upgrade_firmware(path.to_str().unwrap().to_string());
-                } else {
+                } 
+                else if set_message.target.as_str().starts_with("selegrip") {
+                    let grip = &set_message.target.as_str()[9..set_message.target.len()-1];
+                    let side = &set_message.target.as_str().chars().last().unwrap();
+                    if grip == "EVO Grip " {
+                        adevice.lock().unwrap().set_id(0x01);
+                    }
+                    else if grip == "VPC Alpha Prime " {
+                        adevice.lock().unwrap().set_id(0x02);
+                    }
+                    else if grip == "VPC Alpha " {
+                        adevice.lock().unwrap().set_id(0x03);
+                    }
+                    else if grip == "Thrustmaster" {
+                        adevice.lock().unwrap().set_id(0x04);
+                        adevice.lock().unwrap().set_right();
+                    }
+                    if side.to_string() == "R" {
+                        adevice.lock().unwrap().set_right();
+                    } else if side.to_string() == "L" {
+                        adevice.lock().unwrap().set_left();
+                    }
+                }
+                else {
                     mm_res = match_message(adevice, set_message);
                 };
             }

@@ -505,6 +505,18 @@ impl DeviceState {
         self.feature.as_mut().unwrap().control_byte ^= 1 << 6;
     }
 
+    pub fn set_right(&mut self ) {
+        self.feature.as_mut().unwrap().control_byte |= 1 << 6;
+    }
+
+    pub fn set_left(&mut self ) {
+        self.feature.as_mut().unwrap().control_byte &= !(1 << 6);
+    }
+
+    pub fn set_id(&mut self, id: u8) {
+        self.feature.as_mut().unwrap().id_grib = id;
+    }
+
     pub fn set_enable_dfu(&mut self) {
         self.feature.as_mut().unwrap().control_byte |= 1 << 7;
         self.write_feature();
