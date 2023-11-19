@@ -1155,7 +1155,7 @@ class _SettingPageState extends State<SettingPage> {
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'THRUSTMASTER') {
-                                        rust_request('selegrip Thrustmaster', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('selegrip Thrustmaster ', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       
