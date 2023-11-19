@@ -235,7 +235,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   String _selectedGrip = 'EVO';
-  List<String> _grips = ['EVO', 'ALPHA', 'TRUSTMASTER'];
+  List<String> _grips = ['EVO', 'ALPHA', 'THRUSTMASTER'];
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -763,14 +763,14 @@ class _SettingPageState extends State<SettingPage> {
                                 
                                               ),
                                           ),
-                                          if(_selectedGrip == 'ALPHA')
+                                          if(_selectedGrip == 'THRUSTMASTER')
                                             Positioned(
                                               top: 220,
                                               right: 0,
                                               child: Image.asset('assets/base.png', width: 220),
                                             ),
-                                          if(_selectedGrip == 'ALPHA')
-                                            for(var x in gripsConfig['ALPHA']['buttons'])
+                                          if(_selectedGrip == 'THRUSTMASTER')
+                                            for(var x in gripsConfig['THRUSTMASTER']['buttons'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -790,10 +790,7 @@ class _SettingPageState extends State<SettingPage> {
                                                               padding: EdgeInsets.only(bottom: 10),
                                                               child: Text('Button ${i}', style: TextStyle(fontSize: 13),),
                                                             ),
-                                                            Positioned(
-                                                              top: 30,
-                                                              child:
-                                                                Container(
+                                                            Container(
                                                                   width: 50,
                                                                   height: 50,
                                                                   decoration: BoxDecoration(
@@ -815,17 +812,19 @@ class _SettingPageState extends State<SettingPage> {
                                                                     ],
                                                                   ),
                                                                   
-                                                                  child: Padding(padding: EdgeInsets.all(5), child: Container(
-                                                                    width: 40,
-                                                                    height: 40,
-                                                                    decoration: const BoxDecoration(
-                                                                      color: Color.fromRGBO(193, 10, 10, 1),
-                                                                      shape: BoxShape.circle,
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(5), 
+                                                                    child: Container(
+                                                                      width: 40,
+                                                                      height: 40,
+                                                                      decoration: const BoxDecoration(
+                                                                        color: Color.fromRGBO(193, 10, 10, 1),
+                                                                        shape: BoxShape.circle,
+                                                                      )
                                                                     )
-                                                                  ))
+                                                                  )
                                                                 
                                                                 ),
-                                                            ),
                                                           ]
                                                         )
                                                         )
@@ -966,10 +965,9 @@ class _SettingPageState extends State<SettingPage> {
                                         rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
-                                      if(val.toString() == 'ALPHA') {
-                                        rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
+                                      if(val.toString() == 'THRUSTMASTER') {
+                                        rust_request('selegrip Thrustmaster L', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
-
                                       }
                                       
                                     });
@@ -985,6 +983,7 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
 
                                 Text('${data.idGrib}'),
+                                Text('${data.buttons}'),
 
                                 if(_controlButton == 1)
                                   Button1(data: data),

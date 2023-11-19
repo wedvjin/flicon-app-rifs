@@ -2,8 +2,8 @@
     "EVO": {
         "name": "EVO Grip"
     },
-    "ALPHA": {
-        "name": "Alpha VPC",
+    "THRUSTMASTER": {
+        "name": "THRUSTMASTER",
         "buttons": [
             {
                 "offset": 70.0,
@@ -27,5 +27,5 @@
             }
         ]
     },
-    "TRUSTUMASTER": {}
+    "ALPHA": {}
 }
