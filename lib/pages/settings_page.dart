@@ -192,6 +192,12 @@ class _SettingPageState extends State<SettingPage> {
           setControlButton(0);
         }
       }
+
+      if(_selectedGrip == 'ALPHA' || _selectedGrip == 'THRUSTMASTER') {
+        if(((x > 517 && y > 281) && (x<580 && y<336))) {
+          setControlButton(13);
+        }
+      }
     });
   }
 
@@ -763,7 +769,7 @@ class _SettingPageState extends State<SettingPage> {
                                 
                                               ),
                                           ),
-                                          if(_selectedGrip == 'THRUSTMASTER')
+                                          if(_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA')
                                             Positioned(
                                               top: 220,
                                               right: 0,
@@ -833,7 +839,186 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
+                                          if(_selectedGrip == 'ALPHA')
+                                            for(var x in gripsConfig['ALPHA']['multibuttons'])
+                                              Positioned(
+                                                top: x['offset'],
+                                                left: 20,
+                                                child: 
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    for(var i in x['buttons'])
+                                                      Padding(
+                                                        padding: EdgeInsets.all(10),
+                                                        child: 
+                                                        SizedBox(
+                                                          width: 60,
+                                                          child: Column(                                                          
+                                                          children: [
+                                                            Padding(
+                                                              padding: EdgeInsets.only(bottom: 10),
+                                                              child: Text('S${i}', style: TextStyle(fontSize: 13),),
+                                                            ),
+                                                            Container(
+                                                                  width: 80,
+                                                                  height: 80,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.transparent,
+                                                                    shape: BoxShape.circle,
+                                                                    border:Border.all(
+                                                                      color: Colors.white,// Border color
+                                                                      width: 1.0,           // Border width
+                                                                    ),
+                                                                    boxShadow: [
+                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                    ],
+                                                                  ),
+                                                                  
+                                                                  child: 
+                                                                  i == 4 ? 
+                                                                      Image.asset('assets/2-axis-button/vertical.png', width: 50, height: 50) :
+                                                                      Image.asset('assets/multidirectional_button/all.png', width: 50, height: 50),
+                                                                
+                                                                ),
+                                                          ]
+                                                        )
+                                                        )
 
+                                                      ),
+                                                  ]
+                                                )
+                                              ),
+                                          if(_selectedGrip == 'ALPHA')
+                                            for(var x in gripsConfig['ALPHA']['axis'])
+                                              Positioned(
+                                                top: x['offset'],
+                                                left: 20,
+                                                child: 
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    for(var i in x['buttons'])
+                                                      Padding(
+                                                        padding: EdgeInsets.all(10),
+                                                        child: 
+                                                        SizedBox(
+                                                          width: 60,
+                                                          child: Column(                                                          
+                                                          children: [
+                                                            Padding(
+                                                              padding: EdgeInsets.only(bottom: 10),
+                                                              child: Text('${i}', style: TextStyle(fontSize: 13),),
+                                                            ),
+                                                            Container(
+                                                                  width: 50,
+                                                                  height: 100,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.transparent,
+                                                                    borderRadius: BorderRadius.circular(20),
+                                                                    shape: BoxShape.rectangle,
+                                                                    border:Border.all(
+                                                                    
+                                                                      color: Colors.white,// Border color
+                                                                      width: 2.0,           // Border width
+                                                                    ),
+                                                                    
+                                                                  ),
+                                                                  
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(5), 
+                                                                    child: Container(
+                                                                      width: 40,
+                                                                      height: 100,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                        color: Color.fromRGBO(193, 10, 10, 1),
+                                                                        shape: BoxShape.rectangle,
+                                                                        
+                                                                      )
+                                                                    )
+                                                                  )
+                                                                
+                                                                ),
+                                                          ]
+                                                        )
+                                                        )
+
+                                                      ),
+                                                  ]
+                                                )
+                                              ),
+                                          if(_selectedGrip == 'ALPHA')
+                                            for(var x in gripsConfig['ALPHA']['buttons'])
+                                              Positioned(
+                                                top: x['offset'],
+                                                left: 20,
+                                                child: 
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    for(var i in x['buttons'])
+                                                      Padding(
+                                                        padding: EdgeInsets.all(10),
+                                                        child: 
+                                                        SizedBox(
+                                                          width: 60,
+                                                          child: Column(                                                          
+                                                          children: [
+                                                            Padding(
+                                                              padding: EdgeInsets.only(bottom: 10),
+                                                              child: Text('Button ${i}', style: TextStyle(fontSize: 13),),
+                                                            ),
+                                                            Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.transparent,
+                                                                    shape: BoxShape.circle,
+                                                                    border:Border.all(
+                                                                      color: Colors.white,// Border color
+                                                                      width: 2.0,           // Border width
+                                                                    ),
+                                                                    boxShadow: [
+                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                    ],
+                                                                  ),
+                                                                  
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.all(5), 
+                                                                    child: Container(
+                                                                      width: 40,
+                                                                      height: 40,
+                                                                      decoration: const BoxDecoration(
+                                                                        color: Color.fromRGBO(193, 10, 10, 1),
+                                                                        shape: BoxShape.circle,
+                                                                      )
+                                                                    )
+                                                                  )
+                                                                
+                                                                ),
+                                                          ]
+                                                        )
+                                                        )
+
+                                                      ),
+                                                  ]
+                                                )
+                                              ),
                                           ]
                                         )
                                       
@@ -965,8 +1150,12 @@ class _SettingPageState extends State<SettingPage> {
                                         rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
+                                      if(val.toString() == 'ALPHA') {
+                                        rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      }
                                       if(val.toString() == 'THRUSTMASTER') {
-                                        rust_request('selegrip Thrustmaster L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('selegrip Thrustmaster', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       
@@ -984,6 +1173,18 @@ class _SettingPageState extends State<SettingPage> {
 
                                 Text('${data.idGrib}'),
                                 Text('${data.buttons}'),
+                                Text('${realX} ${realY}'),
+
+                                Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
+                                Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
+                                Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
+                                Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
+                                Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
+                                Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
+                                Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
+                                Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
+                                Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
+                                Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
 
                                 if(_controlButton == 1)
                                   Button1(data: data),

@@ -27,5 +27,33 @@
             }
         ]
     },
-    "ALPHA": {}
+    "ALPHA": {
+        "name": "VPC Alpha Prime",
+        "multibuttons": [
+            {
+                "offset": 30.0,
+                "buttons": [1,2,3,4]
+            }
+        ],
+        "axis": [
+            {
+                "offset": 140.0,
+                "buttons": ["RX", "RY", "Z", "Slider"]
+            }
+        ],
+        "buttons": [
+            {
+                "offset": 280.0,
+                "buttons": [1,2,3,4,5]
+            },
+            {
+                "offset": 360.0,
+                "buttons": [5,7,8,9,10]
+            },
+            {
+                "offset": 450.0,
+                "buttons": [11,12]
+            }
+        ]
+    }
 }
