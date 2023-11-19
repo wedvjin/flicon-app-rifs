@@ -14,7 +14,7 @@ import 'package:window_manager/window_manager.dart';
 
 GoRouter router() {
   return GoRouter(
-    initialLocation: '/settings',
+    initialLocation: '/loading',
     routes: [
       GoRoute(
         path: '/loading',
@@ -83,9 +83,11 @@ class _FCTechnologiesAppState extends State<FCTechnologiesApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'EVO Flight Controller',
         theme: AppTheme().main,
         routerConfig: router(),
+        
       );
   }
 }

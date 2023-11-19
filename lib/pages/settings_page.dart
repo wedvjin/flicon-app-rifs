@@ -99,6 +99,11 @@ class _SettingPageState extends State<SettingPage> {
   var gripsConfig; 
   List<String> gripsList = [];
 
+  List<String> alphaButtons = [];
+
+
+  bool baseSelected = false;
+
 
   Future<void> loadJsonAsset() async { 
     final String jsonString = await rootBundle.loadString('assets/grips_config.json'); 
@@ -193,9 +198,51 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip == 'ALPHA' || _selectedGrip == 'THRUSTMASTER') {
+      if(_selectedGrip == 'THRUSTMASTER') {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           setControlButton(13);
+          baseSelected = true;
+        } else {
+          setControlButton(0);
+          baseSelected = false;
+        }
+      }
+
+      if(_selectedGrip == 'ALPHA') {
+        if(((x > 517 && y > 281) && (x<580 && y<336))) {
+          setControlButton(13);
+          baseSelected = true;
+        } else if(((x > 39 && y > 89) && (x<95 && y<148))) {
+          setControlButton(10);
+          addAlphaButton('S1');
+          removeAlphaButton('S2');
+          removeAlphaButton('S3');
+          removeAlphaButton('S4');
+        } else if(((x > 117 && y > 89) && (x<176 && y<148))) {
+          setControlButton(5);
+          addAlphaButton('S2');
+          removeAlphaButton('S1');
+          removeAlphaButton('S3');
+          removeAlphaButton('S4');
+        } else if(((x > 197 && y > 89) && (x<256 && y<148))) {
+          setControlButton(5);
+          addAlphaButton('S3');
+          removeAlphaButton('S1');
+          removeAlphaButton('S2');
+          removeAlphaButton('S4');
+        } else if(((x > 277 && y > 89) && (x<337 && y<148))) {
+          setControlButton(7);
+          addAlphaButton('S4');
+          removeAlphaButton('S1');
+          removeAlphaButton('S2');
+          removeAlphaButton('S3');
+        } else {
+          setControlButton(0);
+          removeAlphaButton('S1');
+          removeAlphaButton('S2');
+          removeAlphaButton('S3');
+          removeAlphaButton('S4');
+          baseSelected = false;
         }
       }
     });
@@ -237,6 +284,18 @@ class _SettingPageState extends State<SettingPage> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  void addAlphaButton(btn) {
+    if(!alphaButtons.contains(btn)) {
+      alphaButtons.add(btn); 
+    }
+  }
+
+  void removeAlphaButton(btn) {
+    if(alphaButtons.contains(btn)) {
+      alphaButtons.removeAt(alphaButtons.indexOf(btn));
     }
   }
 
@@ -336,6 +395,31 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
+      if(_selectedGrip == 'ALPHA' || _selectedGrip == 'THRUSTMASTER') {
+        if(((x > 517 && y > 281) && (x<580 && y<336))) {
+          _showButton = 13;
+        } else {
+          _showButton = 0;
+          cursor = SystemMouseCursors.basic;
+        }
+
+        if(_showButton != 0) {
+          cursor = SystemMouseCursors.click;
+        }
+      }
+
+      if(_selectedGrip == 'ALPHA') {
+        if(((x > 39 && y > 89) && (x<95 && y<148))) {
+          _showButton = 1;
+        } else {
+          _showButton = 0;
+          cursor = SystemMouseCursors.basic;
+        }
+
+        if(_showButton != 0) {
+          cursor = SystemMouseCursors.click;
+        }
+      }
 
     });
   }
@@ -522,7 +606,6 @@ class _SettingPageState extends State<SettingPage> {
     }
 
     void updateShowButton(data) {
-
       if(_controlButton == 0 ) {
         data.b2 ? addPressedButton(11) : removePressedButton(11);
         data.b7 ? addPressedButton(1) : removePressedButton(1);
@@ -665,6 +748,19 @@ class _SettingPageState extends State<SettingPage> {
                 if(!data.connected) {
                   return const Search();
                 }
+
+                if(data.idGrib == 1 && _selectedGrip != "EVO") {
+                  _selectedGrip = 'EVO';
+                }
+                if(data.idGrib == 2 && _selectedGrip != "ALPHA") {
+                    _selectedGrip = 'ALPHA';
+                }
+                if(data.idGrib == 3 && _selectedGrip != "ALPHA") {
+                    _selectedGrip = 'ALPHA';
+                }
+                if(data.idGrib == 4 && _selectedGrip != "THRUSTMASTER") {
+                    _selectedGrip = 'THRUSTMASTER';
+                }
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
                   children: [
@@ -737,7 +833,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                     
-                                        if(_selectedGrip == 'EVO')
+                                        if(_selectedGrip == 'EVO' || _selectedGrip == 'ALPHA')
                                           Positioned(
                                             bottom: 20,
                                             child:
@@ -769,12 +865,18 @@ class _SettingPageState extends State<SettingPage> {
                                 
                                               ),
                                           ),
-                                          if(_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA')
-                                            Positioned(
-                                              top: 220,
-                                              right: 0,
-                                              child: Image.asset('assets/base.png', width: 220),
-                                            ),
+                                          if((_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA') && baseSelected)
+                                              Positioned(
+                                                top: 220,
+                                                right: 0,
+                                                child: Image.asset('assets/base-selected.png', width: 220),
+                                              ),
+                                          if((_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA') && !baseSelected)
+                                              Positioned(
+                                                top: 220,
+                                                right: 0,
+                                                child: Image.asset('assets/base.png', width: 220),
+                                              ),
                                           if(_selectedGrip == 'THRUSTMASTER')
                                             for(var x in gripsConfig['THRUSTMASTER']['buttons'])
                                               Positioned(
@@ -871,7 +973,39 @@ class _SettingPageState extends State<SettingPage> {
                                                                       width: 1.0,           // Border width
                                                                     ),
                                                                     boxShadow: [
-                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                      if((alphaButtons.indexOf("S${i}") >= 0))
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 1 && (data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26))
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 2 && (data.b37 || data.b38 || data.b39 || data.b40 || data.b41 || data.b42 || data.b43 || data.b44))
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 3 && (data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b35))
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 4 && (data.b16 || data.b17 || data.b18))
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -884,8 +1018,8 @@ class _SettingPageState extends State<SettingPage> {
                                                                   
                                                                   child: 
                                                                   i == 4 ? 
-                                                                      Image.asset('assets/2-axis-button/vertical.png', width: 50, height: 50) :
-                                                                      Image.asset('assets/multidirectional_button/all.png', width: 50, height: 50),
+                                                                      Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50) :
+                                                                      Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
                                                                 
                                                                 ),
                                                           ]
@@ -918,35 +1052,31 @@ class _SettingPageState extends State<SettingPage> {
                                                               child: Text('${i}', style: TextStyle(fontSize: 13),),
                                                             ),
                                                             Container(
-                                                                  width: 50,
-                                                                  height: 100,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.transparent,
-                                                                    borderRadius: BorderRadius.circular(20),
-                                                                    shape: BoxShape.rectangle,
-                                                                    border:Border.all(
-                                                                    
-                                                                      color: Colors.white,// Border color
-                                                                      width: 2.0,           // Border width
-                                                                    ),
-                                                                    
-                                                                  ),
-                                                                  
-                                                                  child: Padding(
-                                                                    padding: EdgeInsets.all(5), 
-                                                                    child: Container(
-                                                                      width: 40,
-                                                                      height: 100,
-                                                                      decoration: BoxDecoration(
-                                                                        borderRadius: BorderRadius.circular(15),
-                                                                        color: Color.fromRGBO(193, 10, 10, 1),
-                                                                        shape: BoxShape.rectangle,
-                                                                        
-                                                                      )
-                                                                    )
-                                                                  )
-                                                                
+                                                              width: 50,
+                                                              height: 100,
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.transparent,
+                                                                borderRadius: BorderRadius.circular(20),
+                                                                shape: BoxShape.rectangle,
+                                                                border:Border.all(
+                                                                  color: Colors.white,// Border color
+                                                                  width: 2.0,           // Border width
                                                                 ),
+                                                                
+                                                              ),
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(5), 
+                                                                child: Container(
+                                                                  width: 40,
+                                                                  height: 20,
+                                                                  decoration: const BoxDecoration(
+                                                                    //borderRadius: BorderRadius.circular(15),
+                                                                    color: Color.fromRGBO(193, 10, 10, 1),
+                                                                    shape: BoxShape.circle,
+                                                                  )
+                                                                )
+                                                              )
+                                                            ),
                                                           ]
                                                         )
                                                         )
@@ -1171,20 +1301,22 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Colors.transparent,
                                 ),
 
-                                Text('${data.idGrib}'),
-                                Text('${data.buttons}'),
-                                Text('${realX} ${realY}'),
-
-                                Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
-                                Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
-                                Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
-                                Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
-                                Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
-                                Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
-                                Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
-                                Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
-                                Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
-                                Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
+                                // Text('${data.idGrib}'),
+                                // Text('${data.buttons}'),
+                                // Text('${data.baseName}'),
+                                // Text('${realX} ${realY}'),
+                                // Text('${alphaButtons}'),
+                                // Text('${alphaButtons.indexOf("S1")}'),
+                                // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
+                                // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
+                                // Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
+                                // Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
+                                // Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
+                                // Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
+                                // Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
+                                // Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
+                                // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
+                                // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
 
                                 if(_controlButton == 1)
                                   Button1(data: data),
