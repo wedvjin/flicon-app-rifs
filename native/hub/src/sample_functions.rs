@@ -123,7 +123,7 @@ pub async fn stream_report(
     use sample_crate::Buttons;
 
     loop {
-        crate::sleep(std::time::Duration::from_millis(1)).await;
+        crate::sleep(std::time::Duration::from_millis(10)).await;
         // TODO: REMAKE IT IS A QUICK WORKAROUND
         let mut report_in_data: ReportIn = ReportIn {
             ..Default::default()
