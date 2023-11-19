@@ -2,6 +2,9 @@
 
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:convert'; 
+import 'package:flutter/services.dart' show rootBundle;
+
 import 'dart:typed_data';
 
 import 'package:drop_down_selector/drop_down_selector.dart';
@@ -93,12 +96,32 @@ class _SettingPageState extends State<SettingPage> {
     return responseMessage;
   }
 
+  var gripsConfig; 
+  List<String> gripsList = [];
+
+
+  Future<void> loadJsonAsset() async { 
+    final String jsonString = await rootBundle.loadString('assets/grips_config.json'); 
+
+    final config = jsonDecode(jsonString); 
+    setState(() { 
+      gripsConfig = config; 
+    });
+  }
+
+  @override 
+  void initState() { 
+    super.initState(); 
+    loadJsonAsset(); 
+  }
+
+
   void clickPostion(TapDownDetails details) async {
     setState(() {
       double x = details.globalPosition.dx;
       double y = details.globalPosition.dy;
 
-      if(controller == 'right') {
+      if(controller == 'right' && _selectedGrip == 'EVO') {
         if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           setControlButton(1);
         } else if(((x >134 && y > 173) && (x<159 && y<199))) {
@@ -134,7 +157,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(controller == 'left') {
+      if(controller == 'left' && _selectedGrip == 'EVO') {
         if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           setControlButton(1);
         } else if(((x >504 && y > 169) && (x<534 && y<201))) {
@@ -211,7 +234,8 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-
+  String _selectedGrip = 'EVO';
+  List<String> _grips = ['EVO', 'ALPHA', 'TRUSTMASTER'];
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -221,7 +245,7 @@ class _SettingPageState extends State<SettingPage> {
       realX = details.position.dx;
       realY = details.position.dy;
 
-      if(controller == 'right') {
+      if(controller == 'right' && _selectedGrip == 'EVO') {
         if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           _showButton = 1;
         } else if(((x >134 && y > 173) && (x<159 && y<199))) {
@@ -265,7 +289,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(controller == 'left') {
+      if(controller == 'left' && _selectedGrip == 'EVO') {
         if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           _showButton = 1;
         } else if(((x >504 && y > 169) && (x<534 && y<201))) {
@@ -345,172 +369,90 @@ class _SettingPageState extends State<SettingPage> {
 
 
   Widget buildLoadDialog(BuildContext context) {
-  if (!Platform.isWindows) {
-    return AlertDialog(
-      title: const Text('Oops'),
-      content:
-          const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Close'),
-        ),
-      ],
-    );
-  } else {
-    return FutureBuilder(
-      future: rust_request('listconf', 0, 0, 0, 0, RustOperation.Update),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('An error occurred while loading profiles.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
+    if (!Platform.isWindows) {
+      return AlertDialog(
+        title: const Text('Oops'),
+        content:
+            const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Close'),
+          ),
+        ],
+      );
+    } else {
+      return FutureBuilder(
+        future: rust_request('listconf', 0, 0, 0, 0, RustOperation.Update),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('An error occurred while loading profiles.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Close'),
+                ),
+              ],
+            );
+          } else {
+            List<String> currentProfiles = snapshot.data.outputString.split(',');
+            return AlertDialog(
+              title: const Text('Select profile'),
+              content: DropdownMenu<String>(
+                enableFilter: false,
+                enableSearch: false,
+                width: 230,
+                leadingIcon: const Icon(Icons.person),
+                inputDecorationTheme: const InputDecorationTheme(
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 5, 5, 5),
+                  outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                ),
+                onSelected: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    selectedProfile = value.toString();
+                  });
                 },
-                child: Text('Close'),
+                dropdownMenuEntries:
+                  currentProfiles.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+              
               ),
-            ],
-          );
-        } else {
-          List<String> currentProfiles = snapshot.data.outputString.split(',');
-          return AlertDialog(
-            title: const Text('Select profile'),
-            content: DropdownMenu<String>(
-              enableFilter: false,
-              enableSearch: false,
-              width: 230,
-              leadingIcon: const Icon(Icons.person),
-              inputDecorationTheme: const InputDecorationTheme(
-                filled: true,
-                fillColor: Color.fromARGB(255, 5, 5, 5),
-                outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
-                border: InputBorder.none,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-              ),
-              onSelected: (String? value) {
-                // This is called when the user selects an item.
-                setState(() {
-                  selectedProfile = value.toString();
-                });
-              },
-              dropdownMenuEntries:
-                currentProfiles.map<DropdownMenuEntry<String>>((String value) {
-                return DropdownMenuEntry<String>(value: value, label: value);
-              }).toList(),
-            
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  loadProfile();
-                  Navigator.pop(context);
-                },
-                child: Text('Load'),
-              ),
-            ],
-          );
-        }
-      },
-    );
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    loadProfile();
+                    Navigator.pop(context);
+                  },
+                  child: Text('Load'),
+                ),
+              ],
+            );
+          }
+        },
+      );
+    }
   }
-}
-//end
 
-  // Widget buildLoadDialog(BuildContext context) {
-  //   if(!Platform.isWindows) {
-  //     return AlertDialog(
-  //       title: const Text('Oops'),
-  //       content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
-  //       actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             },
-  //             child: Text('Close'),
-  //           ),
-  //         ],
-  //     );
-  //   } else {
-  //     rust_request('listconf', 0, 0, 0, 0, RustOperation.Update).then((value) {
-  //       print(value);
-  //       List<String> currentProfiles = value.outputString.split(',');
-  //       return AlertDialog(
-  //         title: const Text('Select profile'),
-  //         content: DropdownMenu<String>(
-  //             enableFilter: false,
-  //             enableSearch: false,
-  //             width: 230,
-  //             leadingIcon: const Icon(Icons.person),
-  //             inputDecorationTheme: const InputDecorationTheme(
-  //               filled: true,
-  //               fillColor: Color.fromARGB(255, 5, 5, 5),
-  //               outlineBorder: BorderSide(color: Color.fromRGBO(193, 10, 10, 1)),
-  //               border: InputBorder.none,
-  //               contentPadding:
-  //                   EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-  //             ),
-  //             onSelected: (String? value) {
-  //               // This is called when the user selects an item.
-  //               setState(() {
-  //                 selectedProfile = value.toString();
-  //               });
-  //             },
-  //             dropdownMenuEntries:
-  //               currentProfiles.map<DropdownMenuEntry<String>>((String value) {
-  //               return DropdownMenuEntry<String>(value: value, label: value);
-  //             }).toList(),
-  //           ),
-            
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             },
-  //             child: const Text('Cancel'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               loadProfile();
-  //               Navigator.pop(context);
-  //             },
-  //             child: Text('Load'),
-  //           ),
-  //         ],
-  //       );
-  //     });
-
-  //     if(!Platform.isWindows) {
-  //       return AlertDialog(
-  //         title: const Text('Oops'),
-  //         content: const Text("We're sorry, but this feature is not supported in your OS. We'll support it later"),
-  //         actions: <Widget>[
-  //             TextButton(
-  //               onPressed: () {
-  //                 Navigator.pop(context);
-  //               },
-  //               child: Text('Close'),
-  //             ),
-  //           ],
-  //       );
-  //     } else {
-  //       return Container();
-  //     }
-  //   }
-  // }
 
     Widget buildSaveDialog(BuildContext context) {
 
@@ -695,6 +637,7 @@ class _SettingPageState extends State<SettingPage> {
       }
     }
 
+
     Color mainColor = Color.fromARGB(255, 82, 82, 82);
     Color secondaryColor = Color.fromRGBO(221, 221, 221, 1);
 
@@ -742,26 +685,25 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center,
                                       children: [
-                                        Positioned(
-                                          child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457),
-                                        ),
+                                        if(_selectedGrip == 'EVO')
+                                          Positioned(
+                                            child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457),
+                                          ),
+                                        if(_selectedGrip == 'EVO')
+                                          Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457),),
+                                        if(_selectedGrip == 'EVO')
+                                          for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457),),
+                                        if(_selectedGrip == 'EVO')
+                                          for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457),),                                    
 
-                                        Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457),),
-                                        for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457),),
-
-                                        // active
-                                        // Positioned(
-                                        //   child: Opacity(opacity: 0.3, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-active.png', width: 586, height: 457)),
-                                        // ),
-                                        for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457),),
-                                        // leds
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0)
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
                                           Positioned(
                                             child: Opacity(
                                               opacity: 1, 
                                               child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457)
                                             ),
                                           ),
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledR * 100 / 255 * 0.01, 
@@ -769,64 +711,138 @@ class _SettingPageState extends State<SettingPage> {
 
                                             ),
                                           ),
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledG * 100 / 255 * 0.01, 
                                               child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457)
                                             ),
                                           ),
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledB * 100 / 255 * 0.01, 
                                               child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457)
                                             ),
                                           ),
-                                        if(_controlButton != 0) 
+                                        if(_controlButton != 0 && _selectedGrip == 'EVO') 
                                           Positioned(
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457)),
                                           ),
 
-                                 
-                           
-                                        Positioned(
-                                          bottom: 20,
-                                          child: // Here, default theme colors are used for activeBgColor, activeFgColor, inactiveBgColor and inactiveFgColor
-                                            ToggleSwitch(
-                                              initialLabelIndex: initialController,
-                                              totalSwitches: 2,
-                                              inactiveBgColor: const Color.fromRGBO(44, 44, 44, 1),
-                                              inactiveFgColor: Colors.grey,
+                                    
+                                        if(_selectedGrip == 'EVO')
+                                          Positioned(
+                                            bottom: 20,
+                                            child:
+                                              ToggleSwitch(
+                                                initialLabelIndex: initialController,
+                                                totalSwitches: 2,
+                                                inactiveBgColor: const Color.fromRGBO(44, 44, 44, 1),
+                                                inactiveFgColor: Colors.grey,
 
-                                              activeBgColor: const [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
-                                              activeFgColor: Colors.white,
-                                              //changeOnTap: false,
+                                                activeBgColor: const [Color.fromRGBO(193, 10, 10, 1), Color.fromRGBO(193, 10, 10, 1)],
+                                                activeFgColor: Colors.white,
+                                                //changeOnTap: false,
 
-                                              onToggle:(index) {
-                                                setState(() {
-                                                  if(index==0) {
-                                                    controller = 'left';
-                                                  } else {
-                                                    controller = 'right';
-                                                  }
-                                                  if(index != null) {
-                                                    initialController = index;
-                                                  }
+                                                onToggle:(index) {
+                                                  setState(() {
+                                                    if(index==0) {
+                                                      controller = 'left';
+                                                    } else {
+                                                      controller = 'right';
+                                                    }
+                                                    if(index != null) {
+                                                      initialController = index;
+                                                    }
 
-                                                });
-                                              },
+                                                  });
+                                                },
 
-                                              labels: const ['Left', 'Right'],
-                                 
-                                        ),
-                                      ),
+                                                labels: const ['Left', 'Right'],
+                                
+                                              ),
+                                          ),
+                                          if(_selectedGrip == 'ALPHA')
+                                            Positioned(
+                                              top: 220,
+                                              right: 0,
+                                              child: Image.asset('assets/base.png', width: 220),
+                                            ),
+                                          if(_selectedGrip == 'ALPHA')
+                                            for(var x in gripsConfig['ALPHA']['buttons'])
+                                              Positioned(
+                                                top: x['offset'],
+                                                left: 20,
+                                                child: 
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    for(var i in x['buttons'])
+                                                      Padding(
+                                                        padding: EdgeInsets.all(10),
+                                                        child: 
+                                                        SizedBox(
+                                                          width: 60,
+                                                          child: Column(                                                          
+                                                          children: [
+                                                            Padding(
+                                                              padding: EdgeInsets.only(bottom: 10),
+                                                              child: Text('Button ${i}', style: TextStyle(fontSize: 13),),
+                                                            ),
+                                                            Positioned(
+                                                              top: 30,
+                                                              child:
+                                                                Container(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.transparent,
+                                                                    shape: BoxShape.circle,
+                                                                    border:Border.all(
+                                                                      color: Colors.white,// Border color
+                                                                      width: 2.0,           // Border width
+                                                                    ),
+                                                                    boxShadow: [
+                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                    ],
+                                                                  ),
+                                                                  
+                                                                  child: Padding(padding: EdgeInsets.all(5), child: Container(
+                                                                    width: 40,
+                                                                    height: 40,
+                                                                    decoration: const BoxDecoration(
+                                                                      color: Color.fromRGBO(193, 10, 10, 1),
+                                                                      shape: BoxShape.circle,
+                                                                    )
+                                                                  ))
+                                                                
+                                                                ),
+                                                            ),
+                                                          ]
+                                                        )
+                                                        )
 
-                                      ]
-                                    )
-                                  
-                          
-                            ),
+                                                      ),
+                                                  ]
+                                                )
+                                              ),
+
+                                          ]
+                                        )
+                                      
+                              
+                              ),
                           )
-                        )
+                            )
+                          
                       )
                     ),
 
@@ -841,7 +857,6 @@ class _SettingPageState extends State<SettingPage> {
                               Column(children: [
                                 Row(crossAxisAlignment: CrossAxisAlignment.start, 
                                   children: [
-            
                                       Expanded(
                                         flex: 1,
                                         child: Padding(
@@ -934,6 +949,43 @@ class _SettingPageState extends State<SettingPage> {
                                   endIndent: 0,
                                   color: Colors.transparent,
                                 ),
+
+                                DropdownButton<String>(
+                                  hint: Text('Select grip'),
+                                  value: _selectedGrip,
+                                  items: _grips.map((value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      _selectedGrip = val.toString();
+                                      if(val.toString() == 'EVO') {
+                                        rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      } 
+                                      if(val.toString() == 'ALPHA') {
+                                        rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+
+                                      }
+                                      
+                                    });
+                                  },
+                                ),
+
+                                const Divider(
+                                  height: 20,
+                                  thickness: 5,
+                                  indent: 20,
+                                  endIndent: 0,
+                                  color: Colors.transparent,
+                                ),
+
+                                Text('${data.idGrib}'),
+
                                 if(_controlButton == 1)
                                   Button1(data: data),
                                 if(_controlButton == 2)

@@ -388,6 +388,7 @@ pub async fn handle_device(
             let mut output_string = "disconnected".to_string();
             // println!("MESSAGE FROM FLUTTER: {:?}", set_message.target);
             let mut mm_res = Ok(());
+            println!("{:?}", set_message.target);
             if adevice.lock().unwrap().connected {
 
                 if set_message.target.as_str().starts_with("readconf") {

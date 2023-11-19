@@ -21,7 +21,7 @@ pub fn get_profiles_path() -> Result<PathBuf> {
     let base_path = "C:\\Users";
 
     #[cfg(target_os = "macos")]
-    let base_path = "/Users/";
+    let base_path = "/Users";
 
     #[cfg(target_os = "windows")]
     let dir_path = PathBuf::from(format!("{}\\{}\\Documents\\FCTechnologies", base_path, username));

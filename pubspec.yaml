@@ -58,3 +58,4 @@ flutter:
     - assets/multidirectional_button/
     - assets/2-axis-button/
     - assets/wheel/
+    - assets/grips_config.json
