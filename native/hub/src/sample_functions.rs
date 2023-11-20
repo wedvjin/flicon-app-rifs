@@ -135,6 +135,7 @@ pub async fn stream_report(
         let mut base_name: String = "none".to_string();
         let mut side: String = "none".to_string();
         let mut connected: bool = false;
+        let mut more_than_two: bool = false;
         let device_lock = adevice.lock();
 
         match device_lock {
@@ -163,6 +164,7 @@ pub async fn stream_report(
                         connected = true;
                         device_state.connected = true;
                         side = device_state.get_side_lr();
+                        more_than_two = device_state.more_than_two;
                         base_name = device_state.controller_info.as_ref().unwrap().product_string().unwrap().to_string();
                         data
                     },
@@ -362,6 +364,7 @@ pub async fn stream_report(
             fw_version: report_feature_data.fw_version as u32,
             base_name: base_name, 
             side: side,       
+            more_than_two: more_than_two,
         };
         
         let rust_signal = RustSignal {
