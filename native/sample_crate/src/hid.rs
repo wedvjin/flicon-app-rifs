@@ -19,6 +19,7 @@ pub struct DeviceState {
     pub device: Option<Box<HidDevice>>,
     pub controller_info: Option<DeviceInfo>,
     pub feature: Option<ReportFeature>,
+    pub more_than_two: bool,
 }
 
 impl DeviceState {
@@ -60,12 +61,22 @@ impl DeviceState {
             .into_iter()
             .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
 
+        let count = api.device_list()
+            .filter(|device_info| device_info.vendor_id() == VENDOR_ID_CONST)
+            .count();
+
         if let Some(device_info) = device_info_res {
             let device = api.open(device_info.vendor_id(), device_info.product_id()).unwrap();
             let feature_report = get_report(&device);
 
+            let more_than_two = if count >= 2 {
+                true
+            } else {
+                false
+            };
+
             let boxed_device = Box::new(device);
-            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap())};
+            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap()), more_than_two};
             
             device_state.set_disable_calibrate_base();
             device_state.set_disable_calibrate_handle();
@@ -79,7 +90,7 @@ impl DeviceState {
             // let feautre_report = ReportFeature {
             //     ..Default::default()
             // };
-            return DeviceState { connected: false, device: None, controller_info: None, feature: None};
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None, more_than_two: false};
         }
                 
     }
@@ -92,8 +103,18 @@ impl DeviceState {
             .into_iter()
             .find(|&device| device.vendor_id() == VENDOR_ID_CONST);
 
+            
+        let count = api.device_list()
+            .filter(|device_info| device_info.vendor_id() == VENDOR_ID_CONST)
+            .count();
+
         if let Some(device_info) = device_info_res {
             let device_res = api.open(device_info.vendor_id(), device_info.product_id());
+            let more_than_two = if count >= 2 {
+                true
+            } else {
+                false
+            };
             let device = match device_res {
                 Ok(device) => {
                     self.feature = Some(get_report(&device).unwrap());
@@ -102,6 +123,7 @@ impl DeviceState {
                     self.connected = true;
                     self.set_disable_calibrate_base();
                     self.set_disable_calibrate_handle();
+                    self.more_than_two = more_than_two;
 
                     #[cfg(target_os = "windows")]
                     self.save_current_profile().unwrap();
