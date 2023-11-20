@@ -125,4 +125,5 @@ message ReportMessage {
 
     bool connected = 120;
     string base_name = 121;
+    string side = 122;
 }
