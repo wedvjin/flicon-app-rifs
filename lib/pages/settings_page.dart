@@ -236,6 +236,12 @@ class _SettingPageState extends State<SettingPage> {
           removeAlphaButton('S1');
           removeAlphaButton('S2');
           removeAlphaButton('S3');
+        } else if(((x > 41 && y > 187) && (x<91 && y<288)) || ((x>123 && y>190) && (x<171 && y< 287))) {
+          setControlButton(1);
+        } else if(((x > 202 && y > 187) && (x<252 && y<288))) {
+          setControlButton(14);
+        } else if(((x > 282 && y > 187) && (x<332 && y<288))) {
+          setControlButton(9);
         } else {
           setControlButton(0);
           removeAlphaButton('S1');
@@ -411,6 +417,12 @@ class _SettingPageState extends State<SettingPage> {
       if(_selectedGrip == 'ALPHA') {
         if(((x > 39 && y > 89) && (x<95 && y<148))) {
           _showButton = 1;
+        } else if(((x > 41 && y > 187) && (x<91 && y<288)) || ((x>123 && y>190) && (x<171 && y< 287))) {
+          _showButton = 33;
+        } else if(((x > 202 && y > 187) && (x<252 && y<288))) {
+          _showButton = 33;
+        } else if(((x > 282 && y > 187) && (x<332 && y<288))) {
+          _showButton = 33;
         } else {
           _showButton = 0;
           cursor = SystemMouseCursors.basic;
@@ -612,6 +624,12 @@ class _SettingPageState extends State<SettingPage> {
         data.b8 ? addPressedButton(6) : removePressedButton(6);
         data.b9 ? addPressedButton(4) : removePressedButton(4);
         data.b12 ? addPressedButton(8) : removePressedButton(8);
+
+        if(data.b4 || data.b5 || data.b6) {
+          addSubButton(4);
+        } else {
+          removeSubButton(4);
+        }
 
 
         if(data.b10 || data.b11 || data.b13 || data.b14) {
@@ -832,6 +850,381 @@ class _SettingPageState extends State<SettingPage> {
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457)),
                                           ),
 
+                                        // show rx axis
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            top: 100,
+                                            left: 25,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 2,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() * 2 : 0.0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            top: 100,
+                                            left: 70,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 0,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            top: 65,
+                                            left: 60,
+                                            child: Container(
+                                              height: 45,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() * 2 : 0.0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            top: 110,
+                                            left: 60,
+                                            child: Container(
+                                              height: 45,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            top: 95,
+                                            left: 55,
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: data.b7 ? Color.fromRGBO(193, 10, 10, 1) : const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+
+                                        // show x,y axis
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 285,
+                                            left: 275,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 2,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)) <= 0 ? ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs().toDouble() * 2 : 0.0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 285,
+                                            left: 318,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 0,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 295,
+                                            left: 308,
+                                            child: Container(
+                                              height: 45,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 250,
+                                            left: 308,
+                                            child: Container(
+                                              height: 45,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)) <= 0 ? ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs().toDouble() * 2 : 0.0,
+
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 280,
+                                            left: 303,
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+
+                                        // z axis
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 50,
+                                            left: 80,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 2,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() * 2 : 0.0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                            )
+                                          ),
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 50,
+                                            left: 125,
+                                            child: Container(
+                                              height: 20,
+                                              width: 45,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 0,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+
+                                        //brakes
+                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                          Positioned(
+                                            bottom: 140,
+                                            right: 170,
+                                            child: Container(
+                                              height: 20,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 2,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                            )
+                                          ),
+
                                     
                                         if(_selectedGrip == 'EVO' || _selectedGrip == 'ALPHA')
                                           Positioned(
@@ -981,7 +1374,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                           offset: Offset(0.0, 0.0),
                                                                           blurStyle: BlurStyle.outer
                                                                         ),
-                                                                      if(i == 1 && (data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26))
+                                                                      if(i == 1 && (data.b19 || data.b20 || data.b21 || data.b22 || data.b23 || data.b24 || data.b25 || data.b26 || data.b27))
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -989,7 +1382,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                           offset: Offset(0.0, 0.0),
                                                                           blurStyle: BlurStyle.outer
                                                                         ),
-                                                                      if(i == 2 && (data.b37 || data.b38 || data.b39 || data.b40 || data.b41 || data.b42 || data.b43 || data.b44))
+                                                                      if(i == 2 && (data.b37 || data.b38 || data.b39 || data.b40 || data.b41 || data.b42 || data.b43 || data.b44 || data.b45))
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -997,7 +1390,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                           offset: Offset(0.0, 0.0),
                                                                           blurStyle: BlurStyle.outer
                                                                         ),
-                                                                      if(i == 3 && (data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b35))
+                                                                      if(i == 3 && (data.b28 || data.b29 || data.b30 || data.b31 || data.b32 || data.b33 || data.b34 || data.b35 || data.b36))
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -1016,10 +1409,49 @@ class _SettingPageState extends State<SettingPage> {
                                                                     ],
                                                                   ),
                                                                   
-                                                                  child: 
-                                                                  i == 4 ? 
-                                                                      Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50) :
-                                                                      Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                  child: Wrap(
+                                                                    direction: Axis.vertical,
+                                                                    runAlignment: WrapAlignment.center,
+                                                                    alignment: WrapAlignment.center,
+                                                                    children: [
+                                                                      if(i== 4 && !data.b16 && !data.b17 && !data.b18)
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50),
+                                                                      if(i== 4 && data.b16)
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_016.png', width: 50, height: 50),
+                                                                      if(i==4 && data.b17)
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_017.png', width: 50, height: 50),
+                                                                      if(i==4 && data.b18)
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_018.png', width: 50, height: 50),
+                                                                      if(i == 1 && !data.b19 && !data.b20 && !data.b21 && !data.b22 && !data.b23 && !data.b24 && !data.b25 && !data.b26 && !data.b27)  
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                      if(i == 2 && !data.b37 && !data.b38 && !data.b39 && !data.b40 && !data.b41 && !data.b42 && !data.b43 && !data.b44 && !data.b45)
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                      if(i == 3 && !data.b28 && !data.b29 && !data.b30 && !data.b31 && !data.b32 && !data.b33 && !data.b34 && !data.b35 && !data.b36)
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b19) || (i == 2 && data.b37) || (i == 3 && data.b28) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_001.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b20) || (i == 2 && data.b38) || (i == 3 && data.b29) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_002.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b21) || (i == 2 && data.b39) || (i == 3 && data.b30) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_003.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b22) || (i == 2 && data.b40) || (i == 3 && data.b31) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_004.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b23) || (i == 2 && data.b41) || (i == 3 && data.b32) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_005.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b24) || (i == 2 && data.b42) || (i == 3 && data.b33) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_006.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b25) || (i == 2 && data.b43) || (i == 3 && data.b34) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_007.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b26) || (i == 2 && data.b44) || (i == 3 && data.b35) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_008.png', width: 50, height: 50),
+                                                                      if((i == 1 && data.b27) || (i == 2 && data.b45) || (i == 3 && data.b36) )
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_009.png', width: 50, height: 50),
+
+                                                                    ],
+                                                                    )
+                                                                    // i == 4 ? 
+                                                                    //   Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50) :
+                                                                    //   Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
                                                                 
                                                                 ),
                                                           ]
@@ -1065,18 +1497,126 @@ class _SettingPageState extends State<SettingPage> {
                                                                 
                                                               ),
                                                               child: Padding(
-                                                                padding: EdgeInsets.all(5), 
-                                                                child: Container(
-                                                                  width: 40,
-                                                                  height: 20,
-                                                                  decoration: const BoxDecoration(
-                                                                    //borderRadius: BorderRadius.circular(15),
-                                                                    color: Color.fromRGBO(193, 10, 10, 1),
-                                                                    shape: BoxShape.circle,
-                                                                  )
+                                                                padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0), 
+                                                                child:  
+                                                                Column(
+                                                                  children: [
+                                                                    if(i == 'RX')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: -1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble(),
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'RX')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: 1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() : 0.0,
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'RY')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: -1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble(),
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'RY')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: 1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() : 0.0,
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'Z')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: -1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble(),
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'Z')
+                                                                      SizedBox(
+                                                                        height: 42.5,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: 1,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 50.0,
+                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() : 0.0,
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                    if(i == 'Slider')
+                                                                      SizedBox(
+                                                                        height: 85,
+                                                                        width: 40,
+                                                                        child:
+                                                                          RotatedBox(
+                                                                            quarterTurns: 0,
+                                                                            child: LinearProgressIndicator(
+                                                                              minHeight: 90.0,
+                                                                              value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).isFinite ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) : 0,
+                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              backgroundColor: Colors.transparent,
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                            ),
+                                                                          ),
+                                                                      ),
+                                                                  ]
                                                                 )
-                                                              )
-                                                            ),
+                                                              ),
+                                                            )
                                                           ]
                                                         )
                                                         )
@@ -1117,7 +1657,95 @@ class _SettingPageState extends State<SettingPage> {
                                                                       width: 2.0,           // Border width
                                                                     ),
                                                                     boxShadow: [
-                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                      if(i == 1 && data.b9)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 2 && data.b8)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 3 && data.b7)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 4 && data.b10)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 5 && data.b11)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 6 && data.b12)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 7 && data.b2)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 8 && data.b13)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 9 && data.b14)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 10 && data.b5)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 11 && data.b4)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i == 12 && data.b3)
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -1301,22 +1929,25 @@ class _SettingPageState extends State<SettingPage> {
                                   color: Colors.transparent,
                                 ),
 
+                                // Text('${(data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) != double.infinity ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) : 0} '),
+                                // Text('${data.rxMin}-${data.rxMax} : ${data.rx} (${data.rxAxis})'),
+                                // Text('${data.ryMin}-${data.ryMax} : ${data.ry}'),
                                 // Text('${data.idGrib}'),
                                 // Text('${data.buttons}'),
                                 // Text('${data.baseName}'),
                                 // Text('${realX} ${realY}'),
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
-                                // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
-                                // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
-                                // Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
-                                // Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
-                                // Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
-                                // Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
-                                // Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
-                                // Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
-                                // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
-                                // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
+                                Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
+                                Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
+                                Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
+                                Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
+                                Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
+                                Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
+                                Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
+                                Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
+                                Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
+                                Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
 
                                 if(_controlButton == 1)
                                   Button1(data: data),
