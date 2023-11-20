@@ -382,6 +382,15 @@ impl DeviceState {
         report_feature
     }
 
+    pub fn get_side_lr(&self) -> String {
+        if self.get_side() {
+            return "Right".to_string()
+        }
+        else {
+            return "Left".to_string()
+        }
+    }
+
     pub fn get_side(&self) -> bool {
         match self.controller_info.as_ref().unwrap().product_id() {
             10 => true,

@@ -133,6 +133,7 @@ pub async fn stream_report(
             ..Default::default()
         };
         let mut base_name: String = "none".to_string();
+        let mut side: String = "none".to_string();
         let mut connected: bool = false;
         let device_lock = adevice.lock();
 
@@ -161,6 +162,7 @@ pub async fn stream_report(
                     Ok(data) => {
                         connected = true;
                         device_state.connected = true;
+                        side = device_state.get_side_lr();
                         base_name = device_state.controller_info.as_ref().unwrap().product_string().unwrap().to_string();
                         data
                     },
@@ -358,7 +360,8 @@ pub async fn stream_report(
             rz_axis: report_feature_data.rz_axis as i32,
             slider_axis: report_feature_data.slider_axis as i32,
             fw_version: report_feature_data.fw_version as u32,
-            base_name: base_name,        
+            base_name: base_name, 
+            side: side,       
         };
         
         let rust_signal = RustSignal {
