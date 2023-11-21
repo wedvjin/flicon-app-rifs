@@ -1399,7 +1399,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                     
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('EVO')))
                                           Positioned(
                                             bottom: 20,
                                             child:
