@@ -2590,7 +2590,7 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${(data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) != double.infinity ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) : 0} '),
                                 // Text('${data.rxMin}-${data.rxMax} : ${data.rx} (${data.rxAxis})'),
                                 // Text('${data.ryMin}-${data.ryMax} : ${data.ry}'),
-                                // Text('${data.idGrib}'),
+                                Text('${data.idGrib}'),
                                 // Text('${data.buttons}'),
                                 // Text('${data.baseName}'),
                                 // Text('${realX} ${realY}'),
