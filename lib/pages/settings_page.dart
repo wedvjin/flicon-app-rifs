@@ -1260,7 +1260,7 @@ class _SettingPageState extends State<SettingPage> {
 
 
                                         // Alpha / Trust 
-                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             top: 150,
                                             right: 110,
@@ -1292,7 +1292,7 @@ class _SettingPageState extends State<SettingPage> {
                                               
                                             )
                                           ),
-                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             top: 150,
                                             right: 40,
@@ -1322,7 +1322,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             top: 95,
                                             right: 95,
@@ -1352,7 +1352,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             top: 165,
                                             right: 95,
@@ -1383,7 +1383,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             top: 145,
                                             right: 90,
@@ -1399,7 +1399,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                     
-                                        if(_selectedGrip.startsWith('EVO') || _selectedGrip.startsWith('ALPHA'))
+                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
                                           Positioned(
                                             bottom: 20,
                                             child:
@@ -2598,7 +2598,7 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${realX} ${realY}'),
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
-                                Text('${data.side}'),
+                                //Text('${data.side}'),
                                 // Text('${data.moreThanTwo}'),
                                 // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
                                 // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
