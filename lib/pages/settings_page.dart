@@ -127,7 +127,7 @@ class _SettingPageState extends State<SettingPage> {
       double x = details.globalPosition.dx;
       double y = details.globalPosition.dy;
 
-      if(controller == 'right' && _selectedGrip == 'EVO') {
+      if(controller == 'right' && _selectedGrip.startsWith('EVO')) {
         if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           setControlButton(1);
         } else if(((x >134 && y > 173) && (x<159 && y<199))) {
@@ -163,7 +163,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(controller == 'left' && _selectedGrip == 'EVO') {
+      if(controller == 'left' && _selectedGrip.startsWith('EVO')) {
         if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           setControlButton(1);
         } else if(((x >504 && y > 169) && (x<534 && y<201))) {
@@ -199,7 +199,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip == 'THRUSTMASTER') {
+      if(_selectedGrip.startsWith('THRUSTMASTER')) {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           setControlButton(13);
           baseSelected = true;
@@ -209,7 +209,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip == 'ALPHA') {
+      if(_selectedGrip.startsWith('ALPHA')) {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           setControlButton(13);
           baseSelected = true;
@@ -306,8 +306,8 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  String _selectedGrip = 'EVO';
-  List<String> _grips = ['EVO', 'ALPHA', 'THRUSTMASTER'];
+  String _selectedGrip = 'EVO Prime Left';
+  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'ALPHA VPC Prime Left', 'ALPHA VPC Prime Right', 'ALPHA VPC Left', 'ALPHA VPC Right', 'THRUSTMASTER'];
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -317,7 +317,7 @@ class _SettingPageState extends State<SettingPage> {
       realX = details.position.dx;
       realY = details.position.dy;
 
-      if(controller == 'right' && _selectedGrip == 'EVO') {
+      if(controller == 'right' && _selectedGrip.startsWith('EVO')) {
         if(((x > 98 && y > 156) && (x<129 && y<185)) || ((x>544 && y>161) && (x<573 && y<191))) {
           _showButton = 1;
         } else if(((x >134 && y > 173) && (x<159 && y<199))) {
@@ -361,7 +361,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(controller == 'left' && _selectedGrip == 'EVO') {
+      if(controller == 'left' && _selectedGrip.startsWith('EVO')) {
         if(((x > 536 && y > 151) && (x<569 && y<190)) || ((x>94 && y>160) && (x<119 && y<193))) {
           _showButton = 1;
         } else if(((x >504 && y > 169) && (x<534 && y<201))) {
@@ -402,7 +402,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip == 'ALPHA' || _selectedGrip == 'THRUSTMASTER') {
+      if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           _showButton = 13;
         } else {
@@ -415,7 +415,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip == 'ALPHA') {
+      if(_selectedGrip.startsWith('ALPHA')) {
         if(((x > 39 && y > 89) && (x<95 && y<148))) {
           _showButton = 1;
         } else if(((x > 41 && y > 187) && (x<91 && y<288)) || ((x>123 && y>190) && (x<171 && y< 287))) {
@@ -442,9 +442,6 @@ class _SettingPageState extends State<SettingPage> {
 
 
   void loadProfile () {
-    // do logic here
-    // send rus_request
-    // selected value = selectedProfile (string)
     print(selectedProfile);
     if (Platform.isWindows) {
       rust_request('readconf ' + selectedProfile, 0, 0, 0, 0, RustOperation.Update);
@@ -452,10 +449,6 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void saveProfile() {
-    // do logic here
-    // send rus_request
-    // entered value = newProfile.text (string)
-
     print(newProfile.text);
     if (Platform.isWindows) {
       rust_request('saveconf ' + newProfile.text, 0, 0, 0, 0, RustOperation.Update);
@@ -463,10 +456,8 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void upgradeFW() {
-    // do stuff here
     rust_request('enabledfu', 0, 0, 0, 0, RustOperation.Update);
     rust_request('upgradef ' + hw_update_file_path, 0, 0, 0, 0, RustOperation.Update);
-    // print(hw_update_file_path);
   }
 
 
@@ -584,7 +575,6 @@ class _SettingPageState extends State<SettingPage> {
           ),
         ],
       );
-
   }
 
   
@@ -749,6 +739,11 @@ class _SettingPageState extends State<SettingPage> {
     Color mainColor = Color.fromARGB(255, 82, 82, 82);
     Color secondaryColor = Color.fromRGBO(221, 221, 221, 1);
 
+    bool xytriggered = false;
+    bool rxytriggered = false;
+    bool ztriggered = false;
+    bool slidertriggered = false;
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 24, 24, 24),
         body: Center(
@@ -772,23 +767,52 @@ class _SettingPageState extends State<SettingPage> {
                   return const MoreThanTwo();
                 }
 
-                if(data.idGrib == 1 && _selectedGrip != "EVO") {
-                  _selectedGrip = 'EVO';
+                if(data.idGrib == 1 && !_selectedGrip.startsWith("EVO")) {
+                  if(data.side == 'Left') {
+                    _selectedGrip = 'EVO Prime Left';
+                  } else {
+                    _selectedGrip = 'EVO Prime Right';
+                  }
                 }
-                if(data.idGrib == 2 && _selectedGrip != "ALPHA") {
-                    _selectedGrip = 'ALPHA';
+                if(data.idGrib == 2 && !_selectedGrip.startsWith("ALPHA")) {
+                  if(data.side == 'Left') {
+                    _selectedGrip = 'ALPHA VPC Prime Left';
+                  } else {
+                    _selectedGrip = 'ALPHA VPC Prime Right';
+                  }
                 }
-                if(data.idGrib == 3 && _selectedGrip != "ALPHA") {
-                    _selectedGrip = 'ALPHA';
+                if(data.idGrib == 3 && !_selectedGrip.startsWith("ALPHA")) {
+                  if(data.side == 'Left') {
+                    _selectedGrip = 'ALPHA VPC Left';
+                  } else {
+                    _selectedGrip = 'ALPHA VPC Right';
+                  }
                 }
-                if(data.idGrib == 4 && _selectedGrip != "THRUSTMASTER") {
+                if(data.idGrib == 4 && !_selectedGrip.startsWith("THRUSTMASTER")) {
                     _selectedGrip = 'THRUSTMASTER';
                 }
 
-                // if(data.side == 'Left') {
-                //   controller = 'left';
-                //   initialController = 0;
-                // } 
+                if(data.side == 'Left') {
+                  controller = 'left';
+                  initialController = 0;
+                } else {
+                  controller = 'right';
+                  initialController = 1;
+                }
+
+                double rrX = ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs() * 2;
+                double rrY = ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs() * 2;
+                rxytriggered = (rrX > (data.rxDeadZone / 100)) || (rrY > (data.ryDeadZone / 100));
+
+                double xxX = ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs() * 2;
+                double yyY = ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs() * 2;
+                xytriggered = (xxX > (data.xDeadZone / 100)) || (yyY > (data.yDeadZone / 100));
+
+                double zzZ = ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs() * 2;
+                ztriggered = (zzZ > (data.zDeadZone / 100));
+
+                double ssS = ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)) * 2;
+                slidertriggered = (ssS > (data.sliderDeadZone / 100));
 
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
@@ -816,25 +840,25 @@ class _SettingPageState extends State<SettingPage> {
                                       fit: StackFit.expand,
                                       alignment: Alignment.center,
                                       children: [
-                                        if(_selectedGrip == 'EVO')
+                                        if(_selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457),
                                           ),
-                                        if(_selectedGrip == 'EVO')
+                                        if(_selectedGrip.startsWith('EVO'))
                                           Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457),),
-                                        if(_selectedGrip == 'EVO')
+                                        if(_selectedGrip.startsWith('EVO'))
                                           for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457),),
-                                        if(_selectedGrip == 'EVO')
+                                        if(_selectedGrip.startsWith('EVO'))
                                           for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457),),                                    
 
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: 1, 
                                               child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457)
                                             ),
                                           ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledR * 100 / 255 * 0.01, 
@@ -842,30 +866,30 @@ class _SettingPageState extends State<SettingPage> {
 
                                             ),
                                           ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledG * 100 / 255 * 0.01, 
                                               child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457)
                                             ),
                                           ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip == 'EVO')
+                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledB * 100 / 255 * 0.01, 
                                               child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457)
                                             ),
                                           ),
-                                        if(_controlButton != 0 && _selectedGrip == 'EVO') 
+                                        if(_controlButton != 0 && _selectedGrip.startsWith('EVO')) 
                                           Positioned(
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457)),
                                           ),
 
                                         // show rx axis
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && rxytriggered)
                                           Positioned(
                                             top: 100,
-                                            left: 25,
+                                            left: controller == 'right' ? 25 : 30,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -890,14 +914,12 @@ class _SettingPageState extends State<SettingPage> {
                                                       ),
                                                     ),
                                                 ),
-                                                
-                                              
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && rxytriggered)
                                           Positioned(
                                             top: 100,
-                                            left: 70,
+                                            left: controller == 'right' ? 70 : 75,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -924,10 +946,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && rxytriggered)
                                           Positioned(
                                             top: 65,
-                                            left: 60,
+                                            left: controller == 'right' ? 60 : 65,
                                             child: Container(
                                               height: 45,
                                               width: 20,
@@ -954,10 +976,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && rxytriggered)
                                           Positioned(
                                             top: 110,
-                                            left: 60,
+                                            left: controller == 'right' ? 60 : 65,
                                             child: Container(
                                               height: 45,
                                               width: 20,
@@ -984,10 +1006,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && rxytriggered)
                                           Positioned(
                                             top: 95,
-                                            left: 55,
+                                            left: controller == 'right' ? 55 : 60,
                                             child: Container(
                                               width: 30,
                                               height: 30,
@@ -1000,10 +1022,10 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                         // show x,y axis
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && xytriggered)
                                           Positioned(
                                             bottom: 285,
-                                            left: 275,
+                                            left: controller == 'right' ? 275 : 290,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -1032,10 +1054,10 @@ class _SettingPageState extends State<SettingPage> {
                                               
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && xytriggered)
                                           Positioned(
                                             bottom: 285,
-                                            left: 318,
+                                            left: controller == 'right' ? 318 : 333,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -1062,10 +1084,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && xytriggered)
                                           Positioned(
                                             bottom: 295,
-                                            left: 308,
+                                            left: controller == 'right' ? 308 : 323,
                                             child: Container(
                                               height: 45,
                                               width: 20,
@@ -1092,10 +1114,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && xytriggered)
                                           Positioned(
                                             bottom: 250,
-                                            left: 308,
+                                            left: controller == 'right' ? 308 : 323,
                                             child: Container(
                                               height: 45,
                                               width: 20,
@@ -1123,10 +1145,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && xytriggered)
                                           Positioned(
                                             bottom: 280,
-                                            left: 303,
+                                            left: controller == 'right' ? 303 : 318,
                                             child: Container(
                                               width: 30,
                                               height: 30,
@@ -1139,10 +1161,10 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                         // z axis
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && ztriggered)
                                           Positioned(
-                                            bottom: 50,
-                                            left: 80,
+                                            bottom: controller == 'right' ? 50 : 80,
+                                            left: controller == 'right' ? 80 : 65,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -1171,10 +1193,10 @@ class _SettingPageState extends State<SettingPage> {
                                               
                                             )
                                           ),
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && ztriggered)
                                           Positioned(
-                                            bottom: 50,
-                                            left: 125,
+                                            bottom: controller == 'right' ? 50 : 80,
+                                            left: controller == 'right' ? 125 : 110,
                                             child: Container(
                                               height: 20,
                                               width: 45,
@@ -1203,13 +1225,13 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                         //brakes
-                                        if(_selectedGrip == 'EVO' && controller == 'right')
+                                        if(_selectedGrip.startsWith('EVO') && slidertriggered)
                                           Positioned(
-                                            bottom: 140,
-                                            right: 170,
+                                            bottom: controller == 'right' ? 170 : 190,
+                                            right: controller == 'right' ? 230 : 220,
                                             child: Container(
-                                              height: 20,
-                                              width: 70,
+                                              height: 70,
+                                              width: 20,
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
@@ -1221,7 +1243,7 @@ class _SettingPageState extends State<SettingPage> {
                                                   width: 50,
                                                   child:
                                                     RotatedBox(
-                                                      quarterTurns: 2,
+                                                      quarterTurns: -1,
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).toDouble() * 2,
@@ -1236,8 +1258,148 @@ class _SettingPageState extends State<SettingPage> {
                                             )
                                           ),
 
+
+                                        // Alpha / Trust 
+                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                          Positioned(
+                                            top: 150,
+                                            right: 110,
+                                            child: Container(
+                                              height: 30,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 2,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)) <= 0 ? ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs().toDouble() * 2 : 0.0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                            )
+                                          ),
+                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                          Positioned(
+                                            top: 150,
+                                            right: 40,
+                                            child: Container(
+                                              height: 30,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 0,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                          Positioned(
+                                            top: 95,
+                                            right: 95,
+                                            child: Container(
+                                              height: 70,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).toDouble() * 2,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                          Positioned(
+                                            top: 165,
+                                            right: 95,
+                                            child: Container(
+                                              height: 70,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: 1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)) <= 0 ? ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs().toDouble() * 2 : 0.0,
+
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                            )
+                                          ),
+                                        if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER'))
+                                          Positioned(
+                                            top: 145,
+                                            right: 90,
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+
                                     
-                                        if(_selectedGrip == 'EVO' || _selectedGrip == 'ALPHA')
+                                        if(_selectedGrip.startsWith('EVO') || _selectedGrip.startsWith('ALPHA'))
                                           Positioned(
                                             bottom: 20,
                                             child:
@@ -1269,19 +1431,19 @@ class _SettingPageState extends State<SettingPage> {
                                 
                                               ),
                                           ),
-                                          if((_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA') && baseSelected)
+                                          if((_selectedGrip.startsWith('THRUSTMASTER') || _selectedGrip.startsWith('ALPHA')) && baseSelected)
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
                                                 child: Image.asset('assets/base-selected.png', width: 220),
                                               ),
-                                          if((_selectedGrip == 'THRUSTMASTER' || _selectedGrip == 'ALPHA') && !baseSelected)
+                                          if((_selectedGrip.startsWith('THRUSTMASTER') || _selectedGrip.startsWith('ALPHA')) && !baseSelected)
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
                                                 child: Image.asset('assets/base.png', width: 220),
                                               ),
-                                          if(_selectedGrip == 'THRUSTMASTER')
+                                          if(_selectedGrip.startsWith('THRUSTMASTER'))
                                             for(var x in gripsConfig['THRUSTMASTER']['buttons'])
                                               Positioned(
                                                 top: x['offset'],
@@ -1313,7 +1475,175 @@ class _SettingPageState extends State<SettingPage> {
                                                                       width: 2.0,           // Border width
                                                                     ),
                                                                     boxShadow: [
-                                                                      if(_subButtons.indexOf(i) > 0)
+                                                                      if(i==1 && data.b2)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==2 && data.b3)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==3 && data.b4)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==4 && data.b7)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==5 && data.b6)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==6 && data.b5)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==7 && data.b21)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==8 && data.b22)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==9 && data.b23)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==10 && data.b24)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==11 && data.b8)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==12 && data.b9)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==13 && data.b10)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==14 && data.b11)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==15 && data.b16)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==16 && data.b17)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==17 && data.b18)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==18 && data.b19)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==19 && data.b12)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==20 && data.b13)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==21 && data.b14)
+                                                                        const BoxShadow(
+                                                                          color: Color.fromRGBO(193, 10, 10, 1),
+                                                                          blurRadius: 20.0,
+                                                                          spreadRadius: 0.0,
+                                                                          offset: Offset(0.0, 0.0),
+                                                                          blurStyle: BlurStyle.outer
+                                                                        ),
+                                                                      if(i==22 && data.b15)
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -1325,16 +1655,212 @@ class _SettingPageState extends State<SettingPage> {
                                                                   ),
                                                                   
                                                                   child: Padding(
-                                                                    padding: EdgeInsets.all(5), 
-                                                                    child: Container(
-                                                                      width: 40,
-                                                                      height: 40,
-                                                                      decoration: const BoxDecoration(
-                                                                        color: Color.fromRGBO(193, 10, 10, 1),
-                                                                        shape: BoxShape.circle,
-                                                                      )
-                                                                    )
-                                                                  )
+                                                                    padding: EdgeInsets.all(0), 
+                                                                    child: Wrap(
+                                                                    direction: Axis.vertical,
+                                                                    runAlignment: WrapAlignment.center,
+                                                                    alignment: WrapAlignment.center,
+                                                                    children: [
+                                                                      if(i==1 && data.b2)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==2 && data.b3)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==3 && data.b4)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==4 && data.b7)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==5 && data.b6)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==6 && data.b5)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==7 && data.b21)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==8 && data.b22)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==9 && data.b23)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==10 && data.b24)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==11 && data.b8)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==12 && data.b9)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==13 && data.b10)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==14 && data.b11)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==15 && data.b16)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==16 && data.b17)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==17 && data.b18)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==18 && data.b19)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==19 && data.b12)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==20 && data.b13)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==21 && data.b14)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i==22 && data.b15)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                    ]),
+                                                                )
                                                                 
                                                                 ),
                                                           ]
@@ -1345,8 +1871,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip == 'ALPHA')
-                                            for(var x in gripsConfig['ALPHA']['multibuttons'])
+                                          if(_selectedGrip.startsWith('ALPHA'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['multibuttons'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -1473,8 +1999,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip == 'ALPHA')
-                                            for(var x in gripsConfig['ALPHA']['axis'])
+                                          if(_selectedGrip.startsWith('ALPHA'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['axis'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -1499,7 +2025,7 @@ class _SettingPageState extends State<SettingPage> {
                                                               height: 100,
                                                               decoration: BoxDecoration(
                                                                 color: Colors.transparent,
-                                                                borderRadius: BorderRadius.circular(20),
+                                                                borderRadius: BorderRadius.circular(30),
                                                                 shape: BoxShape.rectangle,
                                                                 border:Border.all(
                                                                   color: Colors.white,// Border color
@@ -1521,10 +2047,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: -1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble(),
+                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble() * 2,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1537,10 +2063,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: 1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() : 0.0,
+                                                                              value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() * 2 : 0.0,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1553,10 +2079,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: -1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble(),
+                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble() * 2,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1569,10 +2095,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: 1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() : 0.0,
+                                                                              value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() * 2 : 0.0,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1585,10 +2111,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: -1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble(),
+                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble() * 2,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1601,10 +2127,10 @@ class _SettingPageState extends State<SettingPage> {
                                                                             quarterTurns: 1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
-                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() : 0.0,
+                                                                              value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() * 2 : 0.0,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1614,13 +2140,13 @@ class _SettingPageState extends State<SettingPage> {
                                                                         width: 40,
                                                                         child:
                                                                           RotatedBox(
-                                                                            quarterTurns: 0,
+                                                                            quarterTurns: -1,
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 90.0,
-                                                                              value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).isFinite ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) : 0,
+                                                                              value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).isFinite ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) * 2 : 0,
                                                                               valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15))
+                                                                              borderRadius: BorderRadius.circular(25)
                                                                             ),
                                                                           ),
                                                                       ),
@@ -1636,8 +2162,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip == 'ALPHA')
-                                            for(var x in gripsConfig['ALPHA']['buttons'])
+                                          if(_selectedGrip.startsWith('ALPHA'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['buttons'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -1768,20 +2294,125 @@ class _SettingPageState extends State<SettingPage> {
                                                                   ),
                                                                   
                                                                   child: Padding(
-                                                                    padding: EdgeInsets.all(5), 
-                                                                    child: Container(
-                                                                      width: 40,
-                                                                      height: 40,
-                                                                      decoration: const BoxDecoration(
-                                                                        color: Color.fromRGBO(193, 10, 10, 1),
-                                                                        shape: BoxShape.circle,
-                                                                      )
+                                                                    padding: EdgeInsets.all(0), 
+                                                                    child: Wrap(
+                                                                    direction: Axis.vertical,
+                                                                    runAlignment: WrapAlignment.center,
+                                                                    alignment: WrapAlignment.center,
+                                                                    children: [
+                                                                      if(i == 1 && data.b9)
+                                                                        Container(
+                                                                          width: 40,
+                                                                          height: 40,
+                                                                          decoration: const BoxDecoration(
+                                                                            color: Color.fromRGBO(193, 10, 10, 1),
+                                                                            shape: BoxShape.circle,
+                                                                          )
+                                                                        ),
+                                                                      if(i == 2 && data.b8)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 3 && data.b7)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 4 && data.b10)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 5 && data.b11)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 6 && data.b12)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 7 && data.b2)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 8 && data.b13)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 9 && data.b14)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 10 && data.b5)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 11 && data.b4)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      if(i == 12 && data.b3)
+                                                                        Container(
+                                                                            width: 40,
+                                                                            height: 40,
+                                                                            decoration: const BoxDecoration(
+                                                                              color: Color.fromRGBO(193, 10, 10, 1),
+                                                                              shape: BoxShape.circle,
+                                                                            )
+                                                                          ),
+                                                                      ]
                                                                     )
-                                                                  )
-                                                                
-                                                                ),
-                                                          ]
-                                                        )
+                                                                  ),
+                                                            )
+                                                          ])
                                                         )
 
                                                       ),
@@ -1915,12 +2546,30 @@ class _SettingPageState extends State<SettingPage> {
                                   onChanged: (val) {
                                     setState(() {
                                       _selectedGrip = val.toString();
-                                      if(val.toString() == 'EVO') {
+                                      //  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'ALPHA VPC Prime Left', 'ALPHA VPC Prime Right', 'ALPHA VPC Left', 'ALPHA VPC Right', 'THRUSTMASTER'];
+
+                                      if(val.toString() == 'EVO Prime Left') {
+                                        rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      } 
+                                      if(val.toString() == 'EVO Prime Right') {
                                         rust_request('selegrip EVO Grip R', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
-                                      if(val.toString() == 'ALPHA') {
+                                      if(val.toString() == 'ALPHA VPC Prime Left') {
                                         rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      }
+                                      if(val.toString() == 'ALPHA VPC Prime Right') {
+                                        rust_request('selegrip VPC Alpha Prime R', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      }
+                                      if(val.toString() == 'ALPHA VPC Left') {
+                                        rust_request('selegrip VPC Alpha L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                      }
+                                      if(val.toString() == 'ALPHA VPC Right') {
+                                        rust_request('selegrip VPC Alpha R', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'THRUSTMASTER') {
@@ -1950,17 +2599,17 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
                                 Text('${data.side}'),
-                                Text('${data.moreThanTwo}'),
-                                Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
-                                Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
-                                Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
-                                Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
-                                Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
-                                Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
-                                Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
-                                Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
-                                Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
-                                Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
+                                // Text('${data.moreThanTwo}'),
+                                // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
+                                // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
+                                // Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
+                                // Text('16-20: ${data.b16} ${data.b17} ${data.b18} ${data.b19} ${data.b20}'),
+                                // Text('21-25: ${data.b21} ${data.b22} ${data.b23} ${data.b24} ${data.b25}'),
+                                // Text('26-30: ${data.b26} ${data.b27} ${data.b28} ${data.b29} ${data.b30}'),
+                                // Text('31-35: ${data.b31} ${data.b32} ${data.b33} ${data.b34} ${data.b35}'),
+                                // Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
+                                // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
+                                // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
 
                                 if(_controlButton == 1)
                                   Button1(data: data),

@@ -3,7 +3,7 @@
         "name": "EVO Grip"
     },
     "THRUSTMASTER": {
-        "name": "THRUSTMASTER",
+        "name": "Thrustmaster",
         "buttons": [
             {
                 "offset": 70.0,
@@ -27,8 +27,37 @@
             }
         ]
     },
-    "ALPHA": {
+    "ALPHA_PRIME": {
         "name": "VPC Alpha Prime",
+        "multibuttons": [
+            {
+                "offset": 30.0,
+                "buttons": [1,2,3,4]
+            }
+        ],
+        "axis": [
+            {
+                "offset": 140.0,
+                "buttons": ["RX", "RY", "Z", "Slider"]
+            }
+        ],
+        "buttons": [
+            {
+                "offset": 290.0,
+                "buttons": [1,2,3,4,5]
+            },
+            {
+                "offset": 380.0,
+                "buttons": [6,7,8,9,10]
+            },
+            {
+                "offset": 470.0,
+                "buttons": [11,12]
+            }
+        ]
+    },
+    "ALPHA": {
+        "name": "VPC Alpha",
         "multibuttons": [
             {
                 "offset": 30.0,
