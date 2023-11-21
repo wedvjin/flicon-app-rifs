@@ -115,6 +115,7 @@ impl DeviceState {
             } else {
                 false
             };
+            println!("more_than_two: {:?}", more_than_two);
             let device = match device_res {
                 Ok(device) => {
                     self.feature = Some(get_report(&device).unwrap());
