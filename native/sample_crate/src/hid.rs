@@ -547,11 +547,17 @@ impl DeviceState {
     }
 
     pub fn set_right(&mut self ) {
-        self.feature.as_mut().unwrap().control_byte |= 1 << 6;
+        // self.feature.as_mut().unwrap().control_byte |= 1 << 6;
+        let mask: u8 = 0b0100_0000;
+        let result = self.feature.as_mut().unwrap().control_byte | mask;
+        self.feature.as_mut().unwrap().control_byte = result;
     }
 
     pub fn set_left(&mut self ) {
-        self.feature.as_mut().unwrap().control_byte &= !(1 << 6);
+        // self.feature.as_mut().unwrap().control_byte &= !(1 << 6);
+        let mask: u8 = 0b1011_1111;
+        let result = self.feature.as_mut().unwrap().control_byte & mask;
+        self.feature.as_mut().unwrap().control_byte = result;
     }
 
     pub fn set_id(&mut self, id: u8) {
@@ -559,7 +565,7 @@ impl DeviceState {
     }
 
     pub fn set_enable_dfu(&mut self) {
-        self.feature.as_mut().unwrap().control_byte |= 1 << 7;
+        self.feature.as_mut().unwrap().control_byte |= 1 << 7;  // TODO: PROBABLY BAD?
         self.write_feature();
         // upgrade_firmware();
     }
