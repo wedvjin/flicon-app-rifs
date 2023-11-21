@@ -583,6 +583,7 @@ pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -
         "discalibratehandle" => adevice.lock().unwrap().set_disable_calibrate_base(),
         "discalibratebase" => adevice.lock().unwrap().set_disable_calibrate_handle(),
         "save" => adevice.lock().unwrap().set_save_config(),
+        "scanagain" => adevice.lock().unwrap().reinst(),
         _ => println!("CONFIG FUNCTION happened OR NOT IMPLEMENTED"),
     }
 
