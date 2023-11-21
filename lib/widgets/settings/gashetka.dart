@@ -482,7 +482,7 @@ class _GashetkaState extends State<Gashetka> {
             const Divider(
               color: Color.fromRGBO(41, 41, 41, 1)
             ),
-            const Text("First trigger range"),
+            const Text("Third trigger range"),
             SliderTheme(
               data: const SliderThemeData(
                 thumbColor: Color.fromRGBO(193, 10, 10, 1),

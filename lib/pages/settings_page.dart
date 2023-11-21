@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert'; 
+import 'package:FC_Technologies/pages/more_than_two.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'dart:typed_data';
@@ -767,6 +768,10 @@ class _SettingPageState extends State<SettingPage> {
                   return const Search();
                 }
 
+                if(data.moreThanTwo) {
+                  return const MoreThanTwo();
+                }
+
                 if(data.idGrib == 1 && _selectedGrip != "EVO") {
                   _selectedGrip = 'EVO';
                 }
@@ -779,6 +784,12 @@ class _SettingPageState extends State<SettingPage> {
                 if(data.idGrib == 4 && _selectedGrip != "THRUSTMASTER") {
                     _selectedGrip = 'THRUSTMASTER';
                 }
+
+                // if(data.side == 'Left') {
+                //   controller = 'left';
+                //   initialController = 0;
+                // } 
+
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
                   children: [
@@ -1905,7 +1916,7 @@ class _SettingPageState extends State<SettingPage> {
                                     setState(() {
                                       _selectedGrip = val.toString();
                                       if(val.toString() == 'EVO') {
-                                        rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
+                                        rust_request('selegrip EVO Grip R', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
                                       if(val.toString() == 'ALPHA') {
@@ -1938,6 +1949,8 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${realX} ${realY}'),
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
+                                Text('${data.side}'),
+                                Text('${data.moreThanTwo}'),
                                 Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
                                 Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
                                 Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
