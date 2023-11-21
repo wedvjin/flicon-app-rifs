@@ -107,7 +107,6 @@ impl DeviceState {
         let count = api.device_list()
             .filter(|device_info| device_info.vendor_id() == VENDOR_ID_CONST)
             .count();
-        println!("count: {}", count);
 
         if let Some(device_info) = device_info_res {
             let device_res = api.open(device_info.vendor_id(), device_info.product_id());
@@ -145,6 +144,7 @@ impl DeviceState {
             //     ..Default::default()
             // };
             self.connected = false;
+            self.more_than_two = false;
             self.device = None;
             self.controller_info = None;
             self.feature = Some(ReportFeature {
