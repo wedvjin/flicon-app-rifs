@@ -407,7 +407,7 @@ impl DeviceState {
     }
 
     pub fn get_side_bit(&self) -> &'static str {
-        if self.feature.as_ref().unwrap().control_byte & 0b00100000 != 0 {
+        if self.feature.as_ref().unwrap().control_byte & 0b01000000 != 0 {
             "Right"
         } else {
             "Left"
