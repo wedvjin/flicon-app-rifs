@@ -2548,31 +2548,31 @@ class _SettingPageState extends State<SettingPage> {
                                       _selectedGrip = val.toString();
                                       if(val.toString() == 'EVO Prime Left') {
                                         rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
                                       if(val.toString() == 'EVO Prime Right') {
                                         rust_request('selegrip EVO Grip R', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
                                       if(val.toString() == 'ALPHA VPC Prime Left') {
                                         rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'ALPHA VPC Prime Right') {
                                         rust_request('selegrip VPC Alpha Prime R', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'ALPHA VPC Left') {
                                         rust_request('selegrip VPC Alpha L', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'ALPHA VPC Right') {
                                         rust_request('selegrip VPC Alpha R', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       if(val.toString() == 'THRUSTMASTER') {
                                         rust_request('selegrip Thrustmaster ', 0, 0, 0, 0, RustOperation.Update);
-                                        rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                                        //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
                                       
                                     });
