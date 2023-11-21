@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
+import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
+import 'package:rust_in_flutter/rust_in_flutter.dart';
+import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
+
 class MoreThanTwo extends StatefulWidget {
   const MoreThanTwo({super.key});
 
@@ -10,6 +14,26 @@ class MoreThanTwo extends StatefulWidget {
 }
 
 class _MoreThanTwoState extends State<MoreThanTwo> {
+
+  Future<deviceInfo.ReadResponse> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
+    final requestMessage = deviceInfo.SetValues(
+      target: message,
+      value1: value1,
+      value2: value2,
+      value3: value3,
+      value4: value4,
+    );
+    var rustResponse = await requestToRust(RustRequest(
+      resource: deviceInfo.ID,
+      operation: operation,
+      message: requestMessage.writeToBuffer(),
+    ));
+    var responseMessage =
+        deviceInfo.ReadResponse.fromBuffer(
+          rustResponse.message!,
+        );
+    return responseMessage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +58,7 @@ class _MoreThanTwoState extends State<MoreThanTwo> {
                 foregroundColor: Colors.white),
             child: const Text('Scan again'),
             onPressed: () => {
-              context.go('/settings')
+              rust_request('scanagain', 0, 0, 0, 0, RustOperation.Update)
             },
           ),
           )
