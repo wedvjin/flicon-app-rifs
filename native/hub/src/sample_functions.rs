@@ -163,7 +163,7 @@ pub async fn stream_report(
                     Ok(data) => {
                         connected = true;
                         device_state.connected = true;
-                        side = device_state.get_side_lr();
+                        side = device_state.get_side_bit().to_string();
                         more_than_two = device_state.more_than_two;
                         base_name = device_state.controller_info.as_ref().unwrap().product_string().unwrap().to_string();
                         data
@@ -420,6 +420,8 @@ pub async fn handle_device(
                     output_string = upgrade_firmware(path.to_str().unwrap().to_string());
                 } 
                 else if set_message.target.as_str().starts_with("selegrip") {
+
+                    println!("grip set: {:?}", set_message.target);
                     let grip = &set_message.target.as_str()[9..set_message.target.len()-1];
                     let side = &set_message.target.as_str().chars().last().unwrap();
                     if grip == "EVO Grip " {
@@ -436,10 +438,13 @@ pub async fn handle_device(
                         adevice.lock().unwrap().set_right();
                     }
                     if side.to_string() == "R" {
+                        println!("set R");
                         adevice.lock().unwrap().set_right();
                     } else if side.to_string() == "L" {
+                        println!("set L");
                         adevice.lock().unwrap().set_left();
                     }
+                    adevice.lock().unwrap().send_feature();
                 }
                 else {
                     mm_res = match_message(adevice, set_message);
