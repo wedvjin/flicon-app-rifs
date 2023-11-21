@@ -2546,8 +2546,6 @@ class _SettingPageState extends State<SettingPage> {
                                   onChanged: (val) {
                                     setState(() {
                                       _selectedGrip = val.toString();
-                                      //  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'ALPHA VPC Prime Left', 'ALPHA VPC Prime Right', 'ALPHA VPC Left', 'ALPHA VPC Right', 'THRUSTMASTER'];
-
                                       if(val.toString() == 'EVO Prime Left') {
                                         rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
                                         rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
@@ -2598,7 +2596,7 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${realX} ${realY}'),
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
-                                //Text('${data.side}'),
+                                Text('${data.side}'),
                                 // Text('${data.moreThanTwo}'),
                                 // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
                                 // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
