@@ -210,7 +210,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip.startsWith('ALPHA')) {
+      if(_selectedGrip.startsWith('VPC')) {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           setControlButton(13);
           baseSelected = true;
@@ -265,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
   List<PlatformFile>? _paths;
   String? _extension;
   String hw_update_file_path = '';
-  bool hwUpgradeStared = false;
+  bool hwUpgradeStared = true;
 
   void _updateHW() async {
     try {
@@ -310,7 +310,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   String _selectedGrip = 'EVO Prime Left';
-  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'ALPHA VPC Prime Left', 'ALPHA VPC Prime Right', 'ALPHA VPC Left', 'ALPHA VPC Right', 'THRUSTMASTER'];
+  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -405,7 +405,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) {
+      if(_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) {
         if(((x > 517 && y > 281) && (x<580 && y<336))) {
           _showButton = 13;
         } else {
@@ -418,7 +418,7 @@ class _SettingPageState extends State<SettingPage> {
         }
       }
 
-      if(_selectedGrip.startsWith('ALPHA')) {
+      if(_selectedGrip.startsWith('VPC')) {
         if(((x > 39 && y > 89) && (x<95 && y<148))) {
           _showButton = 1;
         } else if(((x > 41 && y > 187) && (x<91 && y<288)) || ((x>123 && y>190) && (x<171 && y< 287))) {
@@ -784,22 +784,22 @@ class _SettingPageState extends State<SettingPage> {
                     _selectedGrip = 'EVO Prime Right';
                   }
                 }
-                if(data.idGrib == 2 && !_selectedGrip.startsWith("ALPHA")) {
+                if(data.idGrib == 2 && !_selectedGrip.startsWith('VPC')) {
                   if(data.side == 'Left') {
-                    _selectedGrip = 'ALPHA VPC Prime Left';
+                    _selectedGrip = 'VPC Alpha Prime Left';
                   } else {
-                    _selectedGrip = 'ALPHA VPC Prime Right';
+                    _selectedGrip = 'VPC Alpha Prime Right';
                   }
                 }
-                if(data.idGrib == 3 && !_selectedGrip.startsWith("ALPHA")) {
+                if(data.idGrib == 3 && !_selectedGrip.startsWith('VPC')) {
                   if(data.side == 'Left') {
-                    _selectedGrip = 'ALPHA VPC Left';
+                    _selectedGrip = 'VPC Alpha Left';
                   } else {
-                    _selectedGrip = 'ALPHA VPC Right';
+                    _selectedGrip = 'VPC Alpha Right';
                   }
                 }
-                if(data.idGrib == 4 && !_selectedGrip.startsWith("THRUSTMASTER")) {
-                    _selectedGrip = 'THRUSTMASTER';
+                if(data.idGrib == 4 && !_selectedGrip.startsWith("Thrustmaster")) {
+                    _selectedGrip = 'Thrustmaster';
                 }
 
                 if(data.side == 'Left') {
@@ -1436,7 +1436,7 @@ class _SettingPageState extends State<SettingPage> {
 
 
                                         // Alpha / Trust 
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) && xytriggered)
                                           Positioned(
                                             top: 150,
                                             right: 110,
@@ -1468,7 +1468,7 @@ class _SettingPageState extends State<SettingPage> {
                                               
                                             )
                                           ),
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) && xytriggered)
                                           Positioned(
                                             top: 150,
                                             right: 40,
@@ -1498,7 +1498,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) && xytriggered)
                                           Positioned(
                                             top: 95,
                                             right: 95,
@@ -1528,7 +1528,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) && xytriggered)
                                           Positioned(
                                             top: 165,
                                             right: 95,
@@ -1559,7 +1559,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                             )
                                           ),
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('THRUSTMASTER')) && xytriggered)
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('Thrustmaster')) && xytriggered)
                                           Positioned(
                                             top: 145,
                                             right: 90,
@@ -1575,7 +1575,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ),
 
                                     
-                                        if((_selectedGrip.startsWith('ALPHA') || _selectedGrip.startsWith('EVO')))
+                                        if((_selectedGrip.startsWith('VPC') || _selectedGrip.startsWith('EVO')))
                                           Positioned(
                                             bottom: 20,
                                             child:
@@ -1607,19 +1607,19 @@ class _SettingPageState extends State<SettingPage> {
                                 
                                               ),
                                           ),
-                                          if((_selectedGrip.startsWith('THRUSTMASTER') || _selectedGrip.startsWith('ALPHA')) && baseSelected)
+                                          if((_selectedGrip.startsWith('Thrustmaster') || _selectedGrip.startsWith('VPC')) && baseSelected)
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
                                                 child: Image.asset('assets/base-selected.png', width: 220),
                                               ),
-                                          if((_selectedGrip.startsWith('THRUSTMASTER') || _selectedGrip.startsWith('ALPHA')) && !baseSelected)
+                                          if((_selectedGrip.startsWith('Thrustmaster') || _selectedGrip.startsWith('VPC')) && !baseSelected)
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
                                                 child: Image.asset('assets/base.png', width: 220),
                                               ),
-                                          if(_selectedGrip.startsWith('THRUSTMASTER'))
+                                          if(_selectedGrip.startsWith('Thrustmaster'))
                                             for(var x in gripsConfig['THRUSTMASTER']['buttons'])
                                               Positioned(
                                                 top: x['offset'],
@@ -2047,8 +2047,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip.startsWith('ALPHA'))
-                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['multibuttons'])
+                                          if(_selectedGrip.startsWith('VPC'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('VPC Alpha Prime') ? 'VPC_PRIME': 'VPC']['multibuttons'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -2175,8 +2175,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip.startsWith('ALPHA'))
-                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['axis'])
+                                          if(_selectedGrip.startsWith('VPC'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('VPC Alpha Prime') ? 'VPC_PRIME': 'VPC']['axis'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -2338,8 +2338,8 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
-                                          if(_selectedGrip.startsWith('ALPHA'))
-                                            for(var x in gripsConfig[_selectedGrip.startsWith('ALPHA PRIME') ? 'ALPHA_PRIME': 'ALPHA']['buttons'])
+                                          if(_selectedGrip.startsWith('VPC'))
+                                            for(var x in gripsConfig[_selectedGrip.startsWith('VPC Alpha Prime') ? 'VPC_PRIME': 'VPC']['buttons'])
                                               Positioned(
                                                 top: x['offset'],
                                                 left: 20,
@@ -2730,23 +2730,23 @@ class _SettingPageState extends State<SettingPage> {
                                         rust_request('selegrip EVO Grip R', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
-                                      if(val.toString() == 'ALPHA VPC Prime Left') {
+                                      if(val.toString() == 'VPC Alpha Prime Left') {
                                         rust_request('selegrip VPC Alpha Prime L', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
-                                      if(val.toString() == 'ALPHA VPC Prime Right') {
+                                      if(val.toString() == 'VPC Alpha Prime Right') {
                                         rust_request('selegrip VPC Alpha Prime R', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
-                                      if(val.toString() == 'ALPHA VPC Left') {
+                                      if(val.toString() == 'VPC Alpha Left') {
                                         rust_request('selegrip VPC Alpha L', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
-                                      if(val.toString() == 'ALPHA VPC Right') {
+                                      if(val.toString() == 'VPC Alpha Right') {
                                         rust_request('selegrip VPC Alpha R', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }
-                                      if(val.toString() == 'THRUSTMASTER') {
+                                      if(val.toString() == 'Thrustmaster') {
                                         rust_request('selegrip Thrustmaster ', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       }

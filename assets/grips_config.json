@@ -27,7 +27,7 @@
             }
         ]
     },
-    "ALPHA_PRIME": {
+    "VPC_PRIME": {
         "name": "VPC Alpha Prime",
         "multibuttons": [
             {
@@ -56,7 +56,7 @@
             }
         ]
     },
-    "ALPHA": {
+    "VPC": {
         "name": "VPC Alpha",
         "multibuttons": [
             {
