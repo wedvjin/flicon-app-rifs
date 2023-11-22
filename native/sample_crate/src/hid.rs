@@ -551,6 +551,7 @@ impl DeviceState {
         let mask: u8 = 0b0100_0000;
         let result = self.feature.as_mut().unwrap().control_byte | mask;
         self.feature.as_mut().unwrap().control_byte = result;
+        println!("right set feature: {:?}",  self.feature.as_mut().unwrap().control_byte);
     }
 
     pub fn set_left(&mut self ) {
@@ -558,6 +559,7 @@ impl DeviceState {
         let mask: u8 = 0b1011_1111;
         let result = self.feature.as_mut().unwrap().control_byte & mask;
         self.feature.as_mut().unwrap().control_byte = result;
+        println!("left set feature: {:?}",  self.feature.as_mut().unwrap().control_byte);
     }
 
     pub fn set_id(&mut self, id: u8) {

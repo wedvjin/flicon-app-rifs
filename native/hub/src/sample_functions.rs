@@ -444,8 +444,8 @@ pub async fn handle_device(
                         println!("set L");
                         adevice.lock().unwrap().set_left();
                     }
+                    adevice.lock().unwrap().set_save_config();
                     adevice.lock().unwrap().send_feature();
-                    // adevice.lock().unwrap().set_save_config();
                 }
                 else {
                     mm_res = match_message(adevice, set_message);
