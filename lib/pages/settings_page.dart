@@ -265,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
   List<PlatformFile>? _paths;
   String? _extension;
   String hw_update_file_path = '';
-  bool hwUpgradeStared = true;
+  bool hwUpgradeStared = false;
 
   void _updateHW() async {
     try {
