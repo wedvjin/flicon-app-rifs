@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert'; 
+import 'package:FC_Technologies/pages/hw_upgrade.dart';
 import 'package:FC_Technologies/pages/more_than_two.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -264,6 +265,7 @@ class _SettingPageState extends State<SettingPage> {
   List<PlatformFile>? _paths;
   String? _extension;
   String hw_update_file_path = '';
+  bool hwUpgradeStared = false;
 
   void _updateHW() async {
     try {
@@ -283,6 +285,7 @@ class _SettingPageState extends State<SettingPage> {
           setState(() {
             if(value != null) {
               hw_update_file_path = value.files[0].path.toString();
+              hwUpgradeStared = true;
               upgradeFW();
             }
           })
@@ -743,6 +746,7 @@ class _SettingPageState extends State<SettingPage> {
     bool rxytriggered = false;
     bool ztriggered = false;
     bool slidertriggered = false;
+    bool gashtiggered = false;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 24, 24, 24),
@@ -758,6 +762,12 @@ class _SettingPageState extends State<SettingPage> {
               } else {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                 updateShowButton(data);
+
+                if(hwUpgradeStared && !data.connected) {
+                  return const HWUpgrade();
+                } else {
+                  hwUpgradeStared = false;
+                }
 
                 if(!data.connected) {
                   return const Search();
@@ -813,6 +823,9 @@ class _SettingPageState extends State<SettingPage> {
 
                 double ssS = ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)) * 2;
                 slidertriggered = (ssS > (data.sliderDeadZone / 100));
+
+                double ggG = ((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin));
+                gashtiggered = (ggG > (data.sliderDeadZone / 100));
 
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
@@ -1227,11 +1240,11 @@ class _SettingPageState extends State<SettingPage> {
                                         //brakes
                                         if(_selectedGrip.startsWith('EVO') && slidertriggered)
                                           Positioned(
-                                            bottom: controller == 'right' ? 170 : 190,
-                                            right: controller == 'right' ? 230 : 220,
+                                            bottom: controller == 'right' ? 140 : 150,
+                                            right: controller == 'right' ? 215 : 205,
                                             child: Container(
-                                              height: 70,
-                                              width: 20,
+                                              height: 90,
+                                              width: 40,
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
@@ -1255,8 +1268,171 @@ class _SettingPageState extends State<SettingPage> {
                                                 ),
                                                 
                                               
-                                            )
-                                          ),
+                                              )
+                                            ),
+
+                                        if(_selectedGrip.startsWith('EVO') && slidertriggered)
+                                          Positioned(
+                                            bottom: controller == 'right' ? 155 : 165,
+                                            right: controller == 'right' ? 227 : 217,
+                                            child: Container(
+                                              height: 60,
+                                              width: 16,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: data.b15 ? 1 : 0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                              )
+                                            ),
+
+                                        //rz (gashetka)
+                                        if(_selectedGrip.startsWith('EVO') && gashtiggered)
+                                          Positioned(
+                                            left: controller == 'right' ? 180 : 190,
+                                            bottom: controller == 'right' ? 205 : 190,
+                                            child: Container(
+                                              height: 100,
+                                              width: 40,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: ((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble(),
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 40 : 15), bottomLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 35 : 15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                              )
+                                            ),
+                                        if(_selectedGrip.startsWith('EVO') && gashtiggered)
+                                          Positioned(
+                                            left: controller == 'right' ? 192 : 202,
+                                            bottom: controller == 'right' ? 215 : 200,
+                                            child: Container(
+                                              height: 25,
+                                              width: 16,
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromARGB(255, 31, 31, 31),
+                                                border: Border.all(color: Colors.white),
+                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(15)),
+                                              ),
+                                              child: 
+                                                SizedBox(
+                                                  height: 20,
+                                                  width: 50,
+                                                  child:
+                                                    RotatedBox(
+                                                      quarterTurns: -1,
+                                                      child: LinearProgressIndicator(
+                                                        minHeight: 50.0,
+                                                        value: data.b4 ? 1 : 0,
+                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        backgroundColor: Colors.transparent,
+                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                      ),
+                                                    ),
+                                                ),
+                                                
+                                              
+                                              )
+                                            ),
+                                          if(_selectedGrip.startsWith('EVO') && gashtiggered)
+                                            Positioned(
+                                              left: controller == 'right' ? 192 : 202,
+                                              bottom: controller == 'right' ? 239 : 224,
+                                              child: Container(
+                                                height: 25,
+                                                width: 16,
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromARGB(255, 31, 31, 31),
+                                                  border: Border.all(color: Colors.white),
+                                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                ),
+                                                child: 
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 50,
+                                                    child:
+                                                      RotatedBox(
+                                                        quarterTurns: -1,
+                                                        child: LinearProgressIndicator(
+                                                          minHeight: 50.0,
+                                                          value: data.b5 ? 1 : 0,
+                                                          valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                          backgroundColor: Colors.transparent,
+                                                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                        ),
+                                                      ),
+                                                  ),
+                                                  
+                                                
+                                                )
+                                              ),
+                                          if(_selectedGrip.startsWith('EVO') && gashtiggered)
+                                            Positioned(
+                                              left: controller == 'right' ? 192 : 202,
+                                              bottom: controller == 'right' ? 263 : 248,
+                                              child: Container(
+                                                height: 25,
+                                                width: 16,
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromARGB(255, 31, 31, 31),
+                                                  border: Border.all(color: Colors.white),
+                                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(0)),
+                                                ),
+                                                child: 
+                                                  SizedBox(
+                                                    height: 20,
+                                                    width: 50,
+                                                    child:
+                                                      RotatedBox(
+                                                        quarterTurns: -1,
+                                                        child: LinearProgressIndicator(
+                                                          minHeight: 50.0,
+                                                          value: data.b6 ? 1 : 0,
+                                                          valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                          backgroundColor: Colors.transparent,
+                                                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                        ),
+                                                      ),
+                                                  ),
+                                                  
+                                                
+                                                )
+                                              ),
 
 
                                         // Alpha / Trust 
@@ -2598,6 +2774,9 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${alphaButtons.indexOf("S1")}'),
                                 //Text('${data.side}'),
                                 // Text('${data.moreThanTwo}'),
+                                // Text('${data.rzAxis} (${data.rzMin} - ${data.rzMax}) ${data.rzDeadZone}%'),
+                                // Text('${((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble()}'),
+                                // Text('${((data.rzAxis + ((data.rzMax + data.rzMin) / 2)) / (data.rzMax - data.rzMin)).toDouble()}'),
                                 // Text('01-05: ${data.b1} ${data.b2} ${data.b3} ${data.b4} ${data.b5}'),
                                 // Text('06-10: ${data.b6} ${data.b7} ${data.b8} ${data.b9} ${data.b10}'),
                                 // Text('11-15: ${data.b11} ${data.b12} ${data.b13} ${data.b14} ${data.b15}'),
