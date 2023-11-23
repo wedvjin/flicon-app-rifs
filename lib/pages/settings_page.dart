@@ -309,8 +309,8 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  String _selectedGrip = 'EVO Prime Left';
-  List<String> _grips = ['EVO Prime Left', 'EVO Prime Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
+  String _selectedGrip = 'EVO Grip Left';
+  List<String> _grips = ['EVO Grip Left', 'EVO Grip Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -779,9 +779,9 @@ class _SettingPageState extends State<SettingPage> {
 
                 if(data.idGrib == 1 && !_selectedGrip.startsWith("EVO")) {
                   if(data.side == 'Left') {
-                    _selectedGrip = 'EVO Prime Left';
+                    _selectedGrip = 'EVO Grip Left';
                   } else {
-                    _selectedGrip = 'EVO Prime Right';
+                    _selectedGrip = 'EVO Grip Right';
                   }
                 }
                 if(data.idGrib == 2 && !_selectedGrip.startsWith('VPC')) {
@@ -2722,11 +2722,11 @@ class _SettingPageState extends State<SettingPage> {
                                   onChanged: (val) {
                                     setState(() {
                                       _selectedGrip = val.toString();
-                                      if(val.toString() == 'EVO Prime Left') {
+                                      if(val.toString() == 'EVO Grip Left') {
                                         rust_request('selegrip EVO Grip L', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
-                                      if(val.toString() == 'EVO Prime Right') {
+                                      if(val.toString() == 'EVO Grip Right') {
                                         rust_request('selegrip EVO Grip R', 0, 0, 0, 0, RustOperation.Update);
                                         //rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                                       } 
