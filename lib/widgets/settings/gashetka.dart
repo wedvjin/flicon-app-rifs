@@ -254,12 +254,12 @@ class _GashetkaState extends State<Gashetka> {
                       minChanged = true;
                       maxChanged = true;
                   
-                      var valueInRange = widget.data.rz;
+                      var valueInRange = widget.data.rzAxis;
                       minValue = valueInRange < minValue ? valueInRange : minValue;
                       maxValue = valueInRange > maxValue ? valueInRange : maxValue;
 
                       _periodicTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
-                        var valueInRange = widget.data.rz;
+                        var valueInRange = widget.data.rzAxis;
                         minValue = valueInRange < minValue ? valueInRange : minValue;
                         maxValue = valueInRange > maxValue ? valueInRange : maxValue;
 
