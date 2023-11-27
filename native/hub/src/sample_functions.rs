@@ -136,6 +136,7 @@ pub async fn stream_report(
         let mut side: String = "none".to_string();
         let mut connected: bool = false;
         let mut more_than_two: bool = false;
+        let mut dfu_on: bool = false;
         let device_lock = adevice.lock();
 
         match device_lock {
@@ -166,12 +167,14 @@ pub async fn stream_report(
                         side = device_state.get_side_bit().to_string();
                         more_than_two = device_state.more_than_two;
                         base_name = device_state.controller_info.as_ref().unwrap().product_string().unwrap().to_string();
+                        dfu_on = false;
                         data
                     },
                     Err(err) => {
                         // println!("DISCONNECTED feature report");
                         connected = false;
                         device_state.connected = false;
+                        dfu_on = device_state.dfu_on;
                         device_state.reinst();
                         device_state.feature.as_ref().unwrap().clone()  // TODO: REMAKE IT SHALL NOT BE LIKE THAT
                     }
@@ -365,6 +368,7 @@ pub async fn stream_report(
             base_name: base_name, 
             side: side,       
             more_than_two: more_than_two,
+            dfu_on: dfu_on,
         };
         
         let rust_signal = RustSignal {
@@ -412,6 +416,7 @@ pub async fn handle_device(
                 } 
                 else if set_message.target.as_str().starts_with("upgradef") {
                     // let path = &set_message.target.as_str()[9..];
+                    adevice.lock().unwrap().dfu_on = true;
                     let username = env::var("USERNAME").unwrap();
                     let mut path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
                     // let path = "none";

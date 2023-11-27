@@ -20,6 +20,7 @@ pub struct DeviceState {
     pub controller_info: Option<DeviceInfo>,
     pub feature: Option<ReportFeature>,
     pub more_than_two: bool,
+    pub dfu_on: bool,
 }
 
 impl DeviceState {
@@ -76,7 +77,7 @@ impl DeviceState {
             };
 
             let boxed_device = Box::new(device);
-            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap()), more_than_two};
+            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap()), more_than_two, dfu_on: false};
             
             device_state.set_disable_calibrate_base();
             device_state.set_disable_calibrate_handle();
@@ -90,7 +91,7 @@ impl DeviceState {
             // let feautre_report = ReportFeature {
             //     ..Default::default()
             // };
-            return DeviceState { connected: false, device: None, controller_info: None, feature: None, more_than_two: false};
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None, more_than_two: false, dfu_on: false};
         }
                 
     }

@@ -127,4 +127,5 @@ message ReportMessage {
     string base_name = 121;
     string side = 122;
     bool more_than_two = 123;
+    bool dfu_on = 124;
 }
