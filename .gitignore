@@ -53,3 +53,4 @@ target/
 
 native/stm32_bin
 stm32
+fw-up-dlls

@@ -1,0 +1,234 @@
+extern crate libc;
+extern crate libloading;
+
+use libc::{c_char, c_int};
+use libloading::{os::windows::Library, os::windows::Symbol};
+use std::{ffi::CStr, ptr, slice};
+
+#[derive(Debug)]
+#[repr(C)]
+struct DfuDeviceInfo {
+    usbIndex: [c_char; 10],
+    busNumber: c_int,
+    addressNumber: c_int,
+    productId: [c_char; 100],
+    serialNumber: [c_char; 100],
+    dfuVersion: libc::c_uint,
+}
+
+#[cfg(target_os = "windows")] 
+use std::{io::{self, Read}, env, path::PathBuf, ffi::{OsStr, CString}, os::windows::prelude::OsStrExt, fs::File};
+
+use crate::utils::{get_current_dir, get_username};
+
+// #[cfg(target_os = "windows")]
+pub fn upgrade_firmware(path: String) -> String {
+    #[cfg(not(debug_assertions))]
+    let current_dir = get_current_dir().unwrap();
+    // println!("current_dir: {:?}", current_dir);
+    let username = get_username().unwrap();
+    let current_dir = get_current_dir().unwrap();
+    println!("current dir: {:?}", current_dir);
+
+    // return  current_dir.to_str().unwrap().to_string();
+    // #[cfg(not(debug_assertions))]
+    let complete_path = current_dir.join("fw-up-dlls\\CubeProgrammer_API.dll");
+
+    // let complete_path = r"C:\Users\Viktor\Downloads\stm32\CubeProgrammer_API.dll";
+
+    // #[cfg(debug_assertions)]
+    // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\Desktop\\stm32_bin\\CubeProgrammer_API.dll", username));
+    //Desktop\stm32_bin
+    // let complete_path = PathBuf::from(format!("C:\\Users\\{}\\source\\repos\\flicon-app-rif\\flicon\\stm32\\CubeProgrammer_API.dll", username));
+    //C:\Users\Viktor\source\repos\flicon-app-rif\flicon\stm32
+
+    
+
+    println!("path to dll: {:?}", complete_path);
+
+    // let file_path = "C:\\Users\\Viktor\\Downloads\\FLICON_base_2.0.hex";
+    
+    // TODO: take the same name of the latest version
+    #[cfg(target_os = "windows")] 
+    {
+        std::thread::sleep(std::time::Duration::from_millis(7000));
+    
+        // #[cfg(debug_assertions)]
+        // let mut file_path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
+        
+        let mut file_path = PathBuf::from(path);
+
+        let os_str: &OsStr = OsStr::new(&file_path);
+        let mut wide_string: Vec<u16> = os_str.encode_wide().collect();
+        wide_string.push(0); // Null-terminate the wide string
+        
+        let wide_string_ptr: *const u16 = wide_string.as_ptr();
+
+        // let lib = Library::new(complete_path.clone()).expect("Could not load the DLL");
+        // libloading::os::windows::Library::new(complete_path.clone()) {
+        
+        unsafe {
+
+            let lib = Library::new(complete_path.clone()).expect("Failed to load DLL");
+
+        // Get a reference to the `getDfuDeviceList` function.
+        let get_dfu_device_list: Symbol<unsafe extern "C" fn(
+            *mut *mut DfuDeviceInfo,
+            c_int,
+            c_int,
+        ) -> c_int> = lib.get(b"getDfuDeviceList").expect("Failed to find 'getDfuDeviceList'");
+
+        // Prepare the variables for the call
+        let mut dfu_list: *mut DfuDeviceInfo = ptr::null_mut();
+        let i_pid: c_int = 57105; // Replace with actual PID
+        let i_vid: c_int = 1155; // Replace with actual VID
+
+        // Call the function
+        let result = get_dfu_device_list(&mut dfu_list, i_pid, i_vid);
+
+        if result >= 0 {
+            // Handle the list
+            let devices = slice::from_raw_parts(dfu_list, result as usize);
+            for device in devices {
+                // Process devices
+                // println!("{:?}", device);
+                let connect_dfu_bootloader: Symbol<unsafe extern "C" fn(*const c_char) -> c_int> = 
+                    lib.get(b"connectDfuBootloader").expect("Failed to find 'connectDfuBootloader'");
+
+                let usb_index: Vec<u8> = device.usbIndex.iter().map(|&x| x as u8).collect();
+                let usb_index_cstring = CStr::from_bytes_with_nul(&usb_index[..5])
+                    .expect("CStr::from_bytes_with_nul failed");
+
+                let result = connect_dfu_bootloader(usb_index_cstring.as_ptr());
+                if result == 0 {
+                    println!("Connection successful!");
+                    let func_execute: Symbol<ExecuteFunction> = lib.get(b"execute")
+                        .expect("Could not find the function in the DLL");
+
+                    let upgrade_fw: Symbol<DownloadFirmwareFunction> = lib.get(b"downloadFile")
+                        .expect("Could not find the function in the DLL");
+                    type DownloadFirmwareFunction = unsafe fn(file_path: *const u16, address: u32, skip_erase: u32, verify: u32, binPath: *const u16) -> i32;
+        
+                    let address = 0x08008000;
+                    let skip_erase = 0; // to not skip erasing
+                    let verify = 1;
+                    let bin_path: *const u16 = std::ptr::null();
+                    println!("FW upgrade started");
+                    
+        
+                    let result = upgrade_fw(wide_string_ptr, address, skip_erase, verify, bin_path);
+        
+                    println!("FW upgrade result: {}", result);
+                    std::thread::sleep(std::time::Duration::from_millis(2000));
+        
+                    type ExecuteFunction = unsafe fn(address: u32) -> i32;
+        
+                    let program_start_address = 0x08008000;     //0x08008004
+                    let result = func_execute(program_start_address);
+        
+                    println!("Execute result: {}", result);
+                } else {
+                    println!("Connection failed with error code: {}", result);
+                }
+            }
+
+            // Free the dfuList if necessary (use another function from the DLL)
+        } else {
+            // Handle error
+        }
+
+
+        }
+    }
+    return complete_path.to_str().unwrap().to_string()
+}
+
+// fn get_firmware_hex(file_path: PathBuf) -> 
+
+// pub fn upgrade_firmware() {
+//     match env::current_dir() {
+//         Ok(path) => {
+//             println!("The current directory is: {}", path.display());
+//         }
+//         Err(e) => {
+//             println!("An error occurred while getting the current directory: {}", e);
+//         }
+//     }
+//     unsafe {
+//         // Load the DLL
+//         let lib = Library::new("path_to_your_dll.dll").expect("Could not load the DLL");
+        
+//         // Define the function signature you want to call
+//         #[allow(dead_code)]
+//         type YourFunction = unsafe fn(arg1: i32, arg2: i32) -> i32;
+        
+//         // Get the function symbol from the DLL
+//         let func: Symbol<YourFunction> = lib.get(b"your_function_name")
+//             .expect("Could not find the function in the DLL");
+        
+//         // Call the function
+//         let result = func(1, 2);
+        
+//         println!("Function result: {}", result);
+//     }
+// }
+
+// // extern crate libc;
+// // extern crate winapi;
+
+// // use libc::c_int;
+// // use std::ffi::OsStr;
+// // use std::os::windows::ffi::OsStrExt;
+// // use std::ptr;
+// // use winapi::ctypes::c_void;
+// // use winapi::um::libloaderapi::{GetModuleHandleW, GetProcAddress};
+
+// // fn main() {
+// //     // Convert the function name to a wide string because Windows API expects it
+// //     let function_name = OsStr::new("firmwareUpgrade")
+// //         .encode_wide()
+// //         .chain(std::iter::once(0))
+// //         .collect::<Vec<u16>>();
+
+// //     // Load the DLL
+// //     let h_module = unsafe { GetModuleHandleW(ptr::null()) };
+// //     if h_module.is_null() {
+// //         println!("Failed to get module handle.");
+// //         return;
+// //     }
+
+// //     // Get the procedure address
+// //     let func: Option<unsafe extern "C" fn(
+// //         *const u16,
+// //         c_int,
+// //         c_int,
+// //         c_int,
+// //         c_int,
+// //     ) -> c_int> = unsafe {
+// //         let proc_address = GetProcAddress(h_module, function_name.as_ptr());
+// //         if proc_address.is_null() {
+// //             None
+// //         } else {
+// //             Some(std::mem::transmute(proc_address))
+// //         }
+// //     };
+
+// //     match func {
+// //         Some(firmware_upgrade) => {
+// //             let result = unsafe {
+// //                 firmware_upgrade(
+// //                     // Put your parameters here
+// //                     // For example:
+// //                     // path to your firmware file as *const u16,
+// //                     // address as c_int,
+// //                     // firstInstall as c_int,
+// //                     // startStack as c_int,
+// //                     // verify as c_int
+// //                 )
+// //             };
+
+// //             println!("Function executed, result: {}", result);
+// //         }
+// //         None => println!("Failed to get the procedure address."),
+// //     }
+// // }
