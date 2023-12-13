@@ -34,6 +34,7 @@ int main(int argc, wchar_t  *argv[])
     // typedef int (*start_func)(); // define the type of function start from dll
     typedef int (*ConnectDfuBootloaderType)(char *);
     ConnectDfuBootloaderType connectDfuBootloader;
+    Sleep(1000);
     connectDfuBootloader = (ConnectDfuBootloaderType)GetProcAddress(dll_handle, "connectDfuBootloader"); // get pointer to function start from dll
     if (connectDfuBootloader == NULL) // check that function start exists in dll
     {
@@ -41,15 +42,17 @@ int main(int argc, wchar_t  *argv[])
         FreeLibrary(dll_handle); // free resources occupied by dll
         return 3; // exit with error code
     }
+    Sleep(1000);
 
     int result = connectDfuBootloader("usb1"); // call function start from dll and get its result
-    printf("[*] Function start return: 0x%x\n",result);
-    if (result != 0) // check that function start returned non-zero value
+    printf("[*] Function connectDfuBootloader return: 0x%x\n",result);
+    if (result != 0)
     {
         printf("[-] Error: function %s finished with error.\n","connectDfuBootloader");
         FreeLibrary(dll_handle); // free resources occupied by dll
         return 4; // exit with error code
     }
+    Sleep(1000);
     // FreeLibrary(dll_handle); // free resources occupied by dll
     // return 0; // exit with success code
 
@@ -67,8 +70,9 @@ int main(int argc, wchar_t  *argv[])
         {
             printf("[-] Error: function %s not found in dll %s.\n", "downloadFile", dll_name);
             FreeLibrary(dll_handle); // free resources occupied by dll
-            return 3; // exit with error code
+            return 5; // exit with error code
         }
+    Sleep(1000);
     int up_result = downloadFile(
         filePath,
         134250496,
@@ -81,8 +85,9 @@ int main(int argc, wchar_t  *argv[])
     {
         printf("[-] Error: function %s finished with error.\n","downloadFile");
         FreeLibrary(dll_handle); // free resources occupied by dll
-        return 4; // exit with error code
+        return 6; // exit with error code
     }
+    Sleep(1000);
 
     typedef int (*executeType)(
         unsigned int  address
@@ -93,8 +98,9 @@ int main(int argc, wchar_t  *argv[])
     {
         printf("[-] Error: function %s not found in dll %s.\n", "execute", dll_name);
         FreeLibrary(dll_handle); // free resources occupied by dll
-        return 3; // exit with error code
+        return 7; // exit with error code
     }
+    Sleep(1000);
     int exe_result = execute(
         134250496
     );
@@ -103,9 +109,9 @@ int main(int argc, wchar_t  *argv[])
         {
             printf("[-] Error: function %s finished with error.\n","downloadFile");
             FreeLibrary(dll_handle); // free resources occupied by dll
-            return 4; // exit with error code
+            return 8; // exit with error code
         }
-
+    Sleep(1000);
     FreeLibrary(dll_handle); // free resources occupied by dll
     return 0; // exit with success code
 }

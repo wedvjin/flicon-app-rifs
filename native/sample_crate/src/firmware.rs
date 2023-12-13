@@ -1,6 +1,8 @@
 
 use std::process::Command;
 
+use crate::simple_log::append_to_file_log;
+
 // pub fn upgrade_firmware_bat(path: String) -> String {
 
 //     let status = Command::new("base_update.bat")
@@ -44,9 +46,12 @@ pub fn upgrade_firmware(path: String) -> String {
 
     let status = Command::new("fwup.exe")
         .arg("CubeProgrammer_API.dll")
-        .arg(path) // Pass the path as an argument
+        .arg(path.clone()) // Pass the path as an argument
         .status()
         .expect("Failed to run script");
+
+    // append_to_file_log("log.log", &status.to_string());
+    // append_to_file_log("log.log", &path);
 
     println!("FWUP status: {:?}", status);
     return "status".to_string();

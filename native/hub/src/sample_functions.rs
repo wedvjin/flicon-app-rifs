@@ -418,11 +418,12 @@ pub async fn handle_device(
                     // let path = &set_message.target.as_str()[9..];
                     adevice.lock().unwrap().dfu_on = true;
                     let username = env::var("USERNAME").unwrap();
-                    let mut path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
+                    let path = &set_message.target.as_str()[9..];
+                    // let mut path = PathBuf::from(format!("C:\\Users\\{}\\Downloads\\FLICON_base_2.0.hex", username));
                     // let path = "none";
                     // adevice.is_poisoned() // TODO: use together with error handling on disconnect
                     std::thread::sleep(std::time::Duration::from_millis(5000));
-                    output_string = upgrade_firmware(path.to_str().unwrap().to_string());
+                    output_string = upgrade_firmware(path.to_string());
                 } 
                 else if set_message.target.as_str().starts_with("selegrip") {
 
