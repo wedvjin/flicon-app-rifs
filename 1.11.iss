@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 ; "C:\Users\win11\Desktop\Release\FCTechnologies.exe"
 #define MyAppName "FC Technologies"
-#define MyAppVersion "0.93"
+#define MyAppVersion "0.96"
 #define MyAppPublisher "FC Technologies"
 #define MyAppURL "www.flicontech.com"
 #define MyAppExeName "FCTechnologies.exe"
@@ -40,52 +40,53 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\win11\Desktop\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\CubeProgrammer_API.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\DebugAuthPermissions.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\CubeProgrammer_API.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\DebugAuthPermissions.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\FCTechnologies.exe"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\FileManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\FileManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\HSM_P11_Lib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\HSM_P11_Lib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\hub.dll"; DestDir: "{app}"; Flags: ignoreversion 
-;Source: "C:\Users\win11\Desktop\Release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\mfc120.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\msvcp140d.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\msvcr100.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Preparation.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\psa_sdm.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5DBus.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Script.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5SerialPort.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\Qt5XmlPatterns.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\mfc120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\msvcp120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\msvcp140d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\msvcr100.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\msvcr120.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Preparation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\psa_sdm.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5DBus.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Script.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5SerialPort.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5Xml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\Qt5XmlPatterns.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\screen_retriever_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\stlibp11_SAM.conf"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\stlibp11_SAM.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\STLinkUSBDriver.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\ucrtbased.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\vcruntime140_1d.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\version"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\stlibp11_SAM.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\stlibp11_SAM.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\STLinkUSBDriver.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\ucrtbased.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\vcruntime140_1d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\vcruntime140d.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\version"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\xerces-c_3_1.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "C:\Users\win11\Desktop\Release\zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\win11\Desktop\Release\base_update.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\xerces-c_3_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "C:\Users\win11\Desktop\Release\base_update.bat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\win11\Desktop\Release\fwup.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\win11\Desktop\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-;Source: "C:\Users\win11\Desktop\Release\Driver"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\win11\Desktop\Release\Driver"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\win11\Desktop\VC_redist.x64.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller
-;Source: "C:\Users\win11\Desktop\Driver\installer_x64.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller2
-Source: "C:\Users\win11\Desktop\SetupSTM32CubeProgrammer_win64.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller3
+Source: "C:\Users\win11\Desktop\Driver\installer_x64.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller2
+;Source: "C:\Users\win11\Desktop\SetupSTM32CubeProgrammer_win64.exe"; DestDir: "{app}"; AfterInstall: RunOtherInstaller3
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Code]
@@ -100,11 +101,11 @@ begin
       SysErrorMessage(ResultCode), mbError, MB_OK);
 end;
 [Code]
-procedure RunOtherInstaller3;
+procedure RunOtherInstaller2;
 var
   ResultCode: Integer;
 begin
-  if not Exec(ExpandConstant('{app}\SetupSTM32CubeProgrammer_win64.exe'), '', '', SW_SHOWNORMAL,
+  if not Exec(ExpandConstant('{app}\installer_x64.exe'), '', '', SW_SHOWNORMAL,
     ewWaitUntilTerminated, ResultCode)
   then
     MsgBox('Other installer 2 failed to run!' + #13#10 +
