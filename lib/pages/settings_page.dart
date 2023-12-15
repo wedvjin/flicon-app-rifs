@@ -265,7 +265,6 @@ class _SettingPageState extends State<SettingPage> {
   List<PlatformFile>? _paths;
   String? _extension;
   String hw_update_file_path = '';
-  bool hwUpgradeStared = false;
 
   void _updateHW() async {
     try {
@@ -285,7 +284,6 @@ class _SettingPageState extends State<SettingPage> {
           setState(() {
             if(value != null) {
               hw_update_file_path = value.files[0].path.toString();
-              hwUpgradeStared = true;
               upgradeFW();
             }
           })
@@ -763,10 +761,8 @@ class _SettingPageState extends State<SettingPage> {
                 var data = reportMessage.ReportMessage.fromBuffer(rustSignal.message as List<int>);
                 updateShowButton(data);
 
-                if(hwUpgradeStared && !data.connected) {
+                if(data.dfuOn) {
                   return const HWUpgrade();
-                } else {
-                  hwUpgradeStared = false;
                 }
 
                 if(!data.connected) {
