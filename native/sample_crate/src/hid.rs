@@ -119,7 +119,9 @@ impl DeviceState {
             println!("more_than_two: {:?}", more_than_two);
             let device = match device_res {
                 Ok(device) => {
-                    self.feature = Some(get_report(&device).unwrap());
+                    // self.feature = Some(get_report(&device).unwrap());
+                    self.feature = Some(self.get_report().unwrap());
+
                     self.device = Some(Box::new(device));
                     self.controller_info = Some(device_info.clone());
                     self.connected = true;
