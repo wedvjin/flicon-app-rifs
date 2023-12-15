@@ -243,6 +243,8 @@ pub async fn stream_report(
         //     }
         // };
 
+        // println!("DFU STATE: {:?}", dfu_on);
+
         let report_in_signal_message = ReportMessage {
             connected: connected,
             id: report_in_data.id as u32,

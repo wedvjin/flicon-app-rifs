@@ -116,11 +116,11 @@ impl DeviceState {
             } else {
                 false
             };
-            println!("more_than_two: {:?}", more_than_two);
+            // println!("more_than_two: {:?}", more_than_two);
             let device = match device_res {
                 Ok(device) => {
                     // self.feature = Some(get_report(&device).unwrap());
-                    self.feature = Some(self.get_report().unwrap());
+                    self.feature = Some(self.get_report().unwrap_or_default());
 
                     self.device = Some(Box::new(device));
                     self.controller_info = Some(device_info.clone());
@@ -128,7 +128,7 @@ impl DeviceState {
                     self.set_disable_calibrate_base();
                     self.set_disable_calibrate_handle();
                     self.more_than_two = more_than_two;
-
+                    self.dfu_on = false;
                     #[cfg(target_os = "windows")]
                     self.save_current_profile().unwrap();
                 },
