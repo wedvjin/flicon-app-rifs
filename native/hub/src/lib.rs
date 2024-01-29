@@ -14,7 +14,10 @@ mod with_request;
 /// Always use non-blocking async functions such as `tokio::fs::File::open`.
 async fn main() {
     
-
+    let _guard = sentry::init(("https://1354173b08a55b6adbb7d635509183ed@o4506654064574464.ingest.sentry.io/4506654065426432", sentry::ClientOptions {
+        release: sentry::release_name!(),
+        ..Default::default()
+    }));
 
     let mut device = sample_crate::DeviceState::new();
 
