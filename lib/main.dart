@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:FC_Technologies/theme.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,10 @@ import 'package:flutter_hsvcolor_picker/flutter_hsvcolor_picker.dart';
 import 'package:FC_Technologies/pages/search_page.dart';
 import 'package:FC_Technologies/pages/settings_page.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry/sentry.dart';
+
+
 
 GoRouter router() {
   return GoRouter(
@@ -56,7 +61,15 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const FCTechnologiesApp());
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = 'https://1354173b08a55b6adbb7d635509183ed@o4506654064574464.ingest.sentry.io/4506654065426432';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(const FCTechnologiesApp()),
+  );
 }
 
 class FCTechnologiesApp extends StatefulWidget {
