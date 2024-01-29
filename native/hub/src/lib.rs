@@ -19,6 +19,7 @@ async fn main() {
         ..Default::default()
     }));
 
+    sentry::capture_message("Hello World!", sentry::Level::Info);
     let mut device = sample_crate::DeviceState::new();
 
 

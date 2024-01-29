@@ -59,6 +59,7 @@ void main() async {
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.setTitle('FC Technologies');
     await windowManager.setResizable(false);
+    await windowManager.setMaximizable(false);
     await windowManager.show();
     await windowManager.focus();
   });
