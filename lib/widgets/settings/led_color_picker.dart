@@ -52,11 +52,14 @@ class _LedColorPickerState extends State<LedColorPicker> {
         );
   }
 
+
   @override
   Widget build(BuildContext context) {
 
+
     return Column(
       children: [
+        Text('${_color})}'),
         WheelPicker(
           showPalette: true,
           color: _color,

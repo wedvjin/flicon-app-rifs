@@ -82,6 +82,14 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
   @override
   Widget build(BuildContext context) {
 
+    double normalizedxAxis = (widget.data.xAxis - widget.data.xMin) / (widget.data.xMax - widget.data.xMin);
+    double clampedNormalizedxAxis = normalizedxAxis.clamp(0.0, 1.0);
+    double clampedxAxis = clampedNormalizedxAxis * 120.0;
+
+    double normalizedyAxis = (widget.data.yAxis - widget.data.yMin) / (widget.data.yMax - widget.data.yMin);
+    double clampedNormalizedyAxis = normalizedyAxis.clamp(0.0, 1.0);
+    double clampedyAxis = clampedNormalizedyAxis * 120.0;
+
     return Column(
       children: [
         Stack(
@@ -144,8 +152,8 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
             ),
             Positioned(
-              bottom: widget.data.y * 120 / 32768,
-              left: widget.data.x * 120 / 32768,
+              bottom: clampedyAxis,
+              left: clampedxAxis,
               child: Container(
                 width: 30,
                 height: 30,
@@ -322,7 +330,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: deadZoneXChanged ? _editableDeadZoneXValue : widget.data.xDeadZone.toDouble(), 
-                  min: 1,
+                  min: 0,
                   max: 50,
                   divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
@@ -344,9 +352,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: averageXChanged ? _editableXAverage : widget.data.xAveraging.toDouble(), 
-                  min: 1,
-                  max: 300,
-                  divisions: 300,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {
@@ -486,7 +494,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: deadZoneYChanged ? _editableDeadZoneYValue : widget.data.yDeadZone.toDouble(), 
-                  min: 1,
+                  min: 0,
                   max: 50,
                   divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
@@ -508,9 +516,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: averageYChanged ? _editableYAverage : widget.data.yAveraging.toDouble(), 
-                  min: 1,
-                  max: 300,
-                  divisions: 300,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {

@@ -324,7 +324,7 @@ class _BaseRotationState extends State<BaseRotation> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: deadZoneZChanged ? _editableDeadZoneZValue : widget.data.zDeadZone.toDouble(), 
-                  min: 1,
+                  min: 0,
                   max: 50,
                   divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
@@ -346,9 +346,9 @@ class _BaseRotationState extends State<BaseRotation> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: averageZChanged ? _editableZAverage : widget.data.zAveraging.toDouble(), 
-                  min: 1,
-                  max: 300,
-                  divisions: 300,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {

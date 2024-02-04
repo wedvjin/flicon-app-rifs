@@ -93,9 +93,9 @@ class _Button3State extends State<Button3> {
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
           child: Slider(
             value: changed ? editable : original, 
-            min: 20,
+            min: 0,
             max: 255,
-            divisions: 100,
+            divisions: 255,
             activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
             onChanged: (value) => {
               setState(() {

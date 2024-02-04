@@ -1,5 +1,6 @@
 
 
+import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert'; 
@@ -307,8 +308,12 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  String _selectedGrip = 'EVO Grip Left';
+  String _selectedGrip = '';
   List<String> _grips = ['EVO Grip Left', 'EVO Grip Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
+
+  void updateSelectedGrip(String grip) {
+    _selectedGrip = grip;
+  }
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -774,28 +779,43 @@ class _SettingPageState extends State<SettingPage> {
                 }
 
                 if(data.idGrib == 1 && !_selectedGrip.startsWith("EVO")) {
+                  
                   if(data.side == 'Left') {
-                    _selectedGrip = 'EVO Grip Left';
+                    if(_selectedGrip != 'EVO Grip Left') {
+                      updateSelectedGrip('EVO Grip Left');
+                    }
                   } else {
-                    _selectedGrip = 'EVO Grip Right';
+                    if(_selectedGrip != 'EVO Grip Right') {
+                      updateSelectedGrip('EVO Grip Right');
+                    }
                   }
                 }
                 if(data.idGrib == 2 && !_selectedGrip.startsWith('VPC')) {
                   if(data.side == 'Left') {
-                    _selectedGrip = 'VPC Alpha Prime Left';
+                    if(_selectedGrip != 'VPC Alpha Prime Left') {
+                      updateSelectedGrip('VPC Alpha Prime Left');
+                    }
                   } else {
-                    _selectedGrip = 'VPC Alpha Prime Right';
+                    if(_selectedGrip != 'VPC Alpha Prime Right') {
+                      updateSelectedGrip('VPC Alpha Prime Right');
+                    }
                   }
                 }
                 if(data.idGrib == 3 && !_selectedGrip.startsWith('VPC')) {
                   if(data.side == 'Left') {
-                    _selectedGrip = 'VPC Alpha Left';
+                    if(_selectedGrip != 'VPC Alpha Left') {
+                      updateSelectedGrip('VPC Alpha Left');
+                    }
                   } else {
-                    _selectedGrip = 'VPC Alpha Right';
+                    if(_selectedGrip != 'VPC Alpha Right') {
+                      updateSelectedGrip('VPC Alpha Right');
+                    }
                   }
                 }
                 if(data.idGrib == 4 && !_selectedGrip.startsWith("Thrustmaster")) {
-                    _selectedGrip = 'Thrustmaster';
+                  if(_selectedGrip != 'Thrustmaster') {
+                    updateSelectedGrip('Thrustmaster');
+                  }
                 }
 
                 if(data.side == 'Left') {
@@ -2762,13 +2782,13 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('${(data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) != double.infinity ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) : 0} '),
                                 // Text('${data.rxMin}-${data.rxMax} : ${data.rx} (${data.rxAxis})'),
                                 // Text('${data.ryMin}-${data.ryMax} : ${data.ry}'),
-                                //Text('${data.idGrib}'),
+                                // Text('${data.idGrib}'),
                                 // Text('${data.buttons}'),
                                 // Text('${data.baseName}'),
                                 // Text('${realX} ${realY}'),
                                 // Text('${alphaButtons}'),
                                 // Text('${alphaButtons.indexOf("S1")}'),
-                                //Text('${data.side}'),
+                                // Text('${data.side}'),
                                 // Text('${data.moreThanTwo}'),
                                 // Text('${data.rzAxis} (${data.rzMin} - ${data.rzMax}) ${data.rzDeadZone}%'),
                                 // Text('${((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble()}'),
@@ -2783,6 +2803,7 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
                                 // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
                                 // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
+                            
 
                                 if(_controlButton == 1)
                                   Button1(data: data),

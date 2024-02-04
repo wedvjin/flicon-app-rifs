@@ -84,6 +84,14 @@ class _Button1State extends State<Button1> {
 
     bool isPressed = widget.data.b7;
 
+    double normalizedRxAxis = (widget.data.rxAxis - widget.data.rxMin) / (widget.data.rxMax - widget.data.rxMin);
+    double clampedNormalizedRxAxis = normalizedRxAxis.clamp(0.0, 1.0);
+    double clampedRxAxis = clampedNormalizedRxAxis * 150.0;
+
+    double normalizedRyAxis = (widget.data.ryAxis - widget.data.ryMin) / (widget.data.ryMax - widget.data.ryMin);
+    double clampedNormalizedRyAxis = normalizedRyAxis.clamp(0.0, 1.0);
+    double clampedRyAxis = clampedNormalizedRyAxis * 150.0;
+
     return Column(
       children: [
         Stack(
@@ -154,8 +162,8 @@ class _Button1State extends State<Button1> {
               ),
             ),
             Positioned(
-              top: widget.data.ry * 140 / 32768,
-              left: widget.data.rx * 140 / 32768,
+              top: clampedRyAxis,
+              left: clampedRxAxis,
               child: Container(
                 width: 30,
                 height: 30,
@@ -332,7 +340,7 @@ class _Button1State extends State<Button1> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: deadZoneXChanged ? _editableDeadZoneXValue : widget.data.rxDeadZone.toDouble(), 
-                  min: 1,
+                  min: 0,
                   max: 50,
                   divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
@@ -354,9 +362,9 @@ class _Button1State extends State<Button1> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: averageXChanged ? _editableXAverage : widget.data.rxAveraging.toDouble(), 
-                  min: 1,
-                  max: 300,
-                  divisions: 300,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {
@@ -496,7 +504,7 @@ class _Button1State extends State<Button1> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: deadZoneYChanged ? _editableDeadZoneYValue : widget.data.ryDeadZone.toDouble(), 
-                  min: 1,
+                  min: 0,
                   max: 50,
                   divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
@@ -518,9 +526,9 @@ class _Button1State extends State<Button1> {
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
                 child: Slider(
                   value: averageYChanged ? _editableYAverage : widget.data.ryAveraging.toDouble(), 
-                  min: 1,
-                  max: 300,
-                  divisions: 300,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {

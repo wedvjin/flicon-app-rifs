@@ -335,9 +335,9 @@ class _BrakeState extends State<Brake> {
                 padding: const EdgeInsets.only(top: 5, bottom: 10),
                 child: Slider(
                   value: averageChanged ? _editableAverage : _currentAverage, 
-                  min: 1,
-                  max: 300,
-                  divisions: 100,
+                  min: 0,
+                  max: 255,
+                  divisions: 255,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {
@@ -358,9 +358,9 @@ class _BrakeState extends State<Brake> {
                 padding: const EdgeInsets.only(top: 5, bottom: 10),
                 child: Slider(
                   value: deadZoneChanged ? _editableDeadZoneValue : _currentDeadZoneValue, 
-                  min: 1,
+                  min: 0,
                   max: 50,
-                  divisions: 100,
+                  divisions: 50,
                   activeColor:const Color.fromRGBO(193, 10, 10, 1)  ,
                   onChanged: (value) => {
                     setState(() {
