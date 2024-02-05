@@ -828,20 +828,20 @@ class _SettingPageState extends State<SettingPage> {
 
                 double rrX = ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs() * 2;
                 double rrY = ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs() * 2;
-                rxytriggered = (rrX > (data.rxDeadZone / 100)) || (rrY > (data.ryDeadZone / 100));
+                rxytriggered = (rrX > 0.2) || (rrY > 0.2);
 
                 double xxX = ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs() * 2;
                 double yyY = ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs() * 2;
-                xytriggered = (xxX > (data.xDeadZone / 100)) || (yyY > (data.yDeadZone / 100));
+                xytriggered = (xxX > 0.2) || (yyY >0.2);
 
                 double zzZ = ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs() * 2;
-                ztriggered = (zzZ > (data.zDeadZone / 100));
+                ztriggered = (zzZ > 0.2);
 
                 double ssS = ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)) * 2;
-                slidertriggered = (ssS > (data.sliderDeadZone / 100));
+                slidertriggered = (ssS > 0.2);
 
                 double ggG = ((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin));
-                gashtiggered = (ggG > (data.sliderDeadZone / 100));
+                gashtiggered = (ggG > 0.2);
 
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center, 
@@ -2804,7 +2804,6 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
                                 // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
                             
-
                                 if(_controlButton == 1)
                                   Button1(data: data),
                                 if(_controlButton == 2)
