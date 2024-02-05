@@ -44,4 +44,5 @@ prost = "0.12.0"
 sample_crate = { path = "../sample_crate" }
 anyhow = "1.0.75"
 sentry = { version = "0.32.1", features = ["debug-images"] }
+hidapi = "2.5.1"
 #hid = { path = "../hid" }
