@@ -69,10 +69,14 @@ async fn device_monitor(
             // println!("More than 2 devices connected");
             let mut device = adevice.lock().unwrap();
             device.more_than_two = true;
-        } else if count == 0 {
+        } else if count == 1 {
             let mut device = adevice.lock().unwrap();
-            device.connected = false;
+            device.more_than_two = false;
         }
+        // else if count == 0 {
+        //     let mut device = adevice.lock().unwrap();
+        //     device.connected = false;
+        // }
         // keep count and reference of currently connected devices
         
         // if any device is disconnected, remove it from the list
