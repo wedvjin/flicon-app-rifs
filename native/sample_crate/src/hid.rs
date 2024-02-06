@@ -599,7 +599,7 @@ impl DeviceState {
         let mut buf: [u8; 129] = [0; 129];
         buf[0] = 2;
         self.feature.as_ref().as_mut().unwrap().to_bytes(&mut buf);
-        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap();
+        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap_or_default();
     }
 
     pub fn print_feature(&self) {
