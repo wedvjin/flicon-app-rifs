@@ -2803,6 +2803,9 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('36-40: ${data.b36} ${data.b37} ${data.b38} ${data.b39} ${data.b40}'),
                                 // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
                                 // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
+
+                                // Text('${data.ledR} ${data.ledG} ${data.ledB}'),
+                                // Text('${data.ledR * 100 / 255 * 0.01} ${data.ledG * 100 / 255 * 0.01} ${data.ledB * 100 / 255 * 0.01}'),
                             
                                 if(_controlButton == 1)
                                   Button1(data: data),
