@@ -599,7 +599,9 @@ impl DeviceState {
         let mut buf: [u8; 129] = [0; 129];
         buf[0] = 2;
         self.feature.as_ref().as_mut().unwrap().to_bytes(&mut buf);
-        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap_or_default();
+        self.device.as_ref().unwrap().send_feature_report(&buf).unwrap_or_else(|_| {
+            println!("Error occurred while sending feature report.");
+        });
     }
 
     pub fn print_feature(&self) {
