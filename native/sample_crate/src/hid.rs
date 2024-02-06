@@ -120,9 +120,9 @@ impl DeviceState {
             let device = match device_res {
                 Ok(device) => {
                     // self.feature = Some(get_report(&device).unwrap());
-                    self.feature = Some(self.get_report().unwrap_or_default());
-
+                    
                     self.device = Some(Box::new(device));
+                    self.feature = Some(self.get_report().unwrap());
                     self.controller_info = Some(device_info.clone());
                     self.connected = true;
                     self.set_disable_calibrate_base();
