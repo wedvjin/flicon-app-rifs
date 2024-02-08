@@ -414,8 +414,9 @@ class _BaseRotationState extends State<BaseRotation> {
                       }
 
                       rust_request('setz', minZRange, maxZRange, averageZ, deadZoneZ, RustOperation.Update);
-                      rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                       rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                      rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+
 
                       _showCalibation = false;
                       rZAxisCalibration = false;

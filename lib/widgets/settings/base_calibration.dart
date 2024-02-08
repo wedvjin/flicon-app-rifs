@@ -586,8 +586,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                       }
 
                       rust_request('setx', minXRange, maxXRange, averageX, deadZoneX, RustOperation.Update);
-                      // rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
-                      // rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                    
 
                       int minYRange = 0;
                       int maxYRange = 0;
@@ -631,9 +630,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                       }
 
                       rust_request('sety', minYRange, maxYRange, averageY, deadZoneY, RustOperation.Update);
-                      
-                      rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+
                       rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                      rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
 
                       _showCalibation = false;
                       rXAxisCalibration = false;

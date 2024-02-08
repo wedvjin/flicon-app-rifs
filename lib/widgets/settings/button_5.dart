@@ -264,8 +264,9 @@ class _Button5State extends State<Button5> {
               hatka3 = 4;
             }
             rust_request('sethatka3', hatka3, 0, 0, 0, RustOperation.Update);
-            rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+            
             rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+            rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
 
             setState(() {
               Future.delayed(Duration(seconds: 2)).then((value) {

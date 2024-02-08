@@ -121,8 +121,9 @@ class _Button3State extends State<Button3> {
             onPressed: changed ? () => {
               setState(() {
                 rust_request('setencoder', editable.toInt(), 0, 0, 0, RustOperation.Update);
-                rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                
                 rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                 changed = false;
                 editable = 0;
               })

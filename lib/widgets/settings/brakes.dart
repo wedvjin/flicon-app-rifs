@@ -422,8 +422,9 @@ class _BrakeState extends State<Brake> {
                   }
 
                   rust_request('setslider', minRange, maxRange, average, deadZone, RustOperation.Update);
-                  rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
                   rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                  rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+
 
                   _showCalibation = false;
                   callbackMessage = true;

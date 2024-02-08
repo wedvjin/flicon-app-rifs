@@ -664,8 +664,9 @@ class _GashetkaState extends State<Gashetka> {
 
                   rust_request('setrz', minRange, maxRange, average, deadZone, RustOperation.Update);
 
-                  rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
+                  
                   rust_request('save', 0, 0, 0, 0, RustOperation.Update);
+                  rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
 
                   setState(() {
                     callbackMessage = true;
