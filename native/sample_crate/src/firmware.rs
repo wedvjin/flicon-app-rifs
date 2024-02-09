@@ -50,7 +50,7 @@ pub fn upgrade_firmware(path: String) -> String {
     let status = Command::new("fwup.exe")
         .arg("CubeProgrammer_API.dll")
         .arg(path.clone()) // Pass the path as an argument
-        .creation_flags(CREATE_NO_WINDOW)
+        // .creation_flags(CREATE_NO_WINDOW)
         .status()
         .expect("Failed to run script");
 
