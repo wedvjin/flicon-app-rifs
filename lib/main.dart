@@ -66,16 +66,16 @@ void main() async {
 
   runApp(const FCTechnologiesApp());
 
-  // await SentryFlutter.init(
-  //   (options) {
-  //     options.dsn = 'https://1354173b08a55b6adbb7d635509183ed@o4506654064574464.ingest.sentry.io/4506654065426432';
-  //     // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-  //     // We recommend adjusting this value in production.
-  //     options.tracesSampleRate = 1.0;
-  //     options.debug = false;
-  //   },
-  //   appRunner: () => runApp(const FCTechnologiesApp()),
-  // );
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = 'https://1354173b08a55b6adbb7d635509183ed@o4506654064574464.ingest.sentry.io/4506654065426432';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+      options.debug = false;
+    },
+    appRunner: () => runApp(const FCTechnologiesApp()),
+  );
 }
 
 class FCTechnologiesApp extends StatefulWidget {
