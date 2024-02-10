@@ -481,6 +481,42 @@ impl DeviceState {
         self.feature.as_mut().unwrap().rz_dead_zone = dead_zone;
     }
 
+    pub fn set_invert_x(&mut self) {
+        let tempx = self.feature.as_mut().unwrap().x_max;
+        self.feature.as_mut().unwrap().x_max = self.feature.as_mut().unwrap().x_min;
+        self.feature.as_mut().unwrap().x_min = tempx;
+    }
+
+    pub fn set_invert_y(&mut self) {
+        let tempy = self.feature.as_mut().unwrap().y_max;
+        self.feature.as_mut().unwrap().y_max = self.feature.as_mut().unwrap().y_min;
+        self.feature.as_mut().unwrap().y_min = tempy;
+    }
+
+    pub fn set_invert_z(&mut self) {
+        let tempz = self.feature.as_mut().unwrap().z_max;
+        self.feature.as_mut().unwrap().z_max = self.feature.as_mut().unwrap().z_min;
+        self.feature.as_mut().unwrap().z_min = tempz;
+    }
+
+    pub fn set_invert_rx(&mut self) {
+        let temprx = self.feature.as_mut().unwrap().rx_max;
+        self.feature.as_mut().unwrap().rx_max = self.feature.as_mut().unwrap().rx_min;
+        self.feature.as_mut().unwrap().rx_min = temprx;
+    }
+
+    pub fn set_invert_ry(&mut self) {
+        let tempry = self.feature.as_mut().unwrap().ry_max;
+        self.feature.as_mut().unwrap().ry_max = self.feature.as_mut().unwrap().ry_min;
+        self.feature.as_mut().unwrap().ry_min = tempry;
+    }
+
+    pub fn set_invert_rz(&mut self) {
+        let temprz = self.feature.as_mut().unwrap().rz_max;
+        self.feature.as_mut().unwrap().rz_max = self.feature.as_mut().unwrap().rz_min;
+        self.feature.as_mut().unwrap().rz_min = temprz;
+    }
+
     pub fn set_slider(&mut self, value_min: i16, value_max: i16, averaging: u8, dead_zone: u8) {
         self.feature.as_mut().unwrap().slider_min = value_min;
         self.feature.as_mut().unwrap().slider_max = value_max;

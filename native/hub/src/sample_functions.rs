@@ -371,6 +371,12 @@ pub async fn stream_report(
             side: side,       
             more_than_two: more_than_two,
             dfu_on: dfu_on,
+            inverted_x: report_feature_data.x_min < report_feature_data.x_max || report_feature_data.x_max < report_feature_data.x_min,
+            inverted_y: report_feature_data.y_min < report_feature_data.y_max || report_feature_data.y_max < report_feature_data.y_min,
+            inverted_z: report_feature_data.z_min < report_feature_data.z_max || report_feature_data.z_max < report_feature_data.z_min,
+            inverted_rx: report_feature_data.rx_min < report_feature_data.rx_max || report_feature_data.rx_max < report_feature_data.rx_min,
+            inverted_ry: report_feature_data.ry_min < report_feature_data.ry_max || report_feature_data.ry_max < report_feature_data.ry_min,
+            inverted_rz: report_feature_data.rz_min < report_feature_data.rz_max || report_feature_data.rz_max < report_feature_data.rz_min,
         };
         
         let rust_signal = RustSignal {
@@ -552,6 +558,12 @@ pub fn match_message(adevice: Arc<Mutex<DeviceState>>, set_message: SetValues) -
             set_message.value3.try_into().unwrap(),
             set_message.value4.try_into().unwrap(),
         ),
+        "invertx" => adevice.lock().unwrap().set_invert_x(),
+        "inverty" => adevice.lock().unwrap().set_invert_y(),
+        "invertz" => adevice.lock().unwrap().set_invert_z(),
+        "invertrx" => adevice.lock().unwrap().set_invert_rx(),
+        "invertry" => adevice.lock().unwrap().set_invert_ry(),
+        "invertrz" => adevice.lock().unwrap().set_invert_rz(),
         "setslider" => adevice.lock().unwrap().set_slider(
             set_message.value1.try_into().unwrap(),
             set_message.value2.try_into().unwrap(),
