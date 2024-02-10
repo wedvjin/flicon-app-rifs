@@ -43,14 +43,20 @@ use crate::simple_log::append_to_file_log;
 //     return "on".to_string();
 // }
 
+use std::process::{Stdio};
+use std::fs::File;
+
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 pub fn upgrade_firmware(path: String) -> String {
+
+    let output_file = File::create("fwUpdateResult.txt").expect("Failed to create output file");
 
     let status = Command::new("fwup.exe")
         .arg("CubeProgrammer_API.dll")
         .arg(path.clone()) // Pass the path as an argument
         // .creation_flags(CREATE_NO_WINDOW)
+        .stdout(Stdio::from(output_file)) // Redirect stdout to the file
         .status()
         .expect("Failed to run script");
 
