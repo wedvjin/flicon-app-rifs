@@ -545,7 +545,7 @@ impl DeviceState {
     }
 
     pub fn set_hatka2_mode(&mut self, mode: u8) {
-        if let 0 | 1 | 2 | 3 | 4 = mode {
+        if let 0 | 1 | 2 | 3 | 4 | 5 | 6 = mode {
             self.feature.as_mut().unwrap().hatka2_mode = mode;
         } else {
             panic!("Incorrect value")
@@ -553,7 +553,7 @@ impl DeviceState {
     }
 
     pub fn set_hatka3_mode(&mut self, mode: u8) {
-        if let 0 | 1 | 2 | 3 | 4 = mode {
+        if let 0 | 1 | 2 | 3 | 4 | 5 | 6 = mode {
             self.feature.as_mut().unwrap().hatka3_mode = mode;
         } else {
             panic!("Incorrect value")
@@ -561,7 +561,7 @@ impl DeviceState {
     }
 
     pub fn set_hatka4_mode(&mut self, mode: u8) {
-        if let 0 | 1 | 2 | 3 | 4 = mode {
+        if let 0 | 1 | 2 | 3 | 4 | 5 | 6 = mode {
             self.feature.as_mut().unwrap().hatka4_mode = mode;
         } else {
             panic!("Incorrect value")
