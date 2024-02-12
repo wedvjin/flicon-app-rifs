@@ -1,6 +1,9 @@
 
+use std::io::Write;
 use std::process::Command;
 use std::os::windows::process::CommandExt;
+
+use anyhow::Error;
 
 use crate::simple_log::append_to_file_log;
 use crate::utils::get_profiles_path;
@@ -68,4 +71,24 @@ pub fn upgrade_firmware(path: String) -> String {
 
     println!("FWUP status: {:?}", status);
     return "status".to_string();
+}
+
+pub async fn download_firmware() -> Result<(), Error> {
+    let firmware_url = "https://flicontech.com/wp-content/uploads/2024/02/FC_EVO_FW_v1.29.0.bin";
+    let mut file_path = get_profiles_path().unwrap();
+    file_path.push("Firmware");
+    //create path in rust
+    std::fs::create_dir_all(&file_path).unwrap();
+    let firmware_path = "EVO_BASE_FW.hex";
+    file_path.push(firmware_path);
+
+    let response = reqwest::get(firmware_url).await?;
+    if response.status().is_success() {
+        let bytes = response.bytes().await?;
+        let mut file = File::create(&file_path)?;
+        file.write_all(&bytes)?;
+    }
+
+    upgrade_firmware(file_path.to_str().unwrap().to_string());
+    Ok(())
 }

@@ -2134,6 +2134,7 @@ dependencies = [
  "libloading",
  "machineid-rs",
  "num",
+ "reqwest",
  "serde",
  "serde_json",
 ]

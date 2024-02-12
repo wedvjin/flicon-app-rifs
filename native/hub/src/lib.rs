@@ -26,7 +26,7 @@ async fn main() {
 
     // let (tx, rx) = mpsc::channel(32);
 
-    let mut device = sample_crate::DeviceState::new();
+    let mut device = sample_crate::DeviceState::new().await.unwrap();
 
 
 
