@@ -5,7 +5,7 @@ use std::env;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, PoisonError};
 use anyhow::{Result as AResult, anyhow, Error};
-use sample_crate::firmware::upgrade_firmware;
+use sample_crate::firmware::{download_firmware, upgrade_firmware};
 
 
 use crate::bridge::api::{RustOperation, RustRequest, RustResponse, RustSignal};
@@ -437,6 +437,10 @@ pub async fn handle_device(
                     std::thread::sleep(std::time::Duration::from_millis(5000));
                     output_string = upgrade_firmware(path.to_string());
                 } 
+                else if set_message.target.as_str().starts_with("upfwwwww") {
+                    adevice.lock().unwrap().dfu_on = true;
+                    download_firmware().await.unwrap();
+                }
                 else if set_message.target.as_str().starts_with("selegrip") {
 
                     println!("grip set: {:?}", set_message.target);
