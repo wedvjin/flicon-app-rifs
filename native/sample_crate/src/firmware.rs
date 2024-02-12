@@ -3,6 +3,7 @@ use std::process::Command;
 use std::os::windows::process::CommandExt;
 
 use crate::simple_log::append_to_file_log;
+use crate::utils::get_profiles_path;
 
 // pub fn upgrade_firmware_bat(path: String) -> String {
 
@@ -50,7 +51,9 @@ const CREATE_NO_WINDOW: u32 = 0x08000000;
 
 pub fn upgrade_firmware(path: String) -> String {
 
-    let output_file = File::create("fwUpdateResult.txt").expect("Failed to create output file");
+    let mut file_path = get_profiles_path().unwrap();
+    file_path.push("fwUpdateResult.txt");
+    let output_file = File::create(file_path).expect("Failed to create output file");
 
     let status = Command::new("fwup.exe")
         .arg("CubeProgrammer_API.dll")
