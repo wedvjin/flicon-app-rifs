@@ -128,11 +128,12 @@ message ReportMessage {
     string side = 122;
     bool more_than_two = 123;
     bool dfu_on = 124;
+    bool fw_update_available = 125
 
-    bool inverted_x = 125;
-    bool inverted_y = 126;
-    bool inverted_z = 127;
-    bool inverted_rx = 128;
-    bool inverted_ry = 129;
-    bool inverted_rz = 130;
+    bool inverted_x = 126;
+    bool inverted_y = 127;
+    bool inverted_z = 128;
+    bool inverted_rx = 129;
+    bool inverted_ry = 130;
+    bool inverted_rz = 131;
 }
