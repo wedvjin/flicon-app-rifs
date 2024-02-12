@@ -155,7 +155,7 @@ class _GashetkaState extends State<Gashetka> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent do device.'),
+              child: Text('Settings sent to device.'),
             )),
 
         Padding(
@@ -568,7 +568,7 @@ class _GashetkaState extends State<Gashetka> {
                       color: Color.fromRGBO(2, 42, 22, 1),
                       shape: BoxShape.rectangle,
                     ),
-                  child: const Text('Trigger ranges sent do device.'),
+                  child: const Text('Trigger ranges sent to device.'),
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),

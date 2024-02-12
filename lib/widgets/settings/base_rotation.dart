@@ -177,7 +177,7 @@ class _BaseRotationState extends State<BaseRotation> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent do device.'),
+              child: Text('Settings sent to device.'),
             )),
     
         Padding(
