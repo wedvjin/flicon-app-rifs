@@ -74,7 +74,7 @@ class _Button7State extends State<Button7> {
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/2-axis-button/$image.png', width: 100, height: 100),
+              child: Image.asset('assets/2-axis-button/$image.png', width: 100, height: 100, filterQuality: FilterQuality.high),
             )
           ],
         ),
@@ -86,7 +86,7 @@ class _Button7State extends State<Button7> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/2-axis-button/vertical.png', width: 35, height: 35),
+                child: Image.asset('assets/2-axis-button/vertical.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
@@ -114,7 +114,7 @@ class _Button7State extends State<Button7> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/2-axis-button/push.png', width: 35, height: 35),
+                child: Image.asset('assets/2-axis-button/push.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,

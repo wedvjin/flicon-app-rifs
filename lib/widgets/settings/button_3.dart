@@ -80,7 +80,7 @@ class _Button3State extends State<Button3> {
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/wheel/$image.png', height: 100),
+              child: Image.asset('assets/wheel/$image.png', height: 100, filterQuality: FilterQuality.high),
             )
           ],
         ),

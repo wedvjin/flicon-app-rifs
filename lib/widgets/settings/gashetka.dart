@@ -78,10 +78,12 @@ class _GashetkaState extends State<Gashetka> {
   @override
   Widget build(BuildContext context) {
 
-    double originalProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 300);
+    //double originalProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 300);
+    double originalProgress = (((widget.data.rzAxis - minValue) / (maxValue - minValue)) * 300);
     double progress = originalProgress.clamp(0, 300);
 
-    double originalSmallProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 270);
+    //double originalSmallProgress = (((widget.data.rz - 0) / (65536 / 2 - 0)) * 270);
+    double originalSmallProgress = (((widget.data.rzAxis - minValue) / (maxValue - minValue)) * 270);
     double progressSmall = originalSmallProgress.clamp(0, 270);
 
     return Column(

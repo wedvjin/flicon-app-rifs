@@ -128,7 +128,7 @@ class _LoadingPageState extends State<LoadingPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/logo.gif', width: 100,)
+            Image.asset('assets/logo.gif', width: 100, filterQuality: FilterQuality.high,)
           ]
         )
       )

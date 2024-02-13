@@ -30,6 +30,29 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:keyboard_mouse_indicator/keyboard_mouse_indicator.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 
+class LayerOpacityCalculator {
+  List<double> calculateLayerOpacities(int red, int green, int blue) {
+    // Normalize RGB values to the range 0.0 - 1.0
+    double normalizedRed = red / 255.0;
+    double normalizedGreen = green / 255.0;
+    double normalizedBlue = blue / 255.0;
+
+    // Calculate opacities for each layer based on weighted averages of RGB values
+    double whiteOpacity = (normalizedRed + normalizedGreen + normalizedBlue) / 3.0;
+    double blueOpacity = 1.0 - normalizedBlue;
+    double greenOpacity = 1.0 - normalizedGreen;
+    double redOpacity = 1.0 - normalizedRed;
+
+    // Normalize opacities to the range 0.0 - 1.0
+    whiteOpacity = whiteOpacity.clamp(0.0, 1.0);
+    blueOpacity = blueOpacity.clamp(0.0, 1.0);
+    greenOpacity = greenOpacity.clamp(0.0, 1.0);
+    redOpacity = redOpacity.clamp(0.0, 1.0);
+
+    return [whiteOpacity, blueOpacity, greenOpacity, redOpacity];
+  }
+}
+
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
 
@@ -115,6 +138,8 @@ class _SettingPageState extends State<SettingPage> {
     super.initState(); 
     loadJsonAsset(); 
   }
+
+  LayerOpacityCalculator colorCalculator = LayerOpacityCalculator();
 
 
   void clickPostion(TapDownDetails details) async {
@@ -819,6 +844,9 @@ class _SettingPageState extends State<SettingPage> {
                   initialController = 1;
                 }
 
+                List<double> layerOpacities = colorCalculator.calculateLayerOpacities(data.ledR, data.ledG, data.ledB);
+
+
                 double rrX = ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs() * 2;
                 double rrY = ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs() * 2;
                 rxytriggered = (rrX > 0.2) || (rrY > 0.2);
@@ -873,35 +901,7 @@ class _SettingPageState extends State<SettingPage> {
                                         if(_selectedGrip.startsWith('EVO'))
                                           for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457, filterQuality: FilterQuality.high,),),                                    
 
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
-                                          Positioned(
-                                            child: Opacity(
-                                              opacity: 1, 
-                                              child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
-                                            ),
-                                          ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
-                                          Positioned(
-                                            child: Opacity(
-                                              opacity: data.ledR * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-r.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
-
-                                            ),
-                                          ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
-                                          Positioned(
-                                            child: Opacity(
-                                              opacity: data.ledG * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
-                                            ),
-                                          ),
-                                        if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
-                                          Positioned(
-                                            child: Opacity(
-                                              opacity: data.ledB * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
-                                            ),
-                                          ),
+                                        
                                         if(_controlButton != 0 && _selectedGrip.startsWith('EVO')) 
                                           Positioned(
                                             child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457, filterQuality: FilterQuality.high,)),
@@ -2604,9 +2604,38 @@ class _SettingPageState extends State<SettingPage> {
                                                   ]
                                                 )
                                               ),
+                                          if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
+                                            Positioned(
+                                              child: Opacity(
+                                                alwaysIncludeSemantics: true,
+                                                opacity: layerOpacities[0], 
+                                                child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
+                                              ),
+                                            ),
+                                          if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
+                                            Positioned(
+                                              child: Opacity(
+                                                opacity: layerOpacities[1], 
+                                                child: Image.asset('assets/$controller/led-r.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
+
+                                              ),
+                                            ),
+                                          if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
+                                            Positioned(
+                                              child: Opacity(
+                                                opacity: layerOpacities[2], 
+                                                child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
+                                              ),
+                                            ),
+                                          if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
+                                            Positioned(
+                                              child: Opacity(
+                                                opacity: layerOpacities[3], 
+                                                child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
+                                              ),
+                                            ),
                                           ]
-                                        )
-                                      
+                                        )        
                               
                               ),
                           )
@@ -2797,8 +2826,7 @@ class _SettingPageState extends State<SettingPage> {
                                 // Text('41-45: ${data.b41} ${data.b42} ${data.b43} ${data.b44} ${data.b45}'),
                                 // Text('46-49: ${data.b46} ${data.b47} ${data.b48} ${data.b49}'),
 
-                                // Text('${data.ledR} ${data.ledG} ${data.ledB}'),
-                                // Text('${data.ledR * 100 / 255 * 0.01} ${data.ledG * 100 / 255 * 0.01} ${data.ledB * 100 / 255 * 0.01}'),
+                                //Text('${data.ledR} ${data.ledG} ${data.ledB}'),
                             
                                 if(_controlButton == 1)
                                   Button1(data: data),
@@ -2821,7 +2849,7 @@ class _SettingPageState extends State<SettingPage> {
                                 if(_controlButton == 14)
                                   BaseRotation(data: data),
                                 if(_controlButton == 898)
-                                  LedColorPicker(data: data)
+                                  LedColorPicker(data: data),
 
                               ])
                             ],

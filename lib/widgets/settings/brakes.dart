@@ -77,7 +77,8 @@ class _BrakeState extends State<Brake> {
     // double originalProgress = (((widget.data.sliderAxis - widget.data.sliderMin) / (widget.data.sliderMax - widget.data.sliderMin)) * 300);
     // double progress = originalProgress.clamp(0, 300);
 
-    double originalProgress = (((widget.data.slider - 0) / (65536 / 2 - 0)) * 300);
+    //double originalProgress = (((widget.data.slider - 0) / (65536 / 2 - 0)) * 300);
+    double originalProgress = (((widget.data.sliderAxis - minValue) / (maxValue - minValue)) * 300);
     double progress = originalProgress.clamp(0, 300);
 
     return Column(

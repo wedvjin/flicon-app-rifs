@@ -97,7 +97,7 @@ class _Button5State extends State<Button5> {
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/multidirectional_button/$image.png', width: 100, height: 100),
+              child: Image.asset('assets/multidirectional_button/$image.png', width: 100, height: 100, filterQuality: FilterQuality.high),
             )
           ],
         ),
@@ -109,7 +109,7 @@ class _Button5State extends State<Button5> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/multidirectional_button/all.png', width: 35, height: 35),
+                child: Image.asset('assets/multidirectional_button/all.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
@@ -136,7 +136,7 @@ class _Button5State extends State<Button5> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/multidirectional_button/horizontal-vertical.png', width: 35, height: 35),
+                child: Image.asset('assets/multidirectional_button/horizontal-vertical.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
@@ -163,7 +163,7 @@ class _Button5State extends State<Button5> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/multidirectional_button/horizontal.png', width: 35, height: 35),
+                child: Image.asset('assets/multidirectional_button/horizontal.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
@@ -190,7 +190,7 @@ class _Button5State extends State<Button5> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/multidirectional_button/vertical.png', width: 35, height: 35),
+                child: Image.asset('assets/multidirectional_button/vertical.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
@@ -217,7 +217,7 @@ class _Button5State extends State<Button5> {
           title: Stack(
             children: [
               Positioned(
-                child: Image.asset('assets/multidirectional_button/push.png', width: 35, height: 35),
+                child: Image.asset('assets/multidirectional_button/push.png', width: 35, height: 35, filterQuality: FilterQuality.high),
               ),
               const Positioned(
                 left: 45,
