@@ -21,11 +21,11 @@ pub struct DeviceState {
     pub feature: Option<ReportFeature>,
     pub more_than_two: bool,
     pub dfu_on: bool,
-    pub fw_upgrade_available: bool,
+    pub fw_update_available: bool,
 }
 
 impl DeviceState {
-    pub async fn new() -> Self {
+    pub fn new() -> Self {
 
         // #[cfg(target_os = "windows")]
         // let username = env::var("USERNAME").unwrap();
@@ -77,21 +77,21 @@ impl DeviceState {
                 false
             };
 
-            let url = "https://flicontech.com/wp-content/uploads/2024/02/FC_EVO_FW_version.txt";
+            // let url = "https://flicontech.com/wp-content/uploads/2024/02/FC_EVO_FW_version.txt";
 
-            let device_version = feature_report.as_ref().unwrap().fw_version;
-            let response = reqwest::blocking::get(url).unwrap();
+            // let device_version = feature_report.as_ref().unwrap().fw_version;
+            // let response = reqwest::blocking::get(url).unwrap();
 
-            let mut fw_upgrade_available = false;
-            if response.status().is_success() {
-                let remote_version = response.text().unwrap();
-                if remote_version.trim() != device_version.to_string() {
-                    fw_upgrade_available = true;
-                }
-            }
+            let mut fw_update_available = false;
+            // if response.status().is_success() {
+            //     let remote_version = response.text().unwrap();
+            //     if remote_version.trim() != device_version.to_string() {
+            //         fw_update_available = true;
+            //     }
+            // }
 
             let boxed_device = Box::new(device);
-            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap()), more_than_two, dfu_on: false, fw_upgrade_available: fw_upgrade_available};
+            let mut device_state = DeviceState { connected: true, device: Some(boxed_device), controller_info: Some(device_info.clone()), feature: Some(feature_report.unwrap()), more_than_two, dfu_on: false, fw_update_available: fw_update_available};
             
             device_state.set_disable_calibrate_base();
             device_state.set_disable_calibrate_handle();
@@ -105,7 +105,7 @@ impl DeviceState {
             // let feautre_report = ReportFeature {
             //     ..Default::default()
             // };
-            return DeviceState { connected: false, device: None, controller_info: None, feature: None, more_than_two: false, dfu_on: false, fw_upgrade_available: false};
+            return DeviceState { connected: false, device: None, controller_info: None, feature: None, more_than_two: false, dfu_on: false, fw_update_available: false};
         }
                 
     }
@@ -134,18 +134,18 @@ impl DeviceState {
             let device = match device_res {
                 Ok(device) => {
                     // self.feature = Some(get_report(&device).unwrap());
-                    let url = "https://flicontech.com/wp-content/uploads/2024/02/FC_EVO_FW_version.txt";
+                    // let url = "https://flicontech.com/wp-content/uploads/2024/02/FC_EVO_FW_version.txt";
 
-                    let device_version = self.feature.as_ref().unwrap().fw_version;
-                    let response = reqwest::blocking::get(url).unwrap();
+                    // let device_version = self.feature.as_ref().unwrap().fw_version;
+                    // let response = reqwest::blocking::get(url).unwrap();
         
-                    let mut fw_upgrade_available = false;
-                    if response.status().is_success() {
-                        let remote_version = response.text().unwrap();
-                        if remote_version.trim() != device_version.to_string() {
-                            fw_upgrade_available = true;
-                        }
-                    }
+                    let mut fw_update_available = false;
+                    // if response.status().is_success() {
+                    //     let remote_version = response.text().unwrap();
+                    //     if remote_version.trim() != device_version.to_string() {
+                    //         fw_update_available = true;
+                    //     }
+                    // }
                     
                     self.device = Some(Box::new(device));
                     self.feature = Some(self.get_report().unwrap());
@@ -157,7 +157,7 @@ impl DeviceState {
                     self.dfu_on = false;
                     #[cfg(target_os = "windows")]
                     self.save_current_profile().unwrap();
-                    self.fw_upgrade_available = fw_upgrade_available;
+                    self.fw_update_available = fw_update_available;
                 },
                 Err(_) => {
 

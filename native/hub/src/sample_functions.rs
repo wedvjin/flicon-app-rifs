@@ -137,7 +137,7 @@ pub async fn stream_report(
         let mut connected: bool = false;
         let mut more_than_two: bool = false;
         let mut dfu_on: bool = false;
-        let mut fw_upgrade_available: bool = false;
+        let mut fw_update_available: bool = false;
         let device_lock = adevice.lock();
 
         match device_lock {
@@ -147,7 +147,7 @@ pub async fn stream_report(
                     Ok(data) => {
                         connected = true;
                         device_state.connected = true;
-                        fw_upgrade_available = device_state.fw_upgrade_available;
+                        fw_update_available = device_state.fw_update_available;
                         data
                     },
                     Err(err) => {
@@ -170,7 +170,7 @@ pub async fn stream_report(
                         more_than_two = device_state.more_than_two;
                         base_name = device_state.controller_info.as_ref().unwrap().product_string().unwrap().to_string();
                         dfu_on = false;
-                        fw_upgrade_available = device_state.fw_upgrade_available;
+                        fw_update_available = device_state.fw_update_available;
                         data
                     },
                     Err(err) => {
@@ -374,7 +374,7 @@ pub async fn stream_report(
             side: side,       
             more_than_two: more_than_two,
             dfu_on: dfu_on,
-            fw_upgrade_available: fw_upgrade_available,
+            fw_update_available: fw_update_available,
             inverted_x: report_feature_data.x_min < report_feature_data.x_max || report_feature_data.x_max < report_feature_data.x_min,
             inverted_y: report_feature_data.y_min < report_feature_data.y_max || report_feature_data.y_max < report_feature_data.y_min,
             inverted_z: report_feature_data.z_min < report_feature_data.z_max || report_feature_data.z_max < report_feature_data.z_min,
@@ -439,7 +439,7 @@ pub async fn handle_device(
                 } 
                 else if set_message.target.as_str().starts_with("upfwwwww") {
                     adevice.lock().unwrap().dfu_on = true;
-                    download_firmware().await.unwrap();
+                    download_firmware().await.unwrap_or_default();
                 }
                 else if set_message.target.as_str().starts_with("selegrip") {
 
