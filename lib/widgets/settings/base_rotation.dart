@@ -225,7 +225,7 @@ class _BaseRotationState extends State<BaseRotation> {
                   if(rZAxisCalibration)
                     Positioned(
                       top: 5,
-                      left: (((widget.data.xAxis - minZValue) / (maxZValue - minZValue)) * 250).clamp(0, 250) - (250 * (deadZoneZChanged ? _editableDeadZoneZValue.toDouble() : widget.data.zDeadZone.toDouble()) / 100 / 2),
+                      left: (((widget.data.zAxis - minZValue) / (maxZValue - minZValue)) * 250).clamp(0, 250) - (250 * (deadZoneZChanged ? _editableDeadZoneZValue.toDouble() : widget.data.zDeadZone.toDouble()) / 100 / 2),
                       child: Container(
                         width: 250 * (deadZoneZChanged ? _editableDeadZoneZValue.toDouble() : widget.data.zDeadZone.toDouble()) / 100,
                         height: 10,
@@ -251,7 +251,7 @@ class _BaseRotationState extends State<BaseRotation> {
                   if(rZAxisCalibration)
                     Positioned(
                       top: 0,
-                      left:  (((widget.data.xAxis - minZValue) / (maxZValue - minZValue)) * 250).clamp(0, 250) - 10,
+                      left:  (((widget.data.zAxis - minZValue) / (maxZValue - minZValue)) * 250).clamp(0, 250) - 10,
                       child: Container(
                         width: 20,
                         height: 20,
