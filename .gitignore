@@ -49,7 +49,7 @@ app.*.map.json
 target/
 
 # Generated messages
-*/**/messages/
+# */**/messages/
 
 native/stm32_bin
 stm32
