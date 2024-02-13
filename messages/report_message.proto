@@ -128,7 +128,7 @@ message ReportMessage {
     string side = 122;
     bool more_than_two = 123;
     bool dfu_on = 124;
-    bool fw_update_available = 125
+    bool fw_update_available = 125;
 
     bool inverted_x = 126;
     bool inverted_y = 127;
