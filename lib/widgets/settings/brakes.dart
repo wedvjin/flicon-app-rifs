@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
-import 'package:integer/integer.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 
@@ -40,7 +38,7 @@ class _BrakeState extends State<Brake> {
   bool _showCalibation = false;
   bool sliderCalibration = false;
 
-  double _currentRangeValue = 0;
+  final double _currentRangeValue = 0;
   double _editedRangeMin = -100000000;
   double _editedRangeMax = 1000000000;
   double _editedRangeValue = 0;
@@ -86,7 +84,7 @@ class _BrakeState extends State<Brake> {
       children: [
         Stack(
           children: <Widget>[
-            Container(
+            const SizedBox(
               width: 300,
               height: 60,
             ),
@@ -151,7 +149,7 @@ class _BrakeState extends State<Brake> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent to device.'),
+              child: const Text('Settings sent to device.'),
             )),
 
         Padding(
@@ -175,11 +173,11 @@ class _BrakeState extends State<Brake> {
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child:
                   Stack(
                     children: <Widget>[
-                      Container(
+                      const SizedBox(
                         width: 250,
                         height: 20,
                       ),
@@ -204,9 +202,9 @@ class _BrakeState extends State<Brake> {
                               width: 20,
                               height: 20,
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(193, 10, 10, 1),
+                                color: const Color.fromRGBO(193, 10, 10, 1),
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                                border: Border.all(color: const Color.fromRGBO(107, 4, 4, 1))
 
                               ),
                             ),
@@ -279,9 +277,9 @@ class _BrakeState extends State<Brake> {
               //     ),
               // ),
               if(sliderCalibration)
-                Text('Move slider to get MIN and MAX values'),
+                const Text('Move slider to get MIN and MAX values'),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -305,7 +303,7 @@ class _BrakeState extends State<Brake> {
                         _editedRangeMin = minValue.toDouble();
                         _editedRangeMax = maxValue.toDouble();
 
-                        _periodicTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
+                        _periodicTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) { 
                           var valueInRange = widget.data.sliderAxis;
                           minValue = valueInRange < minValue ? valueInRange : minValue;
                           maxValue = valueInRange > maxValue ? valueInRange : maxValue;

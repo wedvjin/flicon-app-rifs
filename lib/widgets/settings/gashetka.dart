@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
@@ -46,9 +45,9 @@ class _GashetkaState extends State<Gashetka> {
 
   late Timer _periodicTimer;
 
-  RangeValues trigger1 = RangeValues(0, 32767);
-  RangeValues trigger2 = RangeValues(0, 32767);
-  RangeValues trigger3 = RangeValues(0, 32767);
+  RangeValues trigger1 = const RangeValues(0, 32767);
+  RangeValues trigger2 = const RangeValues(0, 32767);
+  RangeValues trigger3 = const RangeValues(0, 32767);
 
   bool trigger1Changed = false;
   bool trigger2Changed = false;
@@ -70,7 +69,7 @@ class _GashetkaState extends State<Gashetka> {
   var minValue = 10000000000; 
   var maxValue = 0; 
 
-  RangeValues globalMinMax = RangeValues(0, 32767);
+  RangeValues globalMinMax = const RangeValues(0, 32767);
 
   bool _showCalibation = false;
 
@@ -89,7 +88,7 @@ class _GashetkaState extends State<Gashetka> {
       children: [
         Stack(
           children: <Widget>[
-            Container(
+            const SizedBox(
               width: 300,
               height: 60,
             ),
@@ -155,7 +154,7 @@ class _GashetkaState extends State<Gashetka> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent to device.'),
+              child: const Text('Settings sent to device.'),
             )),
 
         Padding(
@@ -184,11 +183,11 @@ class _GashetkaState extends State<Gashetka> {
             const Text("Calibration"),
 
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10), 
+              padding: const EdgeInsets.symmetric(vertical: 10), 
               child:
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 250,
                     height: 20,
                   ),
@@ -236,9 +235,9 @@ class _GashetkaState extends State<Gashetka> {
               ),
             ),
             if(sliderCalibration)
-                Text('Move slider to get MIN and MAX values'),
+                const Text('Move slider to get MIN and MAX values'),
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const RoundedRectangleBorder(
@@ -258,7 +257,7 @@ class _GashetkaState extends State<Gashetka> {
                       minValue = valueInRange < minValue ? valueInRange : minValue;
                       maxValue = valueInRange > maxValue ? valueInRange : maxValue;
 
-                      _periodicTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
+                      _periodicTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) { 
                         var valueInRange = widget.data.rzAxis;
                         minValue = valueInRange < minValue ? valueInRange : minValue;
                         maxValue = valueInRange > maxValue ? valueInRange : maxValue;
@@ -355,7 +354,7 @@ class _GashetkaState extends State<Gashetka> {
                 child:
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 270,
                     height: 5,
                   ),
@@ -435,7 +434,7 @@ class _GashetkaState extends State<Gashetka> {
                 child:
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 270,
                     height: 5,
                   ),
@@ -514,7 +513,7 @@ class _GashetkaState extends State<Gashetka> {
                 child:
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 270,
                     height: 5,
                   ),
@@ -671,7 +670,7 @@ class _GashetkaState extends State<Gashetka> {
                   setState(() {
                     callbackMessage = true;
                     _showCalibation = false;
-                    Future.delayed(Duration(seconds: 5)).then((value) {
+                    Future.delayed(const Duration(seconds: 5)).then((value) {
                       callbackMessage = false;
                     });
                   });

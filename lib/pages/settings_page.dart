@@ -1,19 +1,14 @@
 
 
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert'; 
 import 'package:FC_Technologies/pages/hw_upgrade.dart';
 import 'package:FC_Technologies/pages/more_than_two.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
-import 'dart:typed_data';
 
-import 'package:drop_down_selector/drop_down_selector.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:blur/blur.dart';
 import 'package:FC_Technologies/pages/search_page.dart';
 import 'package:FC_Technologies/widgets/settings/base_calibration.dart';
 import 'package:FC_Technologies/widgets/settings/base_rotation.dart';
@@ -27,9 +22,7 @@ import 'package:FC_Technologies/widgets/settings/brakes.dart';
 import 'package:FC_Technologies/widgets/settings/gashetka.dart';
 import 'package:FC_Technologies/widgets/settings/led_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
@@ -53,8 +46,8 @@ class _SettingPageState extends State<SettingPage> {
 
   HSVColor color = HSVColor.fromColor(Colors.blue);
   int _showButton = 0;
-  List<int> _showButtons = [0];
-  List<int> _subButtons = [];
+  final List<int> _showButtons = [0];
+  final List<int> _subButtons = [];
   int _controlButton = 0;
   var cursor = SystemMouseCursors.basic;
   int initialController = 1; // right
@@ -259,10 +252,10 @@ class _SettingPageState extends State<SettingPage> {
 
   final _dialogTitleController = TextEditingController();
   final _initialDirectoryController = TextEditingController();
-  bool _lockParentWindow = false;
-  bool _userAborted = false;
-  FileType _pickingType = FileType.any;
-  bool _multiPick = false;
+  final bool _lockParentWindow = false;
+  final bool _userAborted = false;
+  final FileType _pickingType = FileType.any;
+  final bool _multiPick = false;
   List<PlatformFile>? _paths;
   String? _extension;
   String hw_update_file_path = '';
@@ -309,7 +302,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   String _selectedGrip = '';
-  List<String> _grips = ['EVO Grip Left', 'EVO Grip Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
+  final List<String> _grips = ['EVO Grip Left', 'EVO Grip Right', 'VPC Alpha Prime Left', 'VPC Alpha Prime Right', 'VPC Alpha Left', 'VPC Alpha  Right', 'Thrustmaster'];
 
   void updateSelectedGrip(String grip) {
     _selectedGrip = grip;
@@ -450,20 +443,20 @@ class _SettingPageState extends State<SettingPage> {
   void loadProfile () {
     print(selectedProfile);
     if (Platform.isWindows) {
-      rust_request('readconf ' + selectedProfile, 0, 0, 0, 0, RustOperation.Update);
+      rust_request('readconf $selectedProfile', 0, 0, 0, 0, RustOperation.Update);
     }
   }
 
   void saveProfile() {
     print(newProfile.text);
     if (Platform.isWindows) {
-      rust_request('saveconf ' + newProfile.text, 0, 0, 0, 0, RustOperation.Update);
+      rust_request('saveconf ${newProfile.text}', 0, 0, 0, 0, RustOperation.Update);
     }
   }
 
   void upgradeFW() {
     rust_request('enabledfu', 0, 0, 0, 0, RustOperation.Update);
-    rust_request('upgradef ' + hw_update_file_path, 0, 0, 0, 0, RustOperation.Update);
+    rust_request('upgradef $hw_update_file_path', 0, 0, 0, 0, RustOperation.Update);
   }
 
 
@@ -479,7 +472,7 @@ class _SettingPageState extends State<SettingPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       );
@@ -488,17 +481,17 @@ class _SettingPageState extends State<SettingPage> {
         future: rust_request('listconf', 0, 0, 0, 0, RustOperation.Update),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return AlertDialog(
-              title: Text('Error'),
-              content: Text('An error occurred while loading profiles.'),
+              title: const Text('Error'),
+              content: const Text('An error occurred while loading profiles.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Close'),
+                  child: const Text('Close'),
                 ),
               ],
             );
@@ -543,7 +536,7 @@ class _SettingPageState extends State<SettingPage> {
                     loadProfile();
                     Navigator.pop(context);
                   },
-                  child: Text('Load'),
+                  child: const Text('Load'),
                 ),
               ],
             );
@@ -560,7 +553,7 @@ class _SettingPageState extends State<SettingPage> {
         title: const Text('Save to profile'),
         content: TextField(
           controller: newProfile,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Enter profile name',
           ),
         ),
@@ -577,7 +570,7 @@ class _SettingPageState extends State<SettingPage> {
               saveProfile();
               Navigator.pop(context);
             },
-            child: Text('Save'),
+            child: const Text('Save'),
           ),
         ],
       );
@@ -742,8 +735,8 @@ class _SettingPageState extends State<SettingPage> {
     }
 
 
-    Color mainColor = Color.fromARGB(255, 82, 82, 82);
-    Color secondaryColor = Color.fromRGBO(221, 221, 221, 1);
+    Color mainColor = const Color.fromARGB(255, 82, 82, 82);
+    Color secondaryColor = const Color.fromRGBO(221, 221, 221, 1);
 
     bool xytriggered = false;
     bool rxytriggered = false;
@@ -752,7 +745,7 @@ class _SettingPageState extends State<SettingPage> {
     bool gashtiggered = false;
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 24, 24, 24),
+        backgroundColor: const Color.fromARGB(255, 24, 24, 24),
         body: Center(
           child: StreamBuilder<RustSignal>(
             stream: rustBroadcaster.stream.where((rustSignal) {
@@ -925,7 +918,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -937,9 +930,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() * 2 : 0.0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -955,7 +948,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -967,9 +960,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -985,7 +978,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -997,9 +990,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() * 2 : 0.0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1015,7 +1008,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1027,9 +1020,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1043,7 +1036,7 @@ class _SettingPageState extends State<SettingPage> {
                                               width: 30,
                                               height: 30,
                                               decoration: BoxDecoration(
-                                                color: data.b7 ? Color.fromRGBO(193, 10, 10, 1) : const Color.fromARGB(255, 31, 31, 31),
+                                                color: data.b7 ? const Color.fromRGBO(193, 10, 10, 1) : const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
                                                 shape: BoxShape.circle,
                                               ),
@@ -1061,7 +1054,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1073,9 +1066,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)) <= 0 ? ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs().toDouble() * 2 : 0.0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1093,7 +1086,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1105,9 +1098,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1123,7 +1116,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1135,9 +1128,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1153,7 +1146,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1166,9 +1159,9 @@ class _SettingPageState extends State<SettingPage> {
                                                         minHeight: 50.0,
                                                         value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)) <= 0 ? ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs().toDouble() * 2 : 0.0,
 
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1200,7 +1193,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1212,9 +1205,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() * 2 : 0.0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1232,7 +1225,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1244,9 +1237,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1264,7 +1257,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1276,9 +1269,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1297,7 +1290,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1309,9 +1302,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: data.b15 ? 1 : 0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1331,7 +1324,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1343,9 +1336,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble(),
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 40 : 15), bottomLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 35 : 15)),
+                                                        borderRadius: BorderRadius.only(bottomRight: const Radius.circular(15), topRight: const Radius.circular(15), topLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 40 : 15), bottomLeft: Radius.circular(((data.rzAxis - data.rzMin) / (data.rzMax - data.rzMin)).clamp(0, 1).toDouble() < 0.26 ? 35 : 15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1363,7 +1356,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(15)),
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(15)),
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1375,9 +1368,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: data.b4 ? 1 : 0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1395,7 +1388,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 decoration: BoxDecoration(
                                                   color: const Color.fromARGB(255, 31, 31, 31),
                                                   border: Border.all(color: Colors.white),
-                                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
                                                 ),
                                                 child: 
                                                   SizedBox(
@@ -1407,9 +1400,9 @@ class _SettingPageState extends State<SettingPage> {
                                                         child: LinearProgressIndicator(
                                                           minHeight: 50.0,
                                                           value: data.b5 ? 1 : 0,
-                                                          valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                          valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                           backgroundColor: Colors.transparent,
-                                                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(0), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
                                                         ),
                                                       ),
                                                   ),
@@ -1427,7 +1420,7 @@ class _SettingPageState extends State<SettingPage> {
                                                 decoration: BoxDecoration(
                                                   color: const Color.fromARGB(255, 31, 31, 31),
                                                   border: Border.all(color: Colors.white),
-                                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(0)),
+                                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(0), topRight: Radius.circular(15), topLeft: Radius.circular(15), bottomLeft: Radius.circular(0)),
                                                 ),
                                                 child: 
                                                   SizedBox(
@@ -1439,9 +1432,9 @@ class _SettingPageState extends State<SettingPage> {
                                                         child: LinearProgressIndicator(
                                                           minHeight: 50.0,
                                                           value: data.b6 ? 1 : 0,
-                                                          valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                          valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                           backgroundColor: Colors.transparent,
-                                                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
+                                                          borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15), topLeft: Radius.circular(0), bottomLeft: Radius.circular(0)),
                                                         ),
                                                       ),
                                                   ),
@@ -1462,7 +1455,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1474,9 +1467,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)) <= 0 ? ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).abs().toDouble() * 2 : 0.0,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
                                                       ),
                                                     ),
                                                 ),
@@ -1494,7 +1487,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1506,9 +1499,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.xAxis - ((data.xMax + data.xMin) / 2)) / (data.xMax - data.xMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
                                                       ),
                                                     ),
                                                 ),
@@ -1524,7 +1517,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1536,9 +1529,9 @@ class _SettingPageState extends State<SettingPage> {
                                                       child: LinearProgressIndicator(
                                                         minHeight: 50.0,
                                                         value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).toDouble() * 2,
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
                                                       ),
                                                     ),
                                                 ),
@@ -1554,7 +1547,7 @@ class _SettingPageState extends State<SettingPage> {
                                               decoration: BoxDecoration(
                                                 color: const Color.fromARGB(255, 31, 31, 31),
                                                 border: Border.all(color: Colors.white),
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
+                                                borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10), bottomLeft: Radius.circular(10))
                                               ),
                                               child: 
                                                 SizedBox(
@@ -1567,9 +1560,9 @@ class _SettingPageState extends State<SettingPage> {
                                                         minHeight: 50.0,
                                                         value: ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)) <= 0 ? ((data.yAxis - ((data.yMax + data.yMin) / 2)) / (data.yMax - data.yMin)).abs().toDouble() * 2 : 0.0,
 
-                                                        valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                        valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                         backgroundColor: Colors.transparent,
-                                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
+                                                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(15), topRight: Radius.circular(15)),
                                                       ),
                                                     ),
                                                 ),
@@ -1646,15 +1639,15 @@ class _SettingPageState extends State<SettingPage> {
                                                   children: [
                                                     for(var i in x['buttons'])
                                                       Padding(
-                                                        padding: EdgeInsets.all(10),
+                                                        padding: const EdgeInsets.all(10),
                                                         child: 
                                                         SizedBox(
                                                           width: 60,
                                                           child: Column(                                                          
                                                           children: [
                                                             Padding(
-                                                              padding: EdgeInsets.only(bottom: 10),
-                                                              child: Text('Button ${i}', style: TextStyle(fontSize: 13),),
+                                                              padding: const EdgeInsets.only(bottom: 10),
+                                                              child: Text('Button $i', style: const TextStyle(fontSize: 13),),
                                                             ),
                                                             Container(
                                                                   width: 50,
@@ -1847,7 +1840,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                   ),
                                                                   
                                                                   child: Padding(
-                                                                    padding: EdgeInsets.all(0), 
+                                                                    padding: const EdgeInsets.all(0), 
                                                                     child: Wrap(
                                                                     direction: Axis.vertical,
                                                                     runAlignment: WrapAlignment.center,
@@ -2074,15 +2067,15 @@ class _SettingPageState extends State<SettingPage> {
                                                   children: [
                                                     for(var i in x['buttons'])
                                                       Padding(
-                                                        padding: EdgeInsets.all(10),
+                                                        padding: const EdgeInsets.all(10),
                                                         child: 
                                                         SizedBox(
                                                           width: 60,
                                                           child: Column(                                                          
                                                           children: [
                                                             Padding(
-                                                              padding: EdgeInsets.only(bottom: 10),
-                                                              child: Text('S${i}', style: TextStyle(fontSize: 13),),
+                                                              padding: const EdgeInsets.only(bottom: 10),
+                                                              child: Text('S$i', style: const TextStyle(fontSize: 13),),
                                                             ),
                                                             Container(
                                                                   width: 80,
@@ -2095,7 +2088,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                       width: 1.0,           // Border width
                                                                     ),
                                                                     boxShadow: [
-                                                                      if((alphaButtons.indexOf("S${i}") >= 0))
+                                                                      if((alphaButtons.contains("S$i")))
                                                                         const BoxShadow(
                                                                           color: Color.fromRGBO(193, 10, 10, 1),
                                                                           blurRadius: 20.0,
@@ -2202,15 +2195,15 @@ class _SettingPageState extends State<SettingPage> {
                                                   children: [
                                                     for(var i in x['buttons'])
                                                       Padding(
-                                                        padding: EdgeInsets.all(10),
+                                                        padding: const EdgeInsets.all(10),
                                                         child: 
                                                         SizedBox(
                                                           width: 60,
                                                           child: Column(                                                          
                                                           children: [
                                                             Padding(
-                                                              padding: EdgeInsets.only(bottom: 10),
-                                                              child: Text('${i}', style: TextStyle(fontSize: 13),),
+                                                              padding: const EdgeInsets.only(bottom: 10),
+                                                              child: Text('$i', style: const TextStyle(fontSize: 13),),
                                                             ),
                                                             Container(
                                                               width: 50,
@@ -2226,7 +2219,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                 
                                                               ),
                                                               child: Padding(
-                                                                padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0), 
+                                                                padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0), 
                                                                 child:  
                                                                 Column(
                                                                   children: [
@@ -2240,9 +2233,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).toDouble() * 2,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2256,9 +2249,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)) <= 0 ? ((data.rxAxis - ((data.rxMax + data.rxMin) / 2)) / (data.rxMax - data.rxMin)).abs().toDouble() * 2 : 0.0,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2272,9 +2265,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).toDouble() * 2,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2288,9 +2281,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)) <= 0 ? ((data.ryAxis - ((data.ryMax + data.ryMin) / 2)) / (data.ryMax - data.ryMin)).abs().toDouble() * 2 : 0.0,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2304,9 +2297,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).toDouble() * 2,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25))
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2320,9 +2313,9 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 50.0,
                                                                               value: ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)) <= 0 ? ((data.zAxis - ((data.zMax + data.zMin) / 2)) / (data.zMax - data.zMin)).abs().toDouble() * 2 : 0.0,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
-                                                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
+                                                                              borderRadius: const BorderRadius.only(bottomRight: Radius.circular(25), topRight: Radius.circular(25)),
                                                                             ),
                                                                           ),
                                                                       ),
@@ -2336,7 +2329,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                             child: LinearProgressIndicator(
                                                                               minHeight: 90.0,
                                                                               value: ((data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin)).isFinite ? (data.sliderAxis - ((data.sliderMax + data.sliderMin) / 2)) / (data.sliderMax - data.sliderMin) * 2 : 0,
-                                                                              valueColor: AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
+                                                                              valueColor: const AlwaysStoppedAnimation(Color.fromRGBO(193, 10, 10, 1)),
                                                                               backgroundColor: Colors.transparent,
                                                                               borderRadius: BorderRadius.circular(25)
                                                                             ),
@@ -2365,15 +2358,15 @@ class _SettingPageState extends State<SettingPage> {
                                                   children: [
                                                     for(var i in x['buttons'])
                                                       Padding(
-                                                        padding: EdgeInsets.all(10),
+                                                        padding: const EdgeInsets.all(10),
                                                         child: 
                                                         SizedBox(
                                                           width: 60,
                                                           child: Column(                                                          
                                                           children: [
                                                             Padding(
-                                                              padding: EdgeInsets.only(bottom: 10),
-                                                              child: Text('Button ${i}', style: TextStyle(fontSize: 13),),
+                                                              padding: const EdgeInsets.only(bottom: 10),
+                                                              child: Text('Button $i', style: const TextStyle(fontSize: 13),),
                                                             ),
                                                             Container(
                                                                   width: 50,
@@ -2486,7 +2479,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                   ),
                                                                   
                                                                   child: Padding(
-                                                                    padding: EdgeInsets.all(0), 
+                                                                    padding: const EdgeInsets.all(0), 
                                                                     child: Wrap(
                                                                     direction: Axis.vertical,
                                                                     runAlignment: WrapAlignment.center,
@@ -2625,7 +2618,7 @@ class _SettingPageState extends State<SettingPage> {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        color: Color.fromARGB(255, 24, 24, 24),
+                        color: const Color.fromARGB(255, 24, 24, 24),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                           child: ListView(
@@ -2644,7 +2637,7 @@ class _SettingPageState extends State<SettingPage> {
                                             style: ElevatedButton.styleFrom(
                                                 shape: const RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.zero),
-                                                backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                                backgroundColor: const Color.fromARGB(255, 5, 5, 5),
                                                 foregroundColor: Colors.white),
                                             child: const SizedBox(
                                               height: 48, // Set a specific height
@@ -2670,7 +2663,7 @@ class _SettingPageState extends State<SettingPage> {
                                               elevation: 1,
                                               shape: const RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.zero),
-                                              backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                              backgroundColor: const Color.fromARGB(255, 5, 5, 5),
                                               foregroundColor: Colors.white),
                                               
                                           child: const SizedBox(
@@ -2700,7 +2693,7 @@ class _SettingPageState extends State<SettingPage> {
                                               elevation: 1,
                                               shape: const RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.zero),
-                                              backgroundColor: Color.fromARGB(255, 5, 5, 5),
+                                              backgroundColor: const Color.fromARGB(255, 5, 5, 5),
                                               foregroundColor: Colors.white),
                                               
                                           child: const SizedBox(
@@ -2727,7 +2720,7 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
 
                                 DropdownButton<String>(
-                                  hint: Text('Select grip'),
+                                  hint: const Text('Select grip'),
                                   value: _selectedGrip,
                                   items: _grips.map((value) {
                                     return DropdownMenuItem<String>(

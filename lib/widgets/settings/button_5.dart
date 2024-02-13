@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
@@ -98,7 +97,7 @@ class _Button5State extends State<Button5> {
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/multidirectional_button/${image}.png', width: 100, height: 100),
+              child: Image.asset('assets/multidirectional_button/$image.png', width: 100, height: 100),
             )
           ],
         ),
@@ -121,7 +120,7 @@ class _Button5State extends State<Button5> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.all,
-            fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            fillColor: MaterialStateColor.resolveWith((states) => const Color.fromRGBO(193, 10, 10, 1)),
             groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
@@ -148,7 +147,7 @@ class _Button5State extends State<Button5> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.hv,
-            fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            fillColor: MaterialStateColor.resolveWith((states) => const Color.fromRGBO(193, 10, 10, 1)),
             groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
@@ -175,7 +174,7 @@ class _Button5State extends State<Button5> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.h,
-            fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            fillColor: MaterialStateColor.resolveWith((states) => const Color.fromRGBO(193, 10, 10, 1)),
             groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
@@ -202,7 +201,7 @@ class _Button5State extends State<Button5> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.v,
-            fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            fillColor: MaterialStateColor.resolveWith((states) => const Color.fromRGBO(193, 10, 10, 1)),
             groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
@@ -229,7 +228,7 @@ class _Button5State extends State<Button5> {
           ),
           leading: Radio<buttonType>(
             value: buttonType.b,
-            fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(193, 10, 10, 1)),
+            fillColor: MaterialStateColor.resolveWith((states) => const Color.fromRGBO(193, 10, 10, 1)),
             groupValue: isChanged ? _editableValue : _currentValue,
             onChanged: (buttonType? value) {
               setState(() {
@@ -249,7 +248,6 @@ class _Button5State extends State<Button5> {
                   borderRadius: BorderRadius.zero),
               backgroundColor: const Color.fromARGB(255, 62, 62, 62),
               foregroundColor: Colors.white),
-          child: const Text('Apply changes'),
           onPressed: isChanged ? () {
             int hatka3 = 0;
             if(_editableValue == buttonType.all) {
@@ -269,11 +267,12 @@ class _Button5State extends State<Button5> {
             rust_request('apply', 0, 0, 0, 0, RustOperation.Update);
 
             setState(() {
-              Future.delayed(Duration(seconds: 2)).then((value) {
+              Future.delayed(const Duration(seconds: 2)).then((value) {
                 isChanged = false;
               });
             });
           } : null,
+          child: const Text('Apply changes'),
         )),
 
        

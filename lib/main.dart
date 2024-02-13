@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:FC_Technologies/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
@@ -13,7 +11,6 @@ import 'package:FC_Technologies/pages/search_page.dart';
 import 'package:FC_Technologies/pages/settings_page.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:sentry/sentry.dart';
 
 
 final transaction = Sentry.startTransaction('processOrderBatch()', 'task');
@@ -122,7 +119,7 @@ class _LoadingPageState extends State<LoadingPage> {
     @override
   Widget build(BuildContext context) {  
 
-    Future.delayed(Duration(seconds: 3)).then((value) => {
+    Future.delayed(const Duration(seconds: 3)).then((value) => {
       context.go('/settings')
     });
     

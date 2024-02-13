@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
@@ -28,9 +26,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
 
   var minXValue = 10000000000; 
   var maxXValue = -10000000000; 
-  double _currentXMin = 0;
+  final double _currentXMin = 0;
   bool minXChanged = false;
-  double _currentXMax= 0;
+  final double _currentXMax= 0;
   bool maxXChanged = false;
   bool deadZoneXChanged = false;
   double _editableDeadZoneXValue = 0;
@@ -43,9 +41,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
 
   var minYValue = 10000000000;
   var maxYValue = -10000000000;
-  double _currentYMin = 0;
+  final double _currentYMin = 0;
   bool minYChanged = false;
-  double _currentYMax= 0;
+  final double _currentYMax= 0;
   bool maxYChanged = false;
   bool deadZoneYChanged = false;
   double _editableDeadZoneYValue = 0;
@@ -94,7 +92,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
       children: [
         Stack(
           children: <Widget>[
-            Container(
+            const SizedBox(
               width: 150,
               height: 150,
             ),
@@ -180,7 +178,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent to device.'),
+              child: const Text('Settings sent to device.'),
             )),
 
         Padding(
@@ -212,7 +210,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
               Stack(
                     children: <Widget>[
-                      Container(
+                      const SizedBox(
                         width: 250,
                     height: 20,
                   ),
@@ -263,9 +261,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         width: 20,
                         height: 20,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(193, 10, 10, 1),
+                          color: const Color.fromRGBO(193, 10, 10, 1),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                          border: Border.all(color: const Color.fromRGBO(107, 4, 4, 1))
                           ),
                         ),
                       ),
@@ -289,7 +287,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                   ),
                 ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -308,7 +306,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         minXValue = valueInXRange < minXValue ? valueInXRange : minXValue;
                         maxXValue = valueInXRange > maxXValue ? valueInXRange : maxXValue;
 
-                        _periodicXTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
+                        _periodicXTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) { 
                           var valueInXRange = widget.data.xAxis;
                           minXValue = valueInXRange < minXValue ? valueInXRange : minXValue;
                           maxXValue = valueInXRange > maxXValue ? valueInXRange : maxXValue;
@@ -375,7 +373,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 250,
                     height: 20,
                   ),
@@ -427,9 +425,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         width: 20,
                         height: 20,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(193, 10, 10, 1),
+                          color: const Color.fromRGBO(193, 10, 10, 1),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                          border: Border.all(color: const Color.fromRGBO(107, 4, 4, 1))
                           ),
                         ),
                       ),
@@ -453,7 +451,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                   ),
                 ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -472,7 +470,7 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                         minYValue = valueInYRange < minYValue ? valueInYRange : minYValue;
                         maxYValue = valueInYRange > maxYValue ? valueInYRange : maxYValue;
 
-                        _periodicYTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
+                        _periodicYTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) { 
                           var valueInYRange = widget.data.yAxis;
                           minYValue = valueInYRange < minYValue ? valueInYRange : minYValue;
                           maxYValue = valueInYRange > maxYValue ? valueInYRange : maxYValue;

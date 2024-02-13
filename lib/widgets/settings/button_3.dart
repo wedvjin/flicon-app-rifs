@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
@@ -23,9 +22,9 @@ class EncoderTime {
 
 class _Button3State extends State<Button3> {
 
-  int _centerPostion = 50;
+  final int _centerPostion = 50;
 
-  bool _showCalibation = false;
+  final bool _showCalibation = false;
 
   List<double> calibration = [5, 45, 65, 95];
   bool changed = false;
@@ -81,7 +80,7 @@ class _Button3State extends State<Button3> {
         Stack(
           children: [
             Positioned(
-              child: Image.asset('assets/wheel/${image}.png', height: 100),
+              child: Image.asset('assets/wheel/$image.png', height: 100),
             )
           ],
         ),
@@ -117,7 +116,6 @@ class _Button3State extends State<Button3> {
                     borderRadius: BorderRadius.zero),
                 backgroundColor: const Color.fromARGB(255, 62, 62, 62),
                 foregroundColor: Colors.white),
-            child: const Text('Apply changes'),
             onPressed: changed ? () => {
               setState(() {
                 rust_request('setencoder', editable.toInt(), 0, 0, 0, RustOperation.Update);
@@ -128,6 +126,7 @@ class _Button3State extends State<Button3> {
                 editable = 0;
               })
           }: null,
+            child: const Text('Apply changes'),
         )),
         
       ]);

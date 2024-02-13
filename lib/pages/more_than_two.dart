@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
 
@@ -43,7 +41,7 @@ class _MoreThanTwoState extends State<MoreThanTwo> {
       body: Stack( 
         children: [
           Center(child: Lottie.asset('assets/more-than-two.json', height: 500,)),
-          Positioned(top: 350, left: 410, child: Center(child: Text('Connect one device at a time.'))),
+          const Positioned(top: 350, left: 410, child: Center(child: Text('Connect one device at a time.'))),
           Positioned(
             bottom: 30,
             left: 400,

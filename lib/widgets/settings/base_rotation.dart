@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_slider/flutter_multi_slider.dart';
 import 'package:FC_Technologies/messages/report_message.pb.dart' as reportMessage;
 import 'package:rust_in_flutter/rust_in_flutter.dart';
 import 'package:FC_Technologies/messages/device_info.pb.dart' as deviceInfo;
@@ -25,9 +24,9 @@ class _BaseRotationState extends State<BaseRotation> {
 
   var minZValue = 10000000000; 
   var maxZValue = -10000000000; 
-  double _currentZMin = 0;
+  final double _currentZMin = 0;
   bool minZChanged = false;
-  double _currentZMax= 0;
+  final double _currentZMax= 0;
   bool maxZChanged = false;
   bool deadZoneZChanged = false;
   double _editableDeadZoneZValue = 0;
@@ -38,7 +37,7 @@ class _BaseRotationState extends State<BaseRotation> {
 
   bool callbackMessage = false;
 
-  bool _negativeValue = false;
+  final bool _negativeValue = false;
 
   Future<deviceInfo.ReadResponse> rust_request(message, value1, value2, value3, value4, RustOperation operation) async {
     final requestMessage = deviceInfo.SetValues(
@@ -177,7 +176,7 @@ class _BaseRotationState extends State<BaseRotation> {
                   color: Color.fromRGBO(2, 42, 22, 1),
                   shape: BoxShape.rectangle,
                 ),
-              child: Text('Settings sent to device.'),
+              child: const Text('Settings sent to device.'),
             )),
     
         Padding(
@@ -206,7 +205,7 @@ class _BaseRotationState extends State<BaseRotation> {
               ),
               Stack(
                 children: <Widget>[
-                  Container(
+                  const SizedBox(
                     width: 250,
                     height: 20,
                   ),
@@ -257,9 +256,9 @@ class _BaseRotationState extends State<BaseRotation> {
                         width: 20,
                         height: 20,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(193, 10, 10, 1),
+                          color: const Color.fromRGBO(193, 10, 10, 1),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Color.fromRGBO(107, 4, 4, 1))
+                          border: Border.all(color: const Color.fromRGBO(107, 4, 4, 1))
                           ),
                         ),
                       ),
@@ -283,7 +282,7 @@ class _BaseRotationState extends State<BaseRotation> {
                   ),
                 ),
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
@@ -302,7 +301,7 @@ class _BaseRotationState extends State<BaseRotation> {
                         minZValue = valueInZRange < minZValue ? valueInZRange : minZValue;
                         maxZValue = valueInZRange > maxZValue ? valueInZRange : maxZValue;
 
-                        _periodicZTimer = Timer.periodic(Duration(milliseconds: 40), (timer) { 
+                        _periodicZTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) { 
                           var valueInZRange = widget.data.zAxis;
                           minZValue = valueInZRange < minZValue ? valueInZRange : minZValue;
                           maxZValue = valueInZRange > maxZValue ? valueInZRange : maxZValue;
