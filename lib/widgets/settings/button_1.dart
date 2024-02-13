@@ -86,11 +86,11 @@ class _Button1State extends State<Button1> {
 
     double normalizedRxAxis = (widget.data.rxAxis - widget.data.rxMin) / (widget.data.rxMax - widget.data.rxMin);
     double clampedNormalizedRxAxis = normalizedRxAxis.clamp(0.0, 1.0);
-    double clampedRxAxis = clampedNormalizedRxAxis * 150.0;
+    double clampedRxAxis = clampedNormalizedRxAxis * 140.0;
 
     double normalizedRyAxis = (widget.data.ryAxis - widget.data.ryMin) / (widget.data.ryMax - widget.data.ryMin);
     double clampedNormalizedRyAxis = normalizedRyAxis.clamp(0.0, 1.0);
-    double clampedRyAxis = clampedNormalizedRyAxis * 150.0;
+    double clampedRyAxis = clampedNormalizedRyAxis * 140.0;
 
     return Column(
       children: [
