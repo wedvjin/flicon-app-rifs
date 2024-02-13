@@ -2634,6 +2634,10 @@ class _SettingPageState extends State<SettingPage> {
                                                 child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
                                               ),
                                             ),
+
+                                            const Positioned(
+                                              child: Text('v0.986', style: TextStyle(color: Colors.white24, fontSize: 10),
+                                            ), bottom: 20, left: 10)
                                           ]
                                         )        
                               
