@@ -26,7 +26,8 @@ dependencies:
   flutter_multi_slider: ^2.0.0
   go_router: ^11.0.0
   provider: ^6.0.2
-  flutter_rust_bridge: ^1.82.3
+  flutter_rust_bridge: ^1.82.6
+  rinf: ^6.6.0
   flutter_arc_text: ^0.5.0
   wire: ^1.5.4
   keyboard_mouse_indicator: ^0.1.2

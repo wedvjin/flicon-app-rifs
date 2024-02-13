@@ -210,10 +210,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_rust_bridge
-      sha256: "2d31289a022f8b0a97e952d553686c50dff2ed5b58ac03628a13bc8cdf5f8ece"
+      sha256: "02720226035257ad0b571c1256f43df3e1556a499f6bcb004849a0faaa0e87f0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.82.3"
+    version: "1.82.6"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -440,6 +440,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  rinf:
+    dependency: "direct main"
+    description:
+      name: rinf
+      sha256: "0332613581c85fe9ba5fa5e1c6071f1953f64b3e30db723979ea2cd0db5ea083"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.6.0"
   rust_in_flutter:
     dependency: "direct main"
     description:
@@ -621,6 +629,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  watcher:
+    dependency: transitive
+    description:
+      name: watcher
+      sha256: "3d2ad6751b3c16cf07c7fca317a1413b3f26530319181b37e3b9039b84fc01d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   web:
     dependency: transitive
     description:
