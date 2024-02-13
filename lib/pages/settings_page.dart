@@ -864,27 +864,27 @@ class _SettingPageState extends State<SettingPage> {
                                       children: [
                                         if(_selectedGrip.startsWith('EVO'))
                                           Positioned(
-                                            child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457),
+                                            child: Image.asset('assets/$controller/controllers_and_base.png', width: 586, height: 457, filterQuality: FilterQuality.high,),
                                           ),
                                         if(_selectedGrip.startsWith('EVO'))
-                                          Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457),),
+                                          Positioned(child: Image.asset('assets/$controller/btn-${_showButton.toString()}-selected.png', width: 586, height: 457, filterQuality: FilterQuality.high,),),
                                         if(_selectedGrip.startsWith('EVO'))
-                                          for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457),),
+                                          for(var i in _showButtons) Positioned(child: Image.asset('assets/$controller/btn-${i.toString()}-selected.png', width: 586, height: 457, filterQuality: FilterQuality.high,),),
                                         if(_selectedGrip.startsWith('EVO'))
-                                          for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457),),                                    
+                                          for(var i in _subButtons) Positioned(child: Image.asset('assets/$controller/sub_btn_${i.toString()}.png', width: 586, height: 457, filterQuality: FilterQuality.high,),),                                    
 
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: 1, 
-                                              child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457)
+                                              child: Image.asset('assets/$controller/led-w.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
                                             ),
                                           ),
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledR * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-r.png', width: 586, height: 457)
+                                              child: Image.asset('assets/$controller/led-r.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
 
                                             ),
                                           ),
@@ -892,19 +892,19 @@ class _SettingPageState extends State<SettingPage> {
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledG * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457)
+                                              child: Image.asset('assets/$controller/led-g.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
                                             ),
                                           ),
                                         if(data.ledR != 0 && data.ledG != 0 && data.ledB != 0 && _selectedGrip.startsWith('EVO'))
                                           Positioned(
                                             child: Opacity(
                                               opacity: data.ledB * 100 / 255 * 0.01, 
-                                              child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457)
+                                              child: Image.asset('assets/$controller/led-b.png', width: 586, height: 457, filterQuality: FilterQuality.high,)
                                             ),
                                           ),
                                         if(_controlButton != 0 && _selectedGrip.startsWith('EVO')) 
                                           Positioned(
-                                            child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457)),
+                                            child: Opacity(opacity: 1, child: Image.asset('assets/$controller/btn-${_controlButton.toString()}-selected.png', width: 586, height: 457, filterQuality: FilterQuality.high,)),
                                           ),
 
                                         // show rx axis
@@ -1620,13 +1620,13 @@ class _SettingPageState extends State<SettingPage> {
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
-                                                child: Image.asset('assets/base-selected.png', width: 220),
+                                                child: Image.asset('assets/base-selected.png', width: 220, filterQuality: FilterQuality.high,),
                                               ),
                                           if((_selectedGrip.startsWith('Thrustmaster') || _selectedGrip.startsWith('VPC')) && !baseSelected)
                                               Positioned(
                                                 top: 220,
                                                 right: 0,
-                                                child: Image.asset('assets/base.png', width: 220),
+                                                child: Image.asset('assets/base.png', width: 220, filterQuality: FilterQuality.high,),
                                               ),
                                           if(_selectedGrip.startsWith('Thrustmaster'))
                                             for(var x in gripsConfig['THRUSTMASTER']['buttons'])
@@ -2137,37 +2137,37 @@ class _SettingPageState extends State<SettingPage> {
                                                                     alignment: WrapAlignment.center,
                                                                     children: [
                                                                       if(i== 4 && !data.b16 && !data.b17 && !data.b18)
-                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50),
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_000.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i== 4 && data.b16)
-                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_016.png', width: 50, height: 50),
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_016.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i==4 && data.b17)
-                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_017.png', width: 50, height: 50),
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_017.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i==4 && data.b18)
-                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_018.png', width: 50, height: 50),
+                                                                        Image.asset('assets/2-axis-button/ALPHA/S4_018.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i == 1 && !data.b19 && !data.b20 && !data.b21 && !data.b22 && !data.b23 && !data.b24 && !data.b25 && !data.b26 && !data.b27)  
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i == 2 && !data.b37 && !data.b38 && !data.b39 && !data.b40 && !data.b41 && !data.b42 && !data.b43 && !data.b44 && !data.b45)
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if(i == 3 && !data.b28 && !data.b29 && !data.b30 && !data.b31 && !data.b32 && !data.b33 && !data.b34 && !data.b35 && !data.b36)
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_000.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b19) || (i == 2 && data.b37) || (i == 3 && data.b28) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_001.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_001.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b20) || (i == 2 && data.b38) || (i == 3 && data.b29) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_002.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_002.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b21) || (i == 2 && data.b39) || (i == 3 && data.b30) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_003.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_003.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b22) || (i == 2 && data.b40) || (i == 3 && data.b31) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_004.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_004.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b23) || (i == 2 && data.b41) || (i == 3 && data.b32) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_005.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_005.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b24) || (i == 2 && data.b42) || (i == 3 && data.b33) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_006.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_006.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b25) || (i == 2 && data.b43) || (i == 3 && data.b34) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_007.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_007.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b26) || (i == 2 && data.b44) || (i == 3 && data.b35) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_008.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_008.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
                                                                       if((i == 1 && data.b27) || (i == 2 && data.b45) || (i == 3 && data.b36) )
-                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_009.png', width: 50, height: 50),
+                                                                        Image.asset('assets/multidirectional_button/ALPHA/S1_009.png', width: 50, height: 50, filterQuality: FilterQuality.high,),
 
                                                                     ],
                                                                     )
