@@ -88,6 +88,9 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
     double clampedNormalizedyAxis = normalizedyAxis.clamp(0.0, 1.0);
     double clampedyAxis = clampedNormalizedyAxis * 120.0;
 
+    bool invertedXAxis = widget.data.invertedX;
+    bool invertedYAxis = widget.data.invertedY;
+
     return Column(
       children: [
         Stack(
@@ -322,6 +325,23 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
+                child: Text('X axis inverted: ${invertedXAxis ? 'Yes' : 'No'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Switch(
+                    value: invertedXAxis,
+                    activeColor: Colors.red,
+                    onChanged: (bool value) {
+                      rust_request("invertx", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("save", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("apply", 0, 0, 0 ,0, RustOperation.Update);
+                      
+                    },
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Dead zone : ${deadZoneXChanged ? _editableDeadZoneXValue.toInt() : widget.data.xDeadZone.toInt()}%'),
               ),
               Padding(
@@ -482,6 +502,23 @@ class _JoystickCalibartionState extends State<JoystickCalibartion> {
                       }
                     });
                   },
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text('Y axis inverted: ${invertedYAxis ? 'Yes' : 'No'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Switch(
+                    value: invertedYAxis,
+                    activeColor: Colors.red,
+                    onChanged: (bool value) {
+                      rust_request("inverty", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("save", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("apply", 0, 0, 0 ,0, RustOperation.Update);
+                      
+                    },
                 )
               ),
               Padding(

@@ -66,6 +66,8 @@ class _BaseRotationState extends State<BaseRotation> {
   Widget build(BuildContext context) {
 
     double rotationAngle = (widget.data.zAxis * 100 / widget.data.zMax) / 4;
+    bool invertedZAxis = widget.data.invertedZ;
+
 
     
     return Column(
@@ -313,6 +315,23 @@ class _BaseRotationState extends State<BaseRotation> {
                       }
                     });
                   },
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text('X axis inverted: ${invertedZAxis ? 'Yes' : 'No'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Switch(
+                    value: invertedZAxis,
+                    activeColor: Colors.red,
+                    onChanged: (bool value) {
+                      rust_request("invertz", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("save", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("apply", 0, 0, 0 ,0, RustOperation.Update);
+                      
+                    },
                 )
               ),
               Padding(

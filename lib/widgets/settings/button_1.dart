@@ -90,6 +90,9 @@ class _Button1State extends State<Button1> {
     double clampedNormalizedRyAxis = normalizedRyAxis.clamp(0.0, 1.0);
     double clampedRyAxis = clampedNormalizedRyAxis * 140.0;
 
+    bool invertedRXAxis = widget.data.invertedRx;
+    bool invertedRYAxis = widget.data.invertedRy;
+
     return Column(
       children: [
         Stack(
@@ -332,6 +335,23 @@ class _Button1State extends State<Button1> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
+                child: Text('RX axis inverted: ${invertedRXAxis ? 'Yes' : 'No'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Switch(
+                    value: invertedRXAxis,
+                    activeColor: Colors.red,
+                    onChanged: (bool value) {
+                      rust_request("invertrx", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("save", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("apply", 0, 0, 0 ,0, RustOperation.Update);
+                      
+                    },
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
                 child: Text('Dead zone : ${deadZoneXChanged ? _editableDeadZoneXValue.toInt() : widget.data.rxDeadZone.toInt()}%'),
               ),
               Padding(
@@ -492,6 +512,23 @@ class _Button1State extends State<Button1> {
                       }
                     });
                   },
+                )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text('RY axis inverted: ${invertedRYAxis ? 'Yes' : 'No'}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Switch(
+                    value: invertedRYAxis,
+                    activeColor: Colors.red,
+                    onChanged: (bool value) {
+                      rust_request("invertry", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("save", 0, 0, 0 ,0, RustOperation.Update);
+                      rust_request("apply", 0, 0, 0 ,0, RustOperation.Update);
+                      
+                    },
                 )
               ),
               Padding(
