@@ -335,7 +335,7 @@ class _Button1State extends State<Button1> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
-                child: Text('RX axis inverted: ${invertedRXAxis ? 'Yes' : 'No'}'),
+                child: Text('X axis inverted: ${invertedRXAxis ? 'Yes' : 'No'}'),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -516,7 +516,7 @@ class _Button1State extends State<Button1> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5),
-                child: Text('RY axis inverted: ${invertedRYAxis ? 'Yes' : 'No'}'),
+                child: Text('Y axis inverted: ${invertedRYAxis ? 'Yes' : 'No'}'),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 5, bottom: 5),
