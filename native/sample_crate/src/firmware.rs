@@ -1,7 +1,7 @@
 
 use std::io::Write;
 use std::process::Command;
-use std::os::windows::process::CommandExt;
+// use std::os::windows::process::CommandExt;
 
 use anyhow::Error;
 

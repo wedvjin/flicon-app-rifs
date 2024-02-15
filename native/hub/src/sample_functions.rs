@@ -375,12 +375,12 @@ pub async fn stream_report(
             more_than_two: more_than_two,
             dfu_on: dfu_on,
             fw_update_available: fw_update_available,
-            inverted_x: report_feature_data.x_min < report_feature_data.x_max || report_feature_data.x_max < report_feature_data.x_min,
-            inverted_y: report_feature_data.y_min < report_feature_data.y_max || report_feature_data.y_max < report_feature_data.y_min,
-            inverted_z: report_feature_data.z_min < report_feature_data.z_max || report_feature_data.z_max < report_feature_data.z_min,
-            inverted_rx: report_feature_data.rx_min < report_feature_data.rx_max || report_feature_data.rx_max < report_feature_data.rx_min,
-            inverted_ry: report_feature_data.ry_min < report_feature_data.ry_max || report_feature_data.ry_max < report_feature_data.ry_min,
-            inverted_rz: report_feature_data.rz_min < report_feature_data.rz_max || report_feature_data.rz_max < report_feature_data.rz_min,
+            inverted_x: report_feature_data.x_max < report_feature_data.x_min,
+            inverted_y: report_feature_data.y_max < report_feature_data.y_min,
+            inverted_z: report_feature_data.z_max < report_feature_data.z_min,
+            inverted_rx: report_feature_data.rx_max < report_feature_data.rx_min,
+            inverted_ry: report_feature_data.ry_max < report_feature_data.ry_min,
+            inverted_rz: report_feature_data.rz_max < report_feature_data.rz_min,
         };
         
         let rust_signal = RustSignal {
