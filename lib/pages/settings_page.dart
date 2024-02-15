@@ -2636,8 +2636,30 @@ class _SettingPageState extends State<SettingPage> {
                                             ),
 
                                             const Positioned(
-                                              child: Text('v0.986', style: TextStyle(color: Colors.white24, fontSize: 10),
-                                            ), bottom: 20, left: 10)
+                                              bottom: 20, left: 10,
+                                              child: Text('v0.987', style: TextStyle(color: Colors.white24, fontSize: 10),
+                                            )),
+
+                                            if(data.fwUpdateAvailable) 
+                                              Positioned(
+                                                bottom: 20, right: 10,
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                    backgroundColor: const Color.fromARGB(255, 62, 62, 62),
+                                                    foregroundColor: Colors.white),
+                                                  child: const SizedBox(
+                                                    height: 40, // Set a specific height
+                                                    child: Center(child:Text('Download and upgrade FW',
+                                                    )),
+                                                  ),
+                                                  onPressed: () {
+                                                    rust_request("upfwwwww", 0, 0, 0, 0, RustOperation.Update);
+                                                  },
+                                                ),
+                                              ),
+
+                                            
                                           ]
                                         )        
                               
